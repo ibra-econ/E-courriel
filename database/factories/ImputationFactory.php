@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Departement>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Imputation>
  */
-class DepartementFactory extends Factory
+class ImputationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,7 @@ class DepartementFactory extends Factory
     public function definition()
     {
         return [
-           'nom' => $this->faker->company(),
-           'code' => $this->faker->companySuffix(),
+            //
         ];
     }
 }

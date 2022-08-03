@@ -108,7 +108,14 @@
                     <span class="ml-3 item-text">Utiisateurs</span>
                 </a>
             </li>
-              {{-- Departement lien --}}
+              {{-- correspondant lien --}}
+              <li class="nav-item w-100">
+                <a class="nav-link" href="{{ route('Correspondant') }}">
+                    <i class="fe fe-user-check fe-16"></i>
+                    <span class="ml-3 item-text">Correspondant</span>
+                </a>
+            </li>
+            {{-- Departement lien --}}
               <li class="nav-item w-100">
                 <a class="nav-link" href="{{ route('Departement') }}">
                     <i class="fe fe-layers fe-16"></i>

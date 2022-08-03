@@ -21,6 +21,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'photo' => fake()->imageUrl(64,64),
             'poste' => 'DG',
+            'departement_id' => rand(1,5),
             'role' => 'admin',
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),

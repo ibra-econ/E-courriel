@@ -30,8 +30,7 @@
                             <th>ID</th>
                             <th>Nom</th>
                             <th>Utilisateur</th>
-                            <th>Poste</th>
-                            <th>Imputation</th>
+                            <th>Code</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -41,9 +40,8 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nom }}</td>
-                            <td>{{ $row->user_id }}</td>
-                            <td>{{ $row->user_id }}</td>
-                            <td>{{ $row->imputation }}</td>
+                            <td>{{ count($row->users) }}</td>
+                            <td>{{ $row->code }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <a href="" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
@@ -87,26 +85,14 @@
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="validationCustom02">Imputation</label>
-                            <input type="text" name="imputation" class="form-control" id="validationCustom02"
-                                placeholder="Entrez le nom de l'imputation" required>
+                            <label for="validationCustom02">Code</label>
+                            <input type="text" name="code" class="form-control" id="validationCustom02"
+                                placeholder="Entrez le code" required>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label for="validationCustom04">Utilisateur</label>
-                            <select class="custom-select" name="user" id="validationCustom04" required>
-                                <option selected disabled value="">Selectionner</option>
-                                @forelse ($user as $row)
-                                <option value="{{ $row->id }}">{{ $row->name.'-'.$row->poste }}</option>
-                                @empty
-                                <option>Aucun utilisateur</option>
-                                @endforelse
-                            </select>
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                        </div>
+
                     </div>
 
                     <div class="text-center">

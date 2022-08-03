@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Correspondant;
 use App\Models\Courrier;
 use App\Models\Document;
 use App\Models\Nature;
@@ -16,8 +17,7 @@ class CourrierController extends Controller
             'type' => ['required'],
             'objet' => ['required'],
             'reference' => ['required'],
-            'destinateur' => ['required'],
-            'emetteur' => ['required', 'string'],
+            'correspondant' => ['required'],
             'date_arriver' => ['required', 'string'],
             'etat' => ['required'],
         ]);
@@ -26,10 +26,9 @@ class CourrierController extends Controller
         $courrier->type = $request->type;
         $courrier->user_id = 1;
         $courrier->nature_id = $request->nature;
-        $courrier->reference = uniqid();
+        $courrier->correspondant_id = $request->correspondant;
+        $courrier->reference = $request->reference;
         $courrier->objet = $request->objet;
-        $courrier->destinateur = $request->destinateur;
-        $courrier->emetteur = $request->emetteur;
         $courrier->etat = $request->etat;
         $courrier->date_arriver = $request->date_arriver;
         $courrier->priorite = $request->priorite;
@@ -43,13 +42,18 @@ class CourrierController extends Controller
                 $doc = new Document();
                 // renome le document
                 $filename = 'C-' . $last_id->id . time() . '.' . $row->extension();
-                // dd($filename);
-                $chemin = $row->storeAs('courrier/entrant', $filename, 'public');
+                // si courrier entrant
+                if ($request->type === "arrivée"):
+                    $chemin = $row->storeAs('courrier/entrant', $filename, 'public');
+                endif;
+                // si courrier sortant
+                if ($request->type === "départ"):
+                    $chemin = $row->storeAs('courrier/sortant', $filename, 'public');
+                endif;
                 $doc->chemin = $chemin;
                 $doc->courrier_id = $last_id->id;
                 $doc->save();
             endforeach;
-
         endif;
 
         return back()->with('insert', 'courrier ajouter avec success');
@@ -57,8 +61,7 @@ class CourrierController extends Controller
 
     public function show($id)
     {
-        $courrier = Courrier::with('documents', 'departements')->find($id);
-        // dd($courrier);
+        $courrier = Courrier::with('documents','correspondant','departements')->find($id);
         return view('courrier_show', compact(["courrier"]));
     }
 
@@ -66,7 +69,8 @@ class CourrierController extends Controller
     {
         $courrier = Courrier::with('documents', 'nature')->find($id);
         $nature = Nature::all();
-        return view('courrier_update', compact(["courrier", 'nature']));
+        $correspondant = Correspondant::all();
+        return view('courrier_update', compact(["courrier", 'nature', 'correspondant']));
     }
 
     public function update(Request $request)
@@ -74,8 +78,7 @@ class CourrierController extends Controller
         $request->validate([
             'type' => ['required'],
             'objet' => ['required'],
-            'destinateur' => ['required'],
-            'emetteur' => ['required', 'string'],
+            'correspondant' => ['required'],
             'date_arriver' => ['required', 'string'],
             'etat' => ['required'],
         ]);
@@ -83,8 +86,7 @@ class CourrierController extends Controller
         $courrier->type = $request->type;
         $courrier->objet = $request->objet;
         $courrier->nature_id = $request->nature;
-        $courrier->destinateur = $request->destinateur;
-        $courrier->emetteur = $request->emetteur;
+        $courrier->correspondant_id = $request->correspondant;
         $courrier->etat = $request->etat;
         $courrier->date_arriver = $request->date_arriver;
         $courrier->priorite = $request->priorite;
@@ -96,8 +98,14 @@ class CourrierController extends Controller
                 $doc = new Document();
                 // renome le document
                 $filename = 'C-' . $request->id . time() . '.' . $row->extension();
-                // dd($filename);
-                $chemin = $row->storeAs('courrier/entrant', $filename, 'public');
+                // si courrier entrant
+                if ($request->type === "arrivée"):
+                    $chemin = $row->storeAs('courrier/entrant', $filename, 'public');
+                endif;
+                // si courrier sortant
+                if ($request->type === "départ"):
+                    $chemin = $row->storeAs('courrier/sortant', $filename, 'public');
+                endif;
                 $doc->chemin = $chemin;
                 $doc->courrier_id = $request->id;
                 $doc->save();

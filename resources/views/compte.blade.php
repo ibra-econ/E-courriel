@@ -23,7 +23,8 @@
                             <th>Nom</th>
                             <th>Email</th>
                             <th>Poste</th>
-                            <th>Privilege</th>
+                            <th>Departement</th>
+                            <th>Role</th>
                             <th>Date</th>
                             <th>Etat</th>
                             <th>Action</th>
@@ -37,6 +38,7 @@
                             <td>{{ $row->name }}</td>
                             <td>{{ $row->email }}</td>
                             <td>{{ $row->poste }}</td>
+                            <td>{{ $row->departement->nom }}</td>
                             <td>{{ $row->role }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             @if ($row->etat == 1)

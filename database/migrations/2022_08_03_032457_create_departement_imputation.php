@@ -13,19 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+        Schema::create('departement_imputation', function (Blueprint $table) {
+            $table->unsignedBigInteger('imputation_id');
+            $table->foreign('imputation_id')->references('id')->on('imputations')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('departement_id');
             $table->foreign('departement_id')->references('id')->on('departements')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('photo')->nullable();
-            $table->string('poste');
-            $table->string('role');
-            $table->boolean('etat')->default(0);
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -37,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('departement_imputation');
     }
 };

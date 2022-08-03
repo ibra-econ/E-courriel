@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Annotation;
+use App\Models\Correspondant;
 use App\Models\Courrier;
 use App\Models\Departement;
 use App\Models\Document;
@@ -15,7 +16,7 @@ class RouteController extends Controller
     public function home()
     {
         $nature = Nature::all();
-        $departement = Departement::all();
+        $correspondant = Correspondant::all();
         // Total courrier arriver
         $arriver = Courrier::where('type', 'arrivée')->count();
         // Total courrier depart
@@ -23,8 +24,8 @@ class RouteController extends Controller
         // Total courrier utilisatiers
         $user = User::count();
         // courrier data
-        $rows = Courrier::with('nature', 'user')->where('etat', '!=', 'Archiver')->paginate(10);
-        return view('dashboard', compact(['rows', 'nature', 'departement', 'arriver', 'depart', 'user']));
+        $rows = Courrier::with('nature', 'user','correspondant')->where('etat', '!=', 'Archiver')->paginate(10);
+        return view('dashboard', compact(['rows', 'nature', 'correspondant', 'arriver', 'depart', 'user']));
     }
     // Route compte function
     public function compte()
@@ -36,9 +37,14 @@ class RouteController extends Controller
     // Route departement function
     public function departement()
     {
-        $user = User::all('id', 'name', 'poste');
-        $rows = Departement::latest()->get();
-        return view('departement', compact(['rows', 'user']));
+        $rows = Departement::with('users')->latest()->get();
+        return view('departement', compact(['rows']));
+    }
+    // Route departement function
+    public function correspondant()
+    {
+        $rows = Correspondant::all();
+        return view('correspondant', compact(['rows']));
     }
 
     // Route nature function

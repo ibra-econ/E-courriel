@@ -88,9 +88,7 @@
                             <th>Nature</th>
                             <th>Type</th>
                             <th>Priorité</th>
-                            <th>Emetteur</th>
-                            <th>Destinateur</th>
-                            <th>Fichier</th>
+                            <th>correspondant</th>
                             <th>Etat</th>
                             <th>Date arrivée</th>
                             <th>Crée</th>
@@ -106,9 +104,7 @@
                             <td>{{ $row->nature->nom }}</td>
                             <td>{{ $row->type }}</td>
                             <td>{{ $row->priorite }}</td>
-                            <td>{{ $row->emetteur }}</td>
-                            <td>{{ $row->destinateur }}</td>
-                            <td><i class="fe fe-folder"></i></td>
+                            <td>{{ $row->correspondant->nom }}</td>
                             <td><span class="badge badge-pill badge-success text-white">{{ $row->etat }}</span></td>
                             <td>{{ date('d/m/Y',strtotime($row->date_arriver)) }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
@@ -187,27 +183,29 @@
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
-                            <label for="validationCustom02"> Expéditeur</label>
-                            <input type="text" name="emetteur" class="form-control" id="validationCustom02"
-                                placeholder="Entrez expéditeur du courrier" required>
+                            <label for="validationCustom04">Correspondant (Destinateur/Expediteur)</label>
+                            <select class="custom-select" name="correspondant" id="validationCustom04" required>
+                                <option selected disabled value="">Selectionner</option>
+                                @foreach ($correspondant as $row)
+                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
+                                @endforeach
+                            </select>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="validationCustom02">Destinateur</label>
-                            <input type="text" name="destinateur" class="form-control" id="validationCustom02"
-                                placeholder="Entrez destinateur du courrier" required>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                        </div>
+
                         <div class="mb-3 col-md-6">
                             <label for="validationCustom02">En date du</label>
                             <input type="date" name="date" class="form-control" id="validationCustom02" required>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="validationCustom02">Date arrivée</label>
                             <input type="date" name="date_arriver" class="form-control" id="validationCustom02"
                                 required>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+                                <div class="valid-feedback"></div>
+                                <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="validationCustom02">Objet</label>
@@ -220,8 +218,6 @@
                             <label for="" class="form-label">Fichiers Scanner</label>
                             <input type="file" multiple class="form-control" name="document[]" id="" placeholder=""
                                 aria-describedby="fileHelpId">
-                            {{-- <div id="fileHelpId" class="form-text">Help text</div> --}}
-
                         </div>
                         <div class="mb-3 col-md-3">
                             <label for="validationCustom04">Etat</label>

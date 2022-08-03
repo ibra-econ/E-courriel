@@ -4,11 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Courrier;
+use App\Models\Imputation;
 use App\Models\Departement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +30,7 @@ class User extends Authenticatable
         'role',
         'poste',
         'photo',
+        'departement_id',
     ];
 
     /**
@@ -79,5 +80,15 @@ class User extends Authenticatable
     public function departement(): BelongsTo
     {
         return $this->belongsTo(Departement::class);
+    }
+
+        /**
+     * Get all of the imputations for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function imputations(): HasMany
+    {
+        return $this->hasMany(Imputation::class);
     }
 }

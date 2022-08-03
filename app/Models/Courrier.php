@@ -7,6 +7,7 @@ use App\Models\Nature;
 use App\Models\Document;
 use App\Models\Annotation;
 use App\Models\Departement;
+use App\Models\Correspondant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -66,5 +67,15 @@ class Courrier extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get the correspondant that owns the Courrier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function correspondant(): BelongsTo
+    {
+        return $this->belongsTo(Correspondant::class);
     }
 }

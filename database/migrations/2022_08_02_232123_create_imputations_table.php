@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('departements', function (Blueprint $table) {
+        Schema::create('imputations', function (Blueprint $table) {
             $table->id();
-            $table->string("nom");
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string("code");
+            $table->string('destinateur');
+            $table->date('date');
+            $table->date('fin_traitement');
+            $table->string('observation');
             $table->timestamps();
-
         });
     }
 
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('departements');
+        Schema::dropIfExists('imputations');
     }
 };

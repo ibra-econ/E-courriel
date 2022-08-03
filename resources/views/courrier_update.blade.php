@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="mb-3 col-md-6">
-                            <label for="validationCustom04">Nature (Fax/Lettre)</label>
+                            <label for="validationCustom04">Nature (Fax/Lettre/Email)</label>
                             <select class="custom-select" name="nature" id="validationCustom04" required>
                                 @foreach ($nature as $row)
                                 <option value="{{ $row->id }}" {{ $row->id == $courrier->nature_id ? 'selected' : '' }}>{{ $row->nom }}</option>
@@ -75,18 +75,16 @@
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
-                            <label for="validationCustom02"> Expéditeur</label>
-                            <input type="text" name="emetteur" value="{{ $courrier->emetteur }}" class="form-control"
-                                id="validationCustom02" placeholder="Entrez expéditeur du courrier" required>
+                            <label for="validationCustom04">Correspondant (Destinateur/Expediteur)</label>
+                            <select class="custom-select" name="correspondant" id="validationCustom04" required>
+                                <option selected disabled value="">Selectionner</option>
+                                @foreach ($correspondant as $row)
+                                <option value="{{ $row->id }}" {{ $row->id == $courrier->correspondant_id ? 'selected' : '' }}>{{ $row->prenom }} {{ $row->nom }}</option>
+                                @endforeach
+                            </select>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="validationCustom02">Destinateur</label>
-                            <input type="text" name="destinateur" value="{{ $courrier->destinateur }}"
-                                class="form-control" id="validationCustom02"
-                                placeholder="Entrez destinateur du courrier" required>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                        </div>
+
                         <div class="mb-3 col-md-6">
                             <label for="validationCustom02">En date du</label>
                             <input type="date" name="date" value="{{ $courrier->date }}" class="form-control"

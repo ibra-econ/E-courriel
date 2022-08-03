@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-{{-- departement table --}}
+{{-- correspondant table --}}
 <div class="row">
     <div class="col-md-12">
         <div class="card shadow">
@@ -25,40 +25,38 @@
                             <th>Nom</th>
                             <th>Email</th>
                             <th>Telephone</th>
-                            <th>Profession</th>
+                            <th>Fonction</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>2370</td>
+                            @foreach ($rows as $row)
+                            <td>{{ $row->id }}</td>
+                            <td>{{ $row->prenom }}</td>
+                            <td>{{ $row->nom }}</td>
+                            <td>{{ $row->email }}</td>
+                            <td>{{ $row->phone }}</td>
+                            <td>{{ $row->fonction }}</td>
+                            <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
-                                <div class="progress progress-sm" style="height:3px">
-                                    <div class="progress-bar" role="progressbar" style="width: 87%" aria-valuenow="87"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </td>
-                            <td>Barry Bright</td>
-                            <td>Donec Corporation</td>
-                            <td>662-5410 Eu Ave</td>
-                            <td>662-5410 Eu Ave</td>
-                            <td>Jun 22, 2020</td>
-                            <td>
-                                <a href="" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-                                <a href="" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
-                                <a href="" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></a>
+                                <a href="{{ route('edit.correspondant',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
+                                <button onclick="deleteConfirmation({{ $row->id }})" type="button"
+                                    class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div> <!-- Bordered table -->
-</div> <!-- Fin Département -->
+</div> <!-- Fin correspondant -->
 </div>
 
-{{-- modal forme Nouveau Département --}}
+{{-- modal forme Nouveau correspondant --}}
 <div class="card shadow">
     <div class="card-body">
         <!-- Modal -->
@@ -67,49 +65,50 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="verticalModalTitle">Nouveau Département</h5>
+                        <h5 class="modal-title" id="verticalModalTitle">Nouveau Correspondant</h5>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="needs-validation p-3" novalidate>
+                        <form method="post" action="{{ route('new.correspondant') }}" class="needs-validation p-3" novalidate>
                             @csrf
                             <div class="form-row">
                                 <div class="col-md-6 mb-3">
                                     <label for="validationCustom02">Nom</label>
-                                    <input type="text" class="form-control" id="validationCustom02" value="Otto"
-                                        placeholder="Entrez le nom du departement" required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    <input type="text" class="form-control" id="validationCustom02" name="nom"
+                                        placeholder="Entrez le nom du correspondant" required>
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback">Ce champ est obligatoire.</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="validationCustom02">Imputation</label>
-                                    <input type="text" class="form-control" id="validationCustom02" value="Otto"
-                                        placeholder="Entrez l'imputation" required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    <label for="validationCustom02">Prénom</label>
+                                    <input type="text" class="form-control" id="validationCustom02" name="prenom"
+                                        placeholder="Entrez le prenom du correspondant" required>
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback">Ce champ est obligatoire.</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="validationCustom02">Responsable</label>
-                                    <input type="text" class="form-control" id="validationCustom02" value="Otto"
-                                        placeholder="Entrez le nom du responsable" required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    <label for="validationCustom02">Email (Facultatif)</label>
+                                    <input type="email" class="form-control" id="validationCustom02" name="email"
+                                        placeholder="Entrez email du correspondant">
+                                    <div class="valid-feedback"></div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="validationCustom02">Hiérarchie</label>
-                                    <input type="text" class="form-control" id="validationCustom02" value="Otto"
-                                        placeholder="Entrez la hiérarchie du responsable" required>
-                                    <div class="valid-feedback"> Looks good! </div>
+                                    <label for="validationCustom02">Telephone</label>
+                                    <input type="text" class="form-control" id="validationCustom02" name="phone"
+                                        placeholder="Entrez le contact du correspondant">
+                                    <div class="valid-feedback"></div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="validationCustom04">Nom d'utisateur</label>
-                                    <select class="custom-select" id="validationCustom04" required>
-                                        <option selected disabled value="">Selectionner</option>
-                                        <option>Courrier entrant</option>
-                                        <option>Courrier sortant</option>
-                                    </select>
-                                    <div class="invalid-feedback"> Please select a valid state. </div>
+                                    <label for="validationCustom02">Fonction/Profession</label>
+                                    <input type="text" class="form-control" id="validationCustom02" name="fonction"
+                                        placeholder="Entrez la fonction du correspondant">
+                                    <div class="valid-feedback"></div>
+                                    <div class="invalid-feedback">Ce champ est obligatoire.</div>
+
                                 </div>
                             </div>
 
@@ -117,7 +116,6 @@
                                 <button type="button" class="btn mb-2 btn-secondary"
                                     data-dismiss="modal">Fermer</button>
                                 <button type="submit" class="btn mb-2 btn-success">Valider</button>
-
                             </div>
                         </form>
                     </div>
@@ -127,6 +125,47 @@
     </div>
 </div>
 </div>
-@endsection
-@section('script')
+<script>
+    function deleteConfirmation(id) {
+    swal.fire({
+        title: "Supprimer?",
+        icon: 'question',
+        text: "Etes vous sur de vouloir supprimer cet element!",
+        type: "warning",
+        showCancelButton: !0,
+        confirmButtonText: "Oui, Supprimer!",
+        cancelButtonText: "Non, Annuler!",
+        reverseButtons: !0
+    }).then(function (e) {
+
+        if (e.value === true) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('delete/correspondant')}}/" + id,
+                data: {_token: CSRF_TOKEN},
+                dataType: 'JSON',
+                success: function (results) {
+                    if (results.success === true) {
+                        swal.fire("Done!", results.message, "success");
+                        // refresh page after 2 seconds
+                        setTimeout(function(){
+                            location.reload();
+                        },2000);
+                    } else {
+                        swal.fire("Error!", results.message, "error");
+                    }
+                }
+            });
+
+        } else {
+            e.dismiss;
+        }
+
+    }, function (dismiss) {
+        return false;
+    })
+    }
+</script>
 @endsection

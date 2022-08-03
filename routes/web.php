@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnnotationController;
+use App\Http\Controllers\CorrespondantController;
 use App\Http\Controllers\CourrierController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DocumentController;
@@ -24,6 +25,8 @@ Route::controller(RouteController::class)->group(function () {
 
     Route::get('departement', 'departement')->name('Departement');
 
+    Route::get('correspondant', 'correspondant')->name('Correspondant');
+
     Route::get('annotation', 'annotation')->name('Annotation');
 
     Route::get('imputation', 'imputation')->name('Imputation');
@@ -42,7 +45,6 @@ Route::controller(CourrierController::class)->group(function () {
     Route::post('delete/courrier/{id}', 'delete');
     // Route::get('pdf', 'createPDF');
 });
-
 
 // route nature courrier controlleur
 Route::controller(NatureController::class)->group(function () {
@@ -66,6 +68,14 @@ Route::controller(DepartementController::class)->group(function () {
     Route::get('edit/departement/{id}', 'edit')->whereNumber('id')->name('edit.departement');
     Route::post('update/departement', 'update')->name('update.departement');
     Route::post('delete/departement/{id}', 'delete');
+});
+
+// route correspondant controlleur
+Route::controller(CorrespondantController::class)->group(function () {
+    Route::post('new/correspondant', 'create')->name('new.correspondant');
+    Route::get('edit/correspondant/{id}', 'edit')->whereNumber('id')->name('edit.correspondant');
+    Route::post('update/correspondant', 'update')->name('update.correspondant');
+    Route::post('delete/correspondant/{id}', 'delete');
 });
 
 // route Annotation courrier

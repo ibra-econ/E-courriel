@@ -13,12 +13,12 @@ class DepartementController extends Controller
         $request->validate([
             'nom' => ['required'],
             'user' => ['required'],
-            'imputation' => ['required'],
+            'code' => ['required'],
         ]);
         $departement = new Departement();
         $departement->nom = $request->nom;
         $departement->user_id = $request->user;
-        $departement->imputation = $request->imputation;
+        $departement->code = $request->code;
         $departement->save();
         return back()->with('insert', 'departement ajouter avec success');
     }
@@ -34,7 +34,7 @@ class DepartementController extends Controller
         $departement = Departement::find($request->id);
         $departement->nom = $request->nom;
         $departement->user_id = $request->user;
-        $departement->imputation = $request->imputation;
+        $departement->code = $request->code;
         $departement->save();
         return back()->with('update', 'departement mise à jour avec success');
     }

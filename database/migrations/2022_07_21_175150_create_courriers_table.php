@@ -19,13 +19,14 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('nature_id');
             $table->foreign('nature_id')->references('id')->on('natures')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('correspondant_id');
+            $table->foreign('correspondant_id')->references('id')->on('correspondants')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type');
             $table->string('reference');
+            $table->string('numero');
             $table->string('objet');
             $table->string('priorite');
             $table->string('confidentiel');
-            $table->string('destinateur');
-            $table->string('emetteur');
             $table->string('etat');
             $table->date('date');
             $table->date('date_arriver');

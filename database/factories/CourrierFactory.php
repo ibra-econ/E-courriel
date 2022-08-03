@@ -19,8 +19,11 @@ class CourrierFactory extends Factory
         return [
             'reference' => uniqid(),
             'objet' => $this->faker->sentence(2),
-            'destinateur' => $this->faker->name(),
-            'emetteur' => $this->faker->name(),
+            'correspondant_id' => rand(1,5),
+            'nature_id' => rand(1,5),
+            'user_id' => rand(1,5),
+            'numero' => rand(1,15),
+            'type' => 'arrivée',
             'priorite' => 'normal',
             'confidentiel' => 'OUI',
             'date' => $this->faker->date(),
