@@ -23,8 +23,9 @@ class AnnotationController extends Controller
     public function edit($id)
     {
         $annotation = Annotation::find($id);
-        return view('update', compact(["annotation"]));
+        return view('annotation.update', compact(["annotation"]));
     }
+
     public function update(Request $request)
     {
         $annotation = Annotation::find($request->id);
@@ -32,7 +33,57 @@ class AnnotationController extends Controller
         $annotation->save();
         return back()->with('update', 'annotation mise à jour avec success');
     }
-    public function delete($id)
+
+    // corbeille dashboard
+    public function corbeille()
+    {
+        $rows = Annotation::onlyTrashed()->get();
+        return view('annotation.corbeille', compact(['rows']));
+    }
+
+    // restaurer tous un element
+    public function restore(int $id)
+    {
+        $delete = Annotation::where('id', $id)->restore();
+        // check data restore or not
+        if ($delete == 1) {
+            $success = true;
+            $message = "Annotation restaurer avec success";
+        } else {
+            $success = true;
+            $message = "Annotation non trouver";
+        }
+
+        //  return response
+        return response()->json([
+            'success' => $success,
+            'message' => $message,
+        ]);
+    }
+
+    // restaurer tous les elements
+    public function restore_all()
+    {
+        $delete = Annotation::withTrashed()->restore();
+        // check data restore or not
+        if ($delete == 1) {
+            $success = true;
+            $message = "Tout les annotations ont été restaurées avec success";
+        } else {
+            $success = true;
+            $message = "La corbeille a été vider";
+        }
+
+        //  return response
+        return response()->json([
+            'success' => $success,
+            'message' => $message,
+        ]);
+    }
+
+
+    // supprimer
+    public function delete(int $id)
     {
         // si oui supprimer de la BD
         $delete = Annotation::destroy($id);

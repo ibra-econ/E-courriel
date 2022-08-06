@@ -4,24 +4,20 @@
 # {{ $greeting }}
 @else
 @if ($level === 'error')
-# @lang('Whoops!')
+# @lang('Oups!')
 @else
-# @lang('Hello!')
+# @lang('Bonjour!')
 @endif
 @endif
 
-{{-- Intro Lines --}}
-@foreach ($introLines as $line)
-{{ $line }}
-
-@endforeach
+<p>Vous recevez cet e-mail car nous avons reçu une demande de réinitialisation du mot de passe pour votre compte</p>
 
 {{-- Action Button --}}
 @isset($actionText)
 <?php
     $color = match ($level) {
         'success', 'error' => $level,
-        default => 'primary',
+        default => 'success',
     };
 ?>
 @component('mail::button', ['url' => $actionUrl, 'color' => $color])
@@ -29,17 +25,14 @@
 @endcomponent
 @endisset
 
-{{-- Outro Lines --}}
-@foreach ($outroLines as $line)
-{{ $line }}
-
-@endforeach
+<p>Ce lien de réinitialisation de mot de passe expirera dans 60 minutes.</p>
+<p>Si vous n'avez pas demandé de réinitialisation de mot de passe, aucune autre action n'est requise.</p>
 
 {{-- Salutation --}}
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards'),<br>
+@lang('Salutations'),<br>
 {{ config('app.name') }}
 @endif
 
@@ -47,8 +40,9 @@
 @isset($actionText)
 @slot('subcopy')
 @lang(
-    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser:',
+
+    "Si vous rencontrez des difficultés pour cliquer sur \":actionText\" button, copiez et collez l'URL ci-dessous\n".
+    'dans votre navigateur Web:',
     [
         'actionText' => $actionText,
     ]

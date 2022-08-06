@@ -19,8 +19,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'photo' => fake()->imageUrl(64,64),
-            'poste' => 'DG',
+            'photo' => $this->faker->imageUrl(100,100),
             'departement_id' => rand(1,5),
             'role' => 'admin',
             'email' => fake()->safeEmail(),

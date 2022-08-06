@@ -17,7 +17,9 @@ class ImputationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => rand(1,5),
+            'courrier_id' => rand(1,5),
+            'departement_id' => rand(1,5),
         ];
     }
 }

@@ -20,10 +20,10 @@ class NatureController extends Controller
         return back()->with('insert', 'nature ajouter avec success');
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
         $nature = Nature::find($id);
-        return view('update', compact(["nature"]));
+        return view('nature_update', compact(["nature"]));
     }
     public function update(Request $request)
     {
@@ -32,7 +32,7 @@ class NatureController extends Controller
         $nature->save();
         return back()->with('update', 'nature mise à jour avec success');
     }
-    public function delete($id)
+    public function delete(int $id)
     {
         // si oui supprimer de la BD
         $delete = Nature::destroy($id);

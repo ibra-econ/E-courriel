@@ -16,6 +16,7 @@
                     }}</p>
                 <p class="mb-2 text-dark font-weight-bolder text-uppercase">Objet: {{ $courrier->objet }}</p>
             </div>
+
             <div class="col-md-5">
                 <p class="mb-2 text-dark text-uppercase font-weight-bolder">Date d'arrivée : {{
                     date('d/m/Y',strtotime($courrier->date_arriver)) }}</p>

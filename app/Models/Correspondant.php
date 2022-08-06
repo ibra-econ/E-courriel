@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\Courrier;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Correspondant extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     /**
      * Get all of the courriers for the Correspondant
      *

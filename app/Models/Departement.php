@@ -3,16 +3,20 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Poste;
 use App\Models\Courrier;
+use App\Models\Annotation;
 use App\Models\Imputation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Departement extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+
 /**
  * The courriers that belong to the Departement
  *
@@ -41,5 +45,25 @@ public function courriers(): BelongsToMany
     public function imputations(): BelongsToMany
     {
         return $this->belongsToMany(Imputation::class)->withPivot('departement_id','imputation_id')->withTimestamps();
+    }
+
+    /**
+     * Get all of the annotations for the Departement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function annotations(): HasMany
+    {
+        return $this->hasMany(Annotation::class);
+    }
+
+    /**
+     * Get all of the postes for the Departement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function postes(): HasMany
+    {
+        return $this->hasMany(Poste::class);
     }
 }

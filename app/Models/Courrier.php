@@ -6,10 +6,12 @@ use App\Models\User;
 use App\Models\Nature;
 use App\Models\Document;
 use App\Models\Annotation;
+use App\Models\Imputation;
 use App\Models\Departement;
 use App\Models\Correspondant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Courrier extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The departements that belong to the Courrier
@@ -54,9 +56,9 @@ class Courrier extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function annotations(): HasMany
+    public function annotations(): BelongsToMany
     {
-        return $this->hasMany(Annotation::class);
+        return $this->belongsToMany(Annotation::class)->withPivot('annotation_id','courrier_id')->withTimestamps();
     }
 
     /**
@@ -78,4 +80,15 @@ class Courrier extends Model
     {
         return $this->belongsTo(Correspondant::class);
     }
+
+    /**
+     * Get the imputation associated with the Courrier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function imputation(): HasOne
+    {
+        return $this->hasOne(Imputation::class);
+    }
+
 }

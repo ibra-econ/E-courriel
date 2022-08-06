@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Poste;
+use App\Models\Journal;
 use App\Models\Courrier;
 use App\Models\Imputation;
 use App\Models\Departement;
@@ -12,11 +14,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -27,10 +30,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-        'poste',
-        'photo',
         'departement_id',
+        'role',
+        'photo',
     ];
 
     /**
@@ -52,15 +54,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Get the structure that owns the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    // public function structure(): BelongsTo
-    // {
-    //     return $this->belongsTo(Structure::class);
-    // }
 
     /**
      * Get all of the courriers for the User
@@ -90,5 +83,25 @@ class User extends Authenticatable
     public function imputations(): HasMany
     {
         return $this->hasMany(Imputation::class);
+    }
+
+    /**
+     * Get all of the journals for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function journals(): HasMany
+    {
+        return $this->hasMany(Journal::class);
+    }
+
+    /**
+     * Get the poste associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function poste(): HasOne
+    {
+        return $this->hasOne(Poste::class);
     }
 }

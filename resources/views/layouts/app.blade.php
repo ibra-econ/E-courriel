@@ -20,7 +20,8 @@
 
     <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.steps.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('css/jquery.timepicker.css') }}"> --}}
+    {{--
+    <link rel="stylesheet" href="{{ asset('css/jquery.timepicker.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/quill.snow.css') }}">
 
     <!-- Date Range Picker CSS -->
@@ -101,7 +102,8 @@
           autoWidth: true,
           autoFill: true,
           responsive: true,
-          scrollX: true,
+        //   scrollX: true,
+        @yield('scroll')
           'order':[[0,'desc']],
           "lengthMenu": [
             [16, 32, 64, -1],
@@ -119,6 +121,7 @@
       {
         theme: 'bootstrap4',
       });
+
       $('.select2-multi').select2(
       {
         multiple: true,

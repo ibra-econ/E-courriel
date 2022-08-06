@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
+use App\Models\Journal;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Facades\Agent;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,7 +33,10 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        $journal = New Journal();
+        $journal->user_id = $request->user()->id;
+        $journal->libelle = 'Connexion';
+        $journal->save();
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -44,7 +49,10 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
-
+        $journal = New Journal();
+        $journal->user_id = $request->id;
+        $journal->libelle = 'Deconnexion';
+        $journal->save();
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();

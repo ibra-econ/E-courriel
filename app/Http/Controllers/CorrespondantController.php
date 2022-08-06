@@ -25,9 +25,10 @@ class CorrespondantController extends Controller
         return back()->with('insert', 'Correspondant mise à jour avec success');
     }
 
-    public function edit(int $id){
+    public function edit(int $id)
+    {
         $row = Correspondant::find($id);
-        return view('correspondant_update', compact(['row']));
+        return view('correspondant.update', compact(['row']));
     }
 
     public function update(Request $request)
@@ -42,7 +43,55 @@ class CorrespondantController extends Controller
         return back()->with('update', 'Correspondant mise à jour avec success');
     }
 
-    public function delete($id)
+    // corbeille dashboard
+    public function corbeille()
+    {
+        $rows = Correspondant::onlyTrashed()->get();
+        return view('correspondant.corbeille', compact(['rows']));
+    }
+
+    // restaurer tous un element
+    public function restore(int $id)
+    {
+        $delete = Correspondant::where('id', $id)->restore();
+        // check data restore or not
+        if ($delete == 1) {
+            $success = true;
+            $message = "Correspondant restaurer avec success";
+        } else {
+            $success = true;
+            $message = "Correspondant not found";
+        }
+
+        //  return response
+        return response()->json([
+            'success' => $success,
+            'message' => $message,
+        ]);
+    }
+
+    // restaurer tous les elements
+    public function restore_all()
+    {
+        $delete = Correspondant::withTrashed()->restore();
+        // check data restore or not
+        if ($delete == 1) {
+            $success = true;
+            $message = "Tout les correspondants restaurés avec success";
+        } else {
+            $success = true;
+            $message = "La corbeille a été vider";
+        }
+
+        //  return response
+        return response()->json([
+            'success' => $success,
+            'message' => $message,
+        ]);
+    }
+
+     // supprimer un elements
+    public function delete(int $id)
     {
         $delete = Correspondant::destroy($id);
         // check data deleted or not

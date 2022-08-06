@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->string('libelle');
             $table->string('chemin');
             $table->unsignedBigInteger('courrier_id');
             $table->foreign('courrier_id')->references('id')->on('courriers')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
