@@ -24,7 +24,7 @@ Sleep Well is an open source project. Feel free to fork the source and contribut
 
 ## Authors
 
-Our code squad : Francis & Stéphane
+:Our code squad: Francis & Stéphane
 
 ## Licensing
 
