@@ -9,7 +9,7 @@
 
 
 
-# E-courriel : the smart alarm-clock app
+# <b>E-courriel : the smart alarm-clock app</b>
 
 Sleep Well aims at developing a smart alarm clock for iPhones that monitors your breathing rhythm while you sleep to determine your sleep cycles.
 
