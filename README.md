@@ -21,7 +21,7 @@
 
 ## Authors
 
-:Notre équipe: Sale Diallo,Djibril Djiré &...
+<b>Notre équipe</b>: Sale Diallo,Djibril Djiré & ...
 
 ## Licensing
 
