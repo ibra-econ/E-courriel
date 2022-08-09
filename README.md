@@ -22,7 +22,7 @@
 
 ## Authors
 
-<b>Notre équipe</b>: Sale Diallo,Djibril Djiré & ...
+<b>Notre équipe</b>: Sale Diallo,Djibril Djiré & Racine Sy
 
 ## Licensing
 
