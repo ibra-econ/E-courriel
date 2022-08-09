@@ -9,22 +9,19 @@
 
 
 
-# <b>E-courriel : the smart alarm-clock app</b>
+# <b>E-courriel : Application d'envoie et de reception des courriers</b>
 
-Sleep Well aims at developing a smart alarm clock for iPhones that monitors your breathing rhythm while you sleep to determine your sleep cycles.
+<b>E-courriel</b> vise à développer système efficace pour la gestion des vos courriers .
 
 ## Technologies
 - JS
 - CSS 
-- React
+- Laravel
 
-## Contribute to the project
-
-Sleep Well is an open source project. Feel free to fork the source and contribute with your own features.
 
 ## Authors
 
-:Our code squad: Francis & Stéphane
+:Notre équipe: Sale Diallo,Djibril Djiré &...
 
 ## Licensing
 
