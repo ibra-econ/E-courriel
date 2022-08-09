@@ -17,7 +17,8 @@
 - JS
 - CSS 
 - Laravel
-
+Technologies
+------------
 
 ## Authors
 
