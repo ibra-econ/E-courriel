@@ -9,14 +9,15 @@
 
 
 
- <b>E-courriel : Application d'envoie et de reception des courriers</b>
+ <b>E-courriel : Application web de gestion de courrier</b>
 -----------------------------------------------------------------------
 
-<b>E-courriel</b> vise à développer un système efficace de gestion des vos courriers à fin de mieux suivre,analyser,assister ou participer au traitement d'un ou plusieurs courrier(s) à la fois au sein de votre Organisation.
+<b>E-courriel</b> vous permet de gerer facilement vos courriers à fin de mieux les suivre, analyser, assister ou participer au traitement d'un ou plusieurs courrier(s) au sein de votre organisation.
 
 ## Technologies
 - JS
 - CSS 
+- PHP
 - Laravel
 
 
