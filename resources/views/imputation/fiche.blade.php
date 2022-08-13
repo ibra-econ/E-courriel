@@ -10,6 +10,20 @@
         <div class="shadow card">
             <div class="p-5 card-body">
                 <div class="mb-5 row">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="avatar-lg">
+                                <img src="{{ asset('assets/images/favicon.png') }}" class="rounded mr-5" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <p> Morar-Bechtelar</p>
+                            <p>johnston.claudia@example.net</p>
+                            <p>Contact: +17475384534</p>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="mb-4 text-center col-12">
                         <h2 class="mb-0 text-uppercase">fiche d'imputation N° {{ $imputation->id.' du
                             '.$imputation->created_at->format('d/m/Y') }}</h2>

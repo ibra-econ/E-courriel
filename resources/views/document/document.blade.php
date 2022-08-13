@@ -7,13 +7,16 @@
         <div class="shadow card">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Document Dashboard</h5>
+                    <h5 class="card-title">Listes des documents</h5>
                     <form class="form">
                         <div class="form-row">
                             <div class="col-auto mr-auto form-group">
+                                @if (Auth::user()->role === "admin")
                                 <a href="{{ route('corbeille.document') }}" role="button"
-                                class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{
-                                $corbeille }}</a>
+                                    class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille
+                                    {{
+                                    $corbeille }}</a>
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -25,7 +28,7 @@
                             <th>Libelle</th>
                             <th>Courrier N°</th>
                             <th>Date arriver</th>
-                            <th>Taille</th>
+
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -37,10 +40,13 @@
                             <td>{{ $row->libelle }}</td>
                             <td>{{ $row->courrier->numero }}</td>
                             <td>{{ date('d/m/Y',strtotime($row->courrier->date_arriver)) }}</td>
-                            <td>{{ Storage::size($row->chemin) }} Ko</td>
+
                             <td>{{ $row->created_at->format('d/m/Y H:m:s') }}</td>
                             <td>
-                                <a target="_blank" href="{{ route('show.document',['id'=> $row->id]) }}" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
+                                <a target="_blank" href="{{ route('show.document',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
+                                <a href="{{ route('edit.document',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
                             </td>

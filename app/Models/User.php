@@ -6,15 +6,17 @@ namespace App\Models;
 use App\Models\Poste;
 use App\Models\Journal;
 use App\Models\Courrier;
+use App\Models\Diffusion;
+use App\Models\Annotation;
 use App\Models\Imputation;
 use App\Models\Departement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -31,6 +33,7 @@ class User extends Authenticatable
         'email',
         'password',
         'departement_id',
+        'poste_id',
         'role',
         'photo',
     ];
@@ -54,6 +57,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // verification role
+    public function isAdmin(){
+        return $this->role === 'admin';
+    }
+
+    public function isAgent(){
+        return $this->role === 'agent';
+    }
+
+    public function isSuperuser(){
+        return $this->role === 'superuser';
+    }
+
+    public function isSecretaire(){
+        return $this->role === 'secretaire';
+    }
 
     /**
      * Get all of the courriers for the User
@@ -96,12 +115,33 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the poste associated with the User
+     * Get the poste that owns the User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function poste(): HasOne
+
+    public function poste(): BelongsTo
     {
-        return $this->hasOne(Poste::class);
+        return $this->belongsTo(Poste::class);
+    }
+
+    /**
+     * Get all of the annotations for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function annotations(): HasMany
+    {
+        return $this->hasMany(Annotation::class);
+    }
+
+    /**
+     * Get all of the diffusons for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function diffusons(): HasMany
+    {
+        return $this->hasMany(Diffusion::class);
     }
 }

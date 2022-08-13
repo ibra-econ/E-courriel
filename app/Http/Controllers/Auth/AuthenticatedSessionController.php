@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Models\Journal;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Facades\Agent;
@@ -33,10 +34,15 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        // journalisation
         $journal = New Journal();
         $journal->user_id = $request->user()->id;
         $journal->libelle = 'Connexion';
         $journal->save();
+
+        $user = User::where('id',$request->user()->id)->update(['etat' => 1]);
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -53,6 +59,8 @@ class AuthenticatedSessionController extends Controller
         $journal->user_id = $request->id;
         $journal->libelle = 'Deconnexion';
         $journal->save();
+
+        $user = User::where('id',$request->id)->update(['etat' => 0]);
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();

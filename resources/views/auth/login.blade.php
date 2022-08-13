@@ -1,10 +1,10 @@
 <x-guest-layout>
     <x-auth-card>
-        <x-slot name="logo">
+        {{-- <x-slot name="logo">
             <a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
-        </x-slot>
+        </x-slot> --}}
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -12,7 +12,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
         <h1 class="text-center text-4xl font-bold">Connectez vous</h1>
-        <form class="p-5" method="POST" action="{{ route('login') }}">
+        <form class="p-2" method="POST" action="{{ route('login') }}">
             @csrf
 
             <!-- Email Address -->
@@ -46,7 +46,7 @@
             </div>
 
             <div class="flex items-center justify-center mt-4">
-                <x-button style="background: #00352F;" class="rounded-md">
+                <x-button class="rounded-md">
                     {{ __('connexion') }}
                 </x-button>
             </div>

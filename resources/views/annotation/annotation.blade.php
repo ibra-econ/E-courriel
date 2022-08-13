@@ -16,13 +16,15 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Annotation Dashboard</h5>
+                    <h5 class="card-title">Listes des annotations</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn mb-2 btn-green-1 border-0" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
+                        @if (Auth::user()->role === "admin")
                         <a href="{{ route('corbeille.annotation') }}" role="button"
                             class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>
+                        @endif
                     </div>
                 </div>
                 <table class="table datatables" id="dataTable-1">
@@ -30,6 +32,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nom</th>
+                            <th>Utilisateur</th>
                             <th>Crée</th>
                             <th>Action</th>
                         </tr>
@@ -39,13 +42,16 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nom }}</td>
+                            <td>{{ $row->user->name }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
+
                             <td>
                                 <a href="{{ route('edit.annotation',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -79,19 +85,15 @@
                                 <div class="invalid-feedback">Ce champ est obligatoire.</div>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <div class="text-center">
                             <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                            <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
                         </div>
                     </div>
                 </form>
-
-
             </div>
-
         </div>
     </div>
 </div>

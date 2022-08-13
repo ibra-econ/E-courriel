@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
 
         Config::factory()->create();
         Departement::factory(5)->create();
+        Poste::factory(5)->create();
         User::factory(5)->create();
         Poste::factory(2)->create();
         Journal::factory(10)->create();

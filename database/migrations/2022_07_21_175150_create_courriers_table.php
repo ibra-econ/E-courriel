@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('confidentiel');
             $table->string('etat');
             $table->date('date');
-            $table->date('date_arriver');
+            $table->date('date_arriver')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

@@ -1,21 +1,25 @@
 @extends('layouts.app')
 @section('content')
-
-{{-- departement table --}}
+{{-- utilisateurs table --}}
 <div class="row">
     <div class="col-md-12">
         <div class="shadow card">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Utilisateurs Dashboard</h5>
+                    <h5 class="card-title">Listes des utilisateurs</h5>
+
                     <form class="form">
                         <div class="form-row">
                             <div class="col-auto mr-auto form-group">
-                                <a role="button" href="{{ route('register') }}" class="mb-2 border-0 btn btn-green-1">
+                                <a role="button" href="{{ route('register.user') }}"
+                                    class="mb-2 border-0 btn btn-green-1">
                                     <i class="fe fe-plus"></i> Nouveau</a>
+                                    @if (Auth::user()->role === "admin")
                                     <a href="{{ route('corbeille.user') }}" role="button"
-                                    class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{
-                                    $corbeille }}</a>
+                                    class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille
+                                    {{ $corbeille }}</a>
+                                    @endif
+
                             </div>
                         </div>
                     </form>
@@ -25,7 +29,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Nom</th>
-                            {{-- <th>Photo</th> --}}
                             <th>Email</th>
                             <th>Poste</th>
                             <th>Departement</th>
@@ -40,16 +43,18 @@
 
                         <tr>
                             <td>{{ $row->id }}</td>
-                            <td>{{ $row->name }}</td>
+                            <td>
+                                <div class="avatar">
+                                    <img src="{{ asset('assets/avatars/face-1.jpg') }}" class="img-fluid rounded-circle"
+                                        alt="photo">
+                                </div>
+                                {{ $row->name }}
+                            </td>
 
-                            {{-- <td><img src="{{ Storage::url($row->photo) }}" height="64" height="64" class="img-fluid rounded-circle" alt="photo"></td> --}}
+
                             <td>{{ $row->email }}</td>
 
-                            <td>
-                                @isset($row->poste)
-                                {{ $row->poste->nom }}
-                                @endisset
-                            </td>
+                            <td>{{ $row->poste->nom }}</td>
                             <td>{{ $row->departement->nom }}</td>
                             <td>{{ $row->role }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
@@ -59,20 +64,24 @@
                             <td><span class="mr-1 dot dot-md bg-danger"></span> Pas en ligne</td>
                             @endif
                             <td>
-                                <a href="{{ route('show.user',['id'=> $row->id]) }}" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-                                <a href="{{ route('edit.user',['id'=> $row->id]) }}" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
+                                <a href="{{ route('show.user',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
+
+                                <a href="{{ route('edit.user',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-edit"></i></a>
+                                @if (Auth::user()->role === "admin")
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-trash"></i></button>
+                                @endif
                             </td>
                         </tr>
-
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div> <!-- Bordered table -->
-</div> <!-- Fin Département -->
+</div> <!-- Fin compte -->
 </div>
 </div>
 <Script>
@@ -118,5 +127,5 @@
 </Script>
 @endsection
 {{-- @section('scroll')
-      scrollX: true,
+scrollX: true,
 @endsection --}}

@@ -12,9 +12,11 @@
         </li>
         {{-- button notification --}}
         <li class="nav-item nav-notif">
+            {{-- total des notifacation user --}}
             <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
                 <span class="fe fe-bell fe-16"></span>
-                <span class="dot dot-md bg-success"></span>
+                <span class="badge badge-pill badge-success text-white">{{ Auth::user()->notifications->count() }}</span>
+
             </a>
         </li>
         <li class="nav-item dropdown">
@@ -49,11 +51,11 @@
         <!-- nav bar -->
 
         <div class="mb-4 w-100 d-flex">
-            <a class="mx-auto mt-2 text-center navbar-brand flex-fill" href="">
+            <a class="mx-auto mt-2 text-center navbar-brand flex-fill" href="{{ route('dashboard') }}">
                 <div class="logo-perso-bloc">
                     {{-- <img src="{{ asset('assets/images/logo_icon.png') }}" class="img-fluid logo-icon-perso"
                         height="32" width="32" alt="logo"> --}}
-                    <img src="{{ asset('assets/images/logo_white.png') }}" class="img-fluid logo full-logo-icon-perso"
+                    <img src="{{ asset('assets/images/logo_white.png') }}" class="img-fluid logo full-logo"
                         alt="logo">
                 </div>
 
@@ -71,18 +73,22 @@
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Archive lien --}}
             <li class="nav-item dropdown">
-                <a href="#layouts" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle nav-link">
+                <a href="#Courrier" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle nav-link">
                     <i class="fe fe-mail fe-16"></i>
                     <span class="ml-3 item-text">Courrier</span>
                 </a>
-                <ul class="list-unstyled pl-4 w-100 collapse show" id="layouts" style="">
+                <ul class="list-unstyled pl-4 w-100 collapse show" id="Courrier" style="">
                     <li class="nav-item">
                         <a class="nav-link pl-3" href="{{ route('Depart') }}"><span
                                 class="ml-1 item-text">Départ</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link pl-3" href="{{ route('Arriver') }}"><span
-                                class="ml-1 item-text">Arrivée</span></a>
+                                class="ml-1 item-text">Arriver</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pl-3" href="{{ route('Interne') }}"><span
+                                class="ml-1 item-text">Interne</span></a>
                     </li>
 
                 </ul>
@@ -100,12 +106,13 @@
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Archive lien --}}
             <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('archive.courrier') }}">
+                <a class="nav-link" href="{{ route('Archive') }}">
                     <i class="fe fe-archive fe-16"></i>
-                    <span class="ml-3 item-text">Archives</span>
+                    <span class="ml-3 item-text">Archive</span>
                 </a>
             </li>
         </ul>
+
 
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Archive lien --}}
@@ -116,7 +123,7 @@
                 </a>
             </li>
         </ul>
-
+        @if (Auth::user()->role === "superuser" || "admin" || "secretaire")
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- imputation lien --}}
             <li class="nav-item w-100">
@@ -126,6 +133,18 @@
                 </a>
             </li>
         </ul>
+        @endif
+        @if (Auth::user()->role === "superuser" || "admin")
+        <ul class="mb-2 navbar-nav flex-fill w-100">
+            {{-- Archive lien --}}
+            <li class="nav-item w-100">
+                <a class="nav-link" href="{{ route('Diffusion') }}">
+                    <i class="fe fe-radio fe-16"></i>
+                    <span class="ml-3 item-text">Diffusion</span>
+                </a>
+            </li>
+        </ul>
+        @endif
         <p class="mt-4 mb-1 text-white nav-heading">
             <span>Paramètre</span>
         </p>
@@ -133,20 +152,23 @@
             <ul class="mb-2 navbar-nav flex-fill w-100">
                 {{-- Utilisateurs lien --}}
                 <li class="nav-item dropdown">
-                    <a href="#layouts" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle nav-link">
+                    <a href="#Compte" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle nav-link">
                         <i class="fe fe-users fe-16"></i>
                         <span class="ml-3 item-text">Utiisateurs</span>
                     </a>
-                    <ul class="list-unstyled pl-4 w-100 collapse show" id="layouts" style="">
+                    <ul class="list-unstyled pl-4 w-100 collapse show" id="Compte" style="">
+                        @if (Auth::user()->role === "superuser" || "admin")
                         <li class="nav-item">
                             <a class="nav-link pl-3" href="{{ route('Compte') }}"><span
                                     class="ml-1 item-text">Compte</span></a>
                         </li>
+                        @endif
+                        @if (Auth::user()->role === "admin")
                         <li class="nav-item">
                             <a class="nav-link pl-3" href="{{ route('Journal') }}"><span
                                     class="ml-1 item-text">Journal</span></a>
                         </li>
-
+                        @endif
                     </ul>
                 </li>
             </ul>
@@ -157,13 +179,15 @@
                     <span class="ml-3 item-text">Correspondants</span>
                 </a>
             </li>
-            {{-- Departement lien --}}
+            {{-- Nature lien --}}
             <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Departement') }}">
-                    <i class="fe fe-layers fe-16"></i>
-                    <span class="ml-3 item-text">Departements</span>
+                <a class="nav-link" href="{{ route('Nature') }}">
+                    <i class="fe fe-award fe-16"></i>
+                    <span class="ml-3 item-text">Nature</span>
                 </a>
             </li>
+            @if (Auth::user()->role === "admin" || "superuser")
+
             {{-- Annotation lien --}}
             <li class="nav-item w-100">
                 <a class="nav-link" href="{{ route('Annotation') }}">
@@ -171,11 +195,22 @@
                     <span class="ml-3 item-text">Annotations</span>
                 </a>
             </li>
-            {{-- Nature lien --}}
+            {{-- Poste lien --}}
             <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Nature') }}">
-                    <i class="fe fe-award fe-16"></i>
-                    <span class="ml-3 item-text">Nature</span>
+                <a class="nav-link" href="{{ route('Poste') }}">
+                    <i class="fe fe-airplay fe-16"></i>
+                    <span class="ml-3 item-text">Poste</span>
+                </a>
+            </li>
+            @endif
+
+
+            @if (Auth::user()->role === "admin")
+             {{-- Departement lien --}}
+             <li class="nav-item w-100">
+                <a class="nav-link" href="{{ route('Departement') }}">
+                    <i class="fe fe-layers fe-16"></i>
+                    <span class="ml-3 item-text">Departements</span>
                 </a>
             </li>
             {{-- General (infos de la structure) lien --}}
@@ -185,6 +220,7 @@
                     <span class="ml-3 item-text">Configuration</span>
                 </a>
             </li>
+            @endif
         </ul>
     </nav>
 </aside>
@@ -202,82 +238,28 @@
                 <div class="list-group list-group-flush my-n3">
                     <div class="list-group-item bg-transparent">
                         <div class="row align-items-center">
+
+                            @forelse (Auth::user()->notifications as $row)
                             <div class="col-auto">
-                                <span class="fe fe-box fe-24"></span>
+                                <span class="fe fe-mail fe-24"></span>
                             </div>
                             <div class="col">
-                                <small><strong>Package has uploaded successfull</strong></small>
-                                <div class="my-0 text-muted small">Package is zipped and uploaded</div>
-                                <small class="badge badge-pill badge-light text-muted">1m ago</small>
+                                <small><strong>{{ $row->data['title'] }}</strong></small>
+                                <small class="badge badge-pill badge-light text-muted">{{
+                                    $row->created_at->diffForHumans() }}</small>
                             </div>
+                            @empty
+                            <h3>Vous avez aucune notification</h3>
+                            @endforelse
+
                         </div>
                     </div>
-                    <div class="list-group-item bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="fe fe-download fe-24"></span>
-                            </div>
-                            <div class="col">
-                                <small><strong>Widgets are updated successfull</strong></small>
-                                <div class="my-0 text-muted small">Just create new layout Index, form, table</div>
-                                <small class="badge badge-pill badge-light text-muted">2m ago</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-group-item bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="fe fe-inbox fe-24"></span>
-                            </div>
-                            <div class="col">
-                                <small><strong>Notifications have been sent</strong></small>
-                                <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
-                                <small class="badge badge-pill badge-light text-muted">30m ago</small>
-                            </div>
-                        </div> <!-- / .row -->
-                    </div>
-                    <div class="list-group-item bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="fe fe-inbox fe-24"></span>
-                            </div>
-                            <div class="col">
-                                <small><strong>Notifications have been sent</strong></small>
-                                <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
-                                <small class="badge badge-pill badge-light text-muted">30m ago</small>
-                            </div>
-                        </div> <!-- / .row -->
-                    </div>
-                    <div class="list-group-item bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="fe fe-inbox fe-24"></span>
-                            </div>
-                            <div class="col">
-                                <small><strong>Notifications have been sent</strong></small>
-                                <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
-                                <small class="badge badge-pill badge-light text-muted">30m ago</small>
-                            </div>
-                        </div> <!-- / .row -->
-                    </div>
-                    <div class="list-group-item bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="fe fe-link fe-24"></span>
-                            </div>
-                            <div class="col">
-                                <small><strong>Link was attached to menu</strong></small>
-                                <div class="my-0 text-muted small">New layout has been attached to the menu</div>
-                                <small class="badge badge-pill badge-light text-muted">1h ago</small>
-                            </div>
-                        </div>
-                    </div> <!-- / .row -->
                 </div> <!-- / .list-group -->
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-green-1 btn-block" data-dismiss="modal">Tout marquer comme
                     lu</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

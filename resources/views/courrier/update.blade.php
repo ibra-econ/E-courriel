@@ -21,65 +21,57 @@
                     <input type="hidden" name="id" value="{{ $courrier->id }}">
                     <div class="form-row">
                         <div class="mb-3 col-md-6">
-                            <label for="validationCustom04">Type (Depart/Interne/Arrivee)</label>
-                            <select class="custom-select" name="type" id="validationCustom04" required>
-                                @if ($courrier->type === "depart")
-                                <option selected value="depart">Courrier départ</option>
-                                <option value="arriver">Courrier arrivée</option>
-                                <option value="interne">Courrier interne</option>
-                                @endif
-                                @if ($courrier->type === "arriver")
-                                <option value="depart">Courrier départ</option>
-                                <option selected value="arriver">Courrier arrivée</option>
-                                <option value="interne">Courrier interne</option>
-                                @endif
-                                 @if ($courrier->type === "interne")
-                                 <option value="depart">Courrier départ</option>
-                                 <option value="arriver">Courrier arrivée</option>
-                                 <option selected value="interne">Courrier interne</option>
-                                @endif
-
+                            <label for="simple-select2">Type (Depart/Arrivee)</label>
+                            <select class="form-control select2" name="type" id="simple-select2" required>
+                                <option value="depart" {{ $courrier->type === "depart" ? 'selected' : '' }} >Courrier
+                                    départ</option>
+                                <option value="arriver" {{ $courrier->type === "arriver" ? 'selected' : '' }}>Courrier
+                                    arrivée</option>
                             </select>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
 
                         <div class="mb-3 col-md-3">
-                            <label for="validationCustom04">Confidentiel</label>
-                            <select class="custom-select" name="confidentiel" id="validationCustom04" required>
-                                @if ($courrier->confidentiel === "OUI")
-                                <option selected value="OUI">OUI</option>
-                                <option value="NON">NON</option>
-                               @endif
-                               @if ($courrier->confidentiel === "NON")
-                               <option value="OUI">OUI</option>
-                               <option selected value="NON">NON</option>
-                              @endif
+                            <label for="simple-select3">Confidentiel</label>
+                            <select class="form-control select2" name="confidentiel" id="simple-select3" required>
+                                <option value="OUI" {{ $courrier->confidentiel === "OUI" ? 'selected' : '' }}>OUI
+                                </option>
+                                <option value="NON" {{ $courrier->confidentiel === "NON" ? 'selected' : '' }}>NON
+                                </option>
                             </select>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
+
                         <div class="mb-3 col-md-3">
-                            <label for="validationCustom04">Réference</label>
-                            <input type="text" value="{{ $courrier->reference }}" name="reference" class="form-control"
-                                id="validationCustom02" placeholder="Entrez la reference du courrier" required>
+                            <label for="simple-select7">Priorite</label>
+                            <select class="form-control select2" name="priorite" id="simple-select7" required>
+
+                                <option value="Normal" {{ $courrier->priorite === "Normal" ? 'selected' : '' }}>Normal
+                                </option>
+                                <option value="Urgent" {{ $courrier->priorite === "Urgent" ? 'selected' : '' }}>Urgent
+                                </option>
+                            </select>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
 
                         <div class="mb-3 col-md-6">
-                            <label for="validationCustom04">Nature (Fax/Lettre/Email)</label>
-                            <select class="custom-select" name="nature" id="validationCustom04" required>
+                            <label for="simple-select4">Nature (Fax/Lettre/Email)</label>
+                            <select class="form-control select2" name="nature" id="simple-select4" required>
                                 @foreach ($nature as $row)
-                                <option value="{{ $row->id }}" {{ $row->id == $courrier->nature_id ? 'selected' : '' }}>{{ $row->nom }}</option>
+                                <option value="{{ $row->id }}" {{ $row->id == $courrier->nature_id ? 'selected' : ''
+                                    }}>{{ $row->nom }}</option>
                                 @endforeach
-
                             </select>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
-                            <label for="validationCustom04">Correspondant (Destinateur/Expediteur)</label>
-                            <select class="custom-select" name="correspondant" id="validationCustom04" required>
+                            <label for="simple-select5">Correspondant (Destinateur/Expediteur)</label>
+                            <select class="form-control select2" name="correspondant" id="simple-select5" required>
                                 <option selected disabled value="">Selectionner</option>
                                 @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}" {{ $row->id == $courrier->correspondant_id ? 'selected' : '' }}>{{ $row->prenom }} {{ $row->nom }}</option>
+                                <option value="{{ $row->id }}" {{ $row->id == $courrier->correspondant_id ? 'selected' :
+                                    '' }}>{{ $row->prenom }} {{ $row->nom }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
@@ -105,56 +97,31 @@
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="col-md-6">
-
                             <label for="" class="form-label">Fichiers Scanner</label>
                             <input type="file" multiple class="form-control" name="document[]" id="" placeholder=""
                                 aria-describedby="fileHelpId">
-                            {{-- <div id="fileHelpId" class="form-text">Help text</div> --}}
-
                         </div>
+                        @if (Auth::user()->role === "admin")
                         <div class="mb-3 col-md-3">
-                            <label for="validationCustom04">Etat</label>
-                            <select class="custom-select" name="etat" id="validationCustom04" required>
-                                @if ($courrier->etat === "A Envoyer")
-                                <option selected value="A Envoyer">A Envoyer</option>
-                                <option value="A Traiter">A Traiter</option>
-                                <option class="Archiver">Archiver</option>
-                                @endif
-                                @if ($courrier->etat === "A Traiter")
-                                <option value="A Envoyer">A Envoyer</option>
-                                <option selected value="A Traiter">A Traiter</option>
-                                <option class="Archiver">Archiver</option>
-                                @endif
-                                @if ($courrier->etat === "Archiver")
-                                <option value="A Envoyer">A Envoyer</option>
-                                <option value="A Traiter">A Traiter</option>
-                                <option selected class="Archiver">Archiver</option>
-                                @endif
+                            <label for="simple-select6">Etat</label>
+                            <select class="form-control select2" name="etat" id="simple-select6" required>
+
+                                <option value="Enregistré" {{ $courrier->etat === "Enregistré" ? 'selected' : ''
+                                    }}>Enregistrer</option>
+                                <option value="Imputer" {{ $courrier->etat === "Imputer" ? 'selected' : '' }}>Imputer
+                                </option>
+                                <option class="Archiver" {{ $courrier->etat === "Archiver" ? 'selected' : '' }}>Archiver
+                                </option>
                             </select>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
-                        <div class="mb-3 col-md-3">
-                            <label for="validationCustom04">Priorite</label>
-                            <select class="custom-select" name="priorite" id="validationCustom04" required>
+                        @endif
 
-                                @if ($courrier->priorite === "Normal")
-                                <option selected value="Normal">Normal</option>
-                                <option value="Urgent">Urgent</option>
-                                @endif
-                                @if ($courrier->priorite === "Urgent")
-                                <option value="Normal">Normal</option>
-                                <option selected value="Urgent">Urgent</option>
-                                @endif
-
-                            </select>
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                        </div>
                     </div>
                     <div class="text-center">
                         <button type="button" class="mb-2 btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="mb-2 btn btn-success">Valider</button>
+                        <button type="submit" class="mb-2 btn btn-green-1">Valider</button>
                     </div>
 
                 </form>
@@ -168,7 +135,7 @@
             <div class="card text-center mb-4 shadow">
                 <div class="card-body file">
                     <div class="file-action">
-                        <a href="{{ route('edit.courrier',['id'=> $row->id]) }}" role="button"
+                        <a href="{{ route('edit.document',['id'=> $row->id]) }}" role="button"
                             class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                     </div>
                     <div class="circle circle-lg bg-light my-4">

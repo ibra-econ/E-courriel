@@ -2,13 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Departement;
-use App\Models\Poste;
 use App\Models\User;
+use App\Models\Poste;
+use App\Models\Departement;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
+      /**
+     * Display the registration view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function register()
+    {
+        if(Auth::user()->role === "admin"):
+        $poste = Poste::all();
+        $departement = Departement::all();
+        endif;
+        if(Auth::user()->role === "superuser"):
+            $poste = Poste::where('departement_id',Auth::user()->departement_id);
+            $departement = Departement::where('id',Auth::user()->departement_id);
+        endif;
+        return view('user.create', compact(['departement','poste']));
+    }
+
+    /**
+     * Handle an incoming registration request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function create(Request $request)
+    {
+        // dd($request);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'string'],
+            'poste' => ['required'],
+            'departement' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+
+        $user = New User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->poste_id = $request->poste;
+        if(Auth::user()->role === "admin"):
+        $user->departement_id = $request->departement;
+        endif;
+        $user->password =  Hash::make($request->password);
+        if (!empty($request->file('photo'))):
+            // renome le document
+            $filename = Str::random(10) . '.' . $request->photo->extension();
+                $chemin = $request->file('photo')->storeAs('user/profile', $filename, 'public');
+                $user->photo = $chemin;
+            $user->photo = $chemin;
+        endif;
+        $user->save();
+        return back()->with('insert', 'utilisateur ajouter avec success');
+    }
     // Route profile function
     public function profile($id)
     {
@@ -18,8 +80,7 @@ class UserController extends Controller
 
     public function show(int $id)
     {
-        $user = User::with('departement','journals','poste')->withCount('courriers','imputations')->find($id);
-        // dd($user);
+        $user = User::with('departement', 'journals', 'poste')->withCount('courriers', 'imputations')->find($id);
         return view('user.show', compact(['user']));
     }
 
@@ -28,20 +89,23 @@ class UserController extends Controller
         $user = User::with('poste')->find($id);
         $departement = Departement::all();
         $poste = Poste::all();
-        return view('user.update', compact(['user','departement','poste']));
+        return view('user.update', compact(['user', 'departement', 'poste']));
     }
 
     public function update(Request $request)
     {
         $user = User::find($request->id);
         $user->name = $request->name;
-        $user->role = $request->role;
-        $user->email = $request->email;
-        $user->departement_id = $request->departement;
-        $user->save();
-        $poste = Poste::where('id',$request->poste)->update(['user_id'=>$request->id]);
 
-        // dd($poste);
+        $user->email = $request->email;
+        $user->poste_id = $request->poste;
+        // si user is admin
+        if (Auth::user()->role === "admin"):
+            $user->role = $request->role;
+            $user->departement_id = $request->departement;
+        endif;
+        $user->save();
+
         return back()->with('update', 'utilisateur mise à jour avec success');
     }
 

@@ -16,10 +16,15 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Nature Dashboard</h5>
+                    <h5 class="card-title">Listes des natures de courrier</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn mb-2 btn-green-1 border-0" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
+                            @if (Auth::user()->role === "admin")
+                            <a href="{{ route('corbeille.nature') }}" role="button"
+                                class="btn mb-2 ml-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
+                                $corbeille }}</a>
+                                @endif
                     </div>
                 </div>
                 <table class="table datatables" id="dataTable-1">
@@ -81,7 +86,7 @@
                     <div class="modal-footer">
                         <div class="text-center">
                             <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                            <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
                         </div>
                     </div>
                 </form>

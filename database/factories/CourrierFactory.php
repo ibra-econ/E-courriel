@@ -27,7 +27,7 @@ class CourrierFactory extends Factory
             'priorite' => 'Normal',
             'confidentiel' => 'OUI',
             'date' => $this->faker->date(),
-            'etat' => 'A Traiter',
+            'etat' => 'Enregistré',
             'date_arriver' => $this->faker->date(),
 
         ];

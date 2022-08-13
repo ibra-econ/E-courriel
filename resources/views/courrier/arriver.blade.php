@@ -14,14 +14,15 @@
         <div class="shadow card">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Courrier Dashboard</h5>
+                    <h5 class="card-title">Listes des courrier arriver</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="mb-2 border-0 btn btn-green-1" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
-                            <a href="{{ route('corbeille.courrier') }}" role="button"
+                        @if (Auth::user()->role === "admin")
+                        <a href="{{ route('corbeille.courrier') }}" role="button"
                             class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>
-
+                        @endif
                     </div>
                 </div>
                 <table class="table datatables" id="dataTable-1">
@@ -30,7 +31,7 @@
                             <th>ID</th>
                             <th>Réference</th>
                             <th>Numero</th>
-                            <th>User</th>
+                            <th>Utilisateur</th>
                             <th>Nature</th>
                             <th>Type</th>
                             <th>Priorité</th>
@@ -51,22 +52,20 @@
                             <td>{{ $row->nature->nom }}</td>
                             <td>{{ $row->type }}</td>
                             <td>{{ $row->priorite }}</td>
-                            <td>{{ $row->correspondant->nom }}</td>
-                            <td>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                    <label class="custom-control-label" for="customSwitch1">Traiter</label>
-                                  </div>
-                            </td>
+                            <td>{{ $row->correspondant->prenom.' '.$row->correspondant->nom }}</td>
+                            <td><span class="badge badge-pill badge-success text-white">{{ $row->etat }}</span></td>
                             <td>{{ date('d/m/Y',strtotime($row->date_arriver)) }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
-                                <a href="{{ route('show.courrier',['id'=> $row->id]) }}" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-                                <a href="{{ route('fiche.courrier',['id'=> $row->id]) }}" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-download"></i></a>
+                                <a href="{{ route('show.courrier',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-eye"></i></a>
+                                <a href="{{ route('fiche.courrier',['id'=> $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-download"></i></a>
                                 <a href="{{ route('edit.courrier',['id'=> $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
+                                    class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-edit"></i></a>
+
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
+                                    class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-trash"></i></button>
                             </td>
                         </tr>
                         @endforeach
@@ -97,6 +96,7 @@
                     enctype="multipart/form-data" novalidate>
                     @csrf
                     <input type="hidden" name="type" value="arriver">
+                    <input type="hidden" name="numero" value="{{ $numero == null ? 1 : $numero->numero +1 }}">
                     <div class="form-row">
                         <div class="mb-3 col-md-3">
                             <label for="simple-select2">Type de Courrier</label>
@@ -146,8 +146,8 @@
                         </div>
                         <div class="mb-3 col-md-3">
                             <label for="validationCustom04">Numero</label>
-                            <input type="text" name="numero" class="form-control" id="validationCustom02"
-                                placeholder="Entrez le numero du courrier" required>
+                            <input type="text" value="{{ $numero == null ? 1 : $numero->numero +1 }}" disabled
+                                class="form-control" id="validationCustom02" required>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
@@ -155,7 +155,8 @@
                             <select class="form-control select2" name="correspondant" id="simple-select5" required>
                                 <option selected disabled value="">Selectionner</option>
                                 @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom.' '.$row->fonction }}</option>
+                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom.' '.$row->fonction }}
+                                </option>
                                 @endforeach
                             </select>
                             <div class="valid-feedback"></div>
@@ -172,8 +173,8 @@
                             <label for="validationCustom02">Date arrivée</label>
                             <input type="date" name="date_arriver" class="form-control" id="validationCustom02"
                                 required>
-                                <div class="valid-feedback"></div>
-                                <div class="invalid-feedback">Ce champ est obligatoire.</div>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="validationCustom02">Objet</label>
@@ -183,17 +184,15 @@
                         </div>
                         <div class="col-md-6">
 
-                            <label for="" class="form-label">Fichiers Scanner</label>
+                            <label for="" class="form-label">Fichiers Scanner (Facultatif)</label>
                             <input type="file" multiple class="form-control" name="document[]" id="" placeholder=""
                                 aria-describedby="fileHelpId">
                         </div>
-
-
                     </div>
                     <div class="modal-footer">
                         <div class="text-center">
                             <button type="button" class="mb-2 btn btn-secondary" data-dismiss="modal">Fermer</button>
-                            <button type="submit" class="mb-2 btn btn-success">Valider</button>
+                            <button type="submit" class="mb-2 btn btn-green-1">Valider</button>
                             <p>NB : Tout courrier reçu doit faire l’objet d’une ventilation dans les 24 heures
                                 qui suivent son arrivée.</p>
                         </div>
@@ -205,7 +204,6 @@
 </div>
 
 <Script>
-
     function deleteConfirmation(id) {
     swal.fire({
         title: "Supprimer?",
@@ -250,5 +248,5 @@
 </Script>
 @endsection
 @section('scroll')
-      scrollX: true,
+scrollX: true,
 @endsection

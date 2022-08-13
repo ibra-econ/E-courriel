@@ -10,6 +10,10 @@ class ImputationPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability){
+        return $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -30,7 +34,7 @@ class ImputationPolicy
      */
     public function view(User $user, Imputation $imputation)
     {
-        //
+        return $user->isSuperuser();
     }
 
     /**
@@ -41,7 +45,7 @@ class ImputationPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isSuperuser();
     }
 
     /**
@@ -53,7 +57,7 @@ class ImputationPolicy
      */
     public function update(User $user, Imputation $imputation)
     {
-        //
+        return $user->isSuperuser();
     }
 
     /**
@@ -65,7 +69,7 @@ class ImputationPolicy
      */
     public function delete(User $user, Imputation $imputation)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -77,7 +81,7 @@ class ImputationPolicy
      */
     public function restore(User $user, Imputation $imputation)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -89,6 +93,6 @@ class ImputationPolicy
      */
     public function forceDelete(User $user, Imputation $imputation)
     {
-        //
+        return $user->isAdmin();
     }
 }

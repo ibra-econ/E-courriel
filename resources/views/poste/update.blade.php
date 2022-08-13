@@ -27,33 +27,25 @@
                         <div class="invalid-feedback">Ce champ est obligatoire.</div>
                     </div>
                 </div>
+                @if (Auth::user()->role === "admin")
                 <div class="col-md-6 mb-3">
                     <label for="simple-select2">Département</label>
                     <select class="form-control select2" name="departement" id="simple-select2" required>
                         @foreach ($departement as $row)
-                        <option value="{{ $row->id }}" {{ $row->id == $user->departement_id ? 'selected' : ''
+                        <option value="{{ $row->id }}" {{ $row->id == $poste->departement_id ? 'selected' : ''
                             }}>{{ $row->nom }}</option>
                         @endforeach
                     </select>
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="simple-select3">Utilisateur</label>
-                    <select class="form-control select2" name="user" id="simple-select3" required>
-                        @foreach ($user as $row)
-                        <option value="{{ $row->id }}" {{ $row->id == $poste->user_id ? 'selected' : ''
-                            }}>{{ $row->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="valid-feedback"></div>
-                    <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                </div>
+                @endif
+
             </div>
 
             <div class="text-center">
                 <a href="{{ route('Poste') }}" role="button" class="btn mb-2 btn-secondary">Annuler</a>
-                <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
 
             </div>
         </form>

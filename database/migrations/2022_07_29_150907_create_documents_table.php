@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('chemin');
             $table->unsignedBigInteger('courrier_id');
             $table->foreign('courrier_id')->references('id')->on('courriers')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

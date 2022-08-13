@@ -10,6 +10,10 @@ class JournalPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability){
+        return $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +22,7 @@ class JournalPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -30,7 +34,7 @@ class JournalPolicy
      */
     public function view(User $user, Journal $journal)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -41,7 +45,7 @@ class JournalPolicy
      */
     public function create(User $user)
     {
-        //
+
     }
 
     /**
@@ -53,7 +57,7 @@ class JournalPolicy
      */
     public function update(User $user, Journal $journal)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +69,7 @@ class JournalPolicy
      */
     public function delete(User $user, Journal $journal)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -77,7 +81,7 @@ class JournalPolicy
      */
     public function restore(User $user, Journal $journal)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -89,6 +93,6 @@ class JournalPolicy
      */
     public function forceDelete(User $user, Journal $journal)
     {
-        //
+        return $user->isAdmin();
     }
 }

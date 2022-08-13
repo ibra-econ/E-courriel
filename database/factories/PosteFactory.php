@@ -18,7 +18,7 @@ class PosteFactory extends Factory
     {
         return [
             'nom' => $this->faker->jobTitle(),
-            'user_id' => rand(1,2),
+            // 'user_id' => rand(1,2),
             'departement_id' => rand(1,5),
         ];
     }

@@ -16,13 +16,15 @@
         <div class="shadow card">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Courrier Imputation Dashboard</h5>
+                    <h5 class="card-title">Listes des imputations</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="mb-2 border-0 btn btn-green-1" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
+                            @if (Auth::user()->role === "admin")
                         <a href="{{ route('corbeille.imputation') }}" role="button"
                             class="btn mb-2 ml-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>
+                            @endif
                     </div>
                 </div>
                 <table class="table datatables" id="dataTable-1">
@@ -44,32 +46,35 @@
                     </thead>
                     <tbody>
                         @foreach ($rows as $row)
-                        @foreach ($row->departements as $row2)
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->user->name }}</td>
-                            <td>{{ $row->user->poste }}</td>
+                            <td>{{ $row->user->poste->nom }}</td>
                             <td>{{ $row->courrier->reference }}</td>
                             <td>{{ $row->courrier->numero }}</td>
                             <td>{{ $row->courrier->type }}</td>
                             <td>{{ $row->courrier->correspondant->nom.' '.$row->courrier->correspondant->prenom }}</td>
-                            <td>{{ $row2->nom }}</td>
+                            <td>{{ $row->departement->nom }}</td>
                             <td>{{ date('d/m/Y',strtotime($row->courrier->date_arriver)) }}</td>
-                            {{-- <td>{{ $row->date }}</td> --}}
                             <td>{{ $row->fin_traitement }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
+                                @if (Auth::user()->role === "admin" || "secretaire" || "superuser")
                                 <a href="{{ route('show.imputation', ['id' => $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-                                <a href="{{ route('pdf.imputation', ['id' => $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-download"></i></a>
-                                <a href="{{ route('edit.imputation', ['id' => $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-eye"></i></a>
+
+                                    @endif
+                                    @if (Auth::user()->role === "admin" || "superuser")
+                                    <a href="{{ route('pdf.imputation', ['id' => $row->id]) }}" role="button"
+                                        class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-download"></i></a>
+                                <a href="{{ route('edit.imputation', ['imputation' => $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-trash"></i></button>
+                                    @endif
                             </td>
                         </tr>
-                        @endforeach
+
                         @endforeach
                     </tbody>
                 </table>
@@ -149,13 +154,12 @@
                             <div class="valid-feedback"></div>
                         </div>
 
-
                     </div>
                     <div class="text-center col-12">
                         <h4>ANNOTATION</h4>
                     </div>
                     <div class="row mt-5">
-                        @forelse ($annotation as $row)
+                        @forelse($annotation as $row)
                         <div class="col-md-3">
                             <div class="custom-control custom-checkbox mb-3">
                                 <input type="checkbox" name="annotation[]" class="custom-control-input"
@@ -164,7 +168,9 @@
                             </div>
                         </div>
                         @empty
-                        <h3 class="text-center">Aucune annotation</h3>
+                        <div class="col-12 text-center">
+                            <h3 class="text-center">Vous avez aucune annotation</h3>
+                        </div>
                         @endforelse
                         <div class="col-12">
                             <div class="mb-3">
@@ -175,7 +181,7 @@
                     </div>
                     <div class="text-center">
                         <button type="button" class="mb-2 btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="mb-2 btn btn-success">Valider</button>
+                        <button type="submit" class="mb-2 btn btn-green-1">Valider</button>
                     </div>
                 </form>
             </div>

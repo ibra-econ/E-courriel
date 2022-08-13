@@ -10,6 +10,10 @@ class CorrespondantPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability){
+        return $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -30,7 +34,7 @@ class CorrespondantPolicy
      */
     public function view(User $user, Correspondant $correspondant)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**

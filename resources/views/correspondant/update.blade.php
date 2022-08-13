@@ -60,7 +60,7 @@
                     <div class="text-center">
                         <a href="{{ route('Correspondant') }}" role="button" class="btn mb-2 btn-secondary"
                             data-dismiss="modal">Annuler</a>
-                        <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                        <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
                     </div>
                 </form>
             </div>

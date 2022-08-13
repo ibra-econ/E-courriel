@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class ConfigController extends Controller
 {
-    public function edit(int $id)
+    public function edit(Config $config)
     {
-        $config = Config::find($id);
-        return view('config_update', compact(["config"]));
+        $configs = Config::find($config);
+        return view('config_update', compact(["configs"]));
     }
-    public function update(Request $request)
+    public function update(Request $request,Config $config)
     {
         $config = Config::find($request->id);
         $config->nom = $request->nom;

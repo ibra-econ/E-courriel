@@ -27,6 +27,32 @@
                         <div class="invalid-feedback">Ce champ est obligatoire.</div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="validationCustom02">Email</label>
+                        <input type="email" value="{{ $user->email }}" name="email" class="form-control"
+                            id="validationCustom02" placeholder="Entrez email de l'utilisateur" required>
+                        <div class="invalid-feedback">Ce champ est obligatoire.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="simple-select2">Poste</label>
+                        <select class="form-control select2" name="poste" id="simple-select2">
+                            @foreach ($poste as $row)
+                            @if ($row->departement_id == Auth::user()->departement_id)
+                            <option value="{{ $row->id }}" {{ $row->id == $user->poste_id ? 'selected' : ''
+                                }}>{{ $row->nom }}</option>
+                            @endif
+                            @if (Auth::user()->role === "admin")
+                            <option value="{{ $row->id }}" {{ $row->id == $user->poste_id ? 'selected' : ''
+                                }}>{{ $row->nom }}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @if (Auth::user()->role === "admin")
                 <div class="col-md-4 mb-3">
                     <label for="simple-select4">Département</label>
                     <select class="form-control select2" name="departement" id="simple-select4" required>
@@ -38,29 +64,6 @@
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
                 </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="simple-select2">Poste</label>
-                        <select class="form-control select2" name="poste" id="simple-select2">
-                            @foreach ($poste as $row)
-                            @isset($user->poste)
-                            <option value="{{ $row->id }}" {{ $row->id == $user->poste->id ? 'selected' : ''
-                                }}>{{ $row->nom }}</option>
-                            @endisset
-                            {{-- <option value="{{ $row->id }}">{{ $row->nom }}</option> --}}
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="validationCustom02">Email</label>
-                        <input type="email" value="{{ $user->email }}" name="email" class="form-control"
-                            id="validationCustom02" placeholder="Entrez email de l'utilisateur" required>
-                        <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                    </div>
-                </div>
-
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="simple-select3">Role</label>
@@ -68,18 +71,21 @@
                             <option value="admin" {{ $user->role === "admin" ? 'selected' : ''}}>Admin (Administrateur)
                             </option>
                             <option value="superuser" {{ $user->role === "superuser" ? 'selected' : ''}}>Superuser
-                                (Chef, Directeur)</option>
-                            <option value="agent" {{ $user->role === "agent" ? 'selected' : ''}}>Agent (Secretariat,
+                                (Chef departement, Directeur)</option>
+                            <option value="agent" {{ $user->role === "secretaire" ? 'selected' : ''}}>Secretaire
+                                (Secretariat)</option>
+                            <option value="agent" {{ $user->role === "agent" ? 'selected' : ''}}>Agent (
                                 Agent courrier)</option>
+
                         </select>
                     </div>
                 </div>
-
+                @endif
             </div>
 
             <div class="text-center">
                 <a href="{{ route('Compte') }}" role="button" class="btn mb-2 btn-secondary">Annuler</a>
-                <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
 
             </div>
         </form>

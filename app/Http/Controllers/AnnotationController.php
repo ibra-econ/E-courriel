@@ -3,30 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Annotation;
+use App\Models\Journal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnnotationController extends Controller
 {
     public function create(Request $request)
     {
-
         $request->validate([
             'nom' => ['required'],
         ]);
-
         $annotation = new Annotation();
         $annotation->nom = $request->nom;
+        $annotation->user_id = Auth::user()->id;
         $annotation->save();
         return back()->with('insert', 'annotation ajouter avec success');
     }
 
-    public function edit($id)
+    public function edit(int $id, Annotation $annotation)
     {
+
         $annotation = Annotation::find($id);
         return view('annotation.update', compact(["annotation"]));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Annotation $annotation)
     {
         $annotation = Annotation::find($request->id);
         $annotation->nom = $request->nom;
@@ -42,7 +44,7 @@ class AnnotationController extends Controller
     }
 
     // restaurer tous un element
-    public function restore(int $id)
+    public function restore(int $id, Annotation $annotation)
     {
         $delete = Annotation::where('id', $id)->restore();
         // check data restore or not
@@ -81,10 +83,13 @@ class AnnotationController extends Controller
         ]);
     }
 
-
     // supprimer
-    public function delete(int $id)
+    public function delete(int $id, Annotation $annotation)
     {
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Suppression de annotation N°' . $id;
+        $journal->save();
         // si oui supprimer de la BD
         $delete = Annotation::destroy($id);
         // check data deleted or not

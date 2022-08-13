@@ -1,21 +1,30 @@
 @extends('layouts.app')
 @section('content')
-
+<div class="">
+    @if (Session::has('insert'))
+    <div class="alert alert-info alert-dismissible text-center fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong> {{ Session::get('insert') }}</strong>
+    </div>
+    @endif
+</div>
 {{-- poste table --}}
 <div class="row">
     <div class="col-md-12">
         <div class="shadow card">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Postes Dashboard</h5>
+                    <h5 class="card-title">Listes des postes</h5>
                     <form class="form">
                         <div class="form-row">
                             <div class="col-auto mr-auto form-group">
                                 <button type="button" class="btn mb-2 btn-green-1" data-toggle="modal"
-                                data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
-                            <a href="{{ route('corbeille.poste') }}" role="button"
-                                class="btn mb-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
-                                $corbeille }}</a>
+                                    data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
+                                <a href="{{ route('corbeille.poste') }}" role="button"
+                                    class="btn mb-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
+                                    $corbeille }}</a>
                             </div>
                         </div>
                     </form>
@@ -25,8 +34,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Nom</th>
-                            <th>Utilisateur</th>
-                            <th>Email</th>
                             <th>Departement</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -38,8 +45,6 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nom }}</td>
-                            <td>{{ $row->user->nom }}</td>
-                            <td>{{ $row->user->email }}</td>
                             <td>{{ $row->departement->nom }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
@@ -49,7 +54,6 @@
                                     class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
                             </td>
                         </tr>
-
                         @endforeach
                     </tbody>
                 </table>
@@ -62,7 +66,7 @@
 <!-- Modal -->
 <div class="modal fade" id="verticalModal" tabindex="-1" role="dialog" aria-labelledby="verticalModalTitle"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="verticalModalTitle">Formulaire de nouveau poste</h5>
@@ -77,42 +81,31 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="validationCustom02">Nom</label>
-                                <input type="text" name="nom" class="form-control"
-                                    id="validationCustom02" placeholder="Entrez le nom du poste" required>
+                                <input type="text" name="nom" class="form-control" id="validationCustom02"
+                                    placeholder="Entrez le nom du poste" required>
                                 <div class="invalid-feedback">Ce champ est obligatoire.</div>
                             </div>
                         </div>
+                        @if (Auth::user()->role === "admin")
                         <div class="col-md-6 mb-3">
                             <label for="simple-select2">Département</label>
                             <select class="form-control select2" name="departement" id="simple-select2" required>
                                 @foreach ($departement as $row)
-                                <option value="{{ $row->id }}" {{ $row->id == $user->departement_id ? 'selected' : ''
-                                    }}>{{ $row->nom }}</option>
+                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
                             </select>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="simple-select3">Utilisateur</label>
-                            <select class="form-control select2" name="user" id="simple-select3" required>
-                                @foreach ($user as $row)
-                                <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                @endforeach
-                            </select>
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                        </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <div class="text-center">
                             <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                            <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
                         </div>
                     </div>
                 </form>
-
-
             </div>
 
         </div>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Correspondant;
+use App\Models\Journal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CorrespondantController extends Controller
 {
@@ -21,17 +23,24 @@ class CorrespondantController extends Controller
         $correspondant->email = $request->email;
         $correspondant->phone = $request->phone;
         $correspondant->fonction = $request->fonction;
+        $correspondant->type = $request->type;
         $correspondant->save();
+
+        // add Journal
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Ajout nouveau correspondant';
+        $journal->save();
         return back()->with('insert', 'Correspondant mise à jour avec success');
     }
 
-    public function edit(int $id)
+    public function edit(int $id, Correspondant $correspondant)
     {
         $row = Correspondant::find($id);
         return view('correspondant.update', compact(['row']));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Correspondant $correspondant)
     {
         $correspondant = Correspondant::find($request->id);
         $correspondant->nom = $request->nom;
@@ -39,7 +48,13 @@ class CorrespondantController extends Controller
         $correspondant->email = $request->email;
         $correspondant->phone = $request->phone;
         $correspondant->fonction = $request->fonction;
+        $correspondant->type = $request->type;
         $correspondant->save();
+        // ajout journal
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Mise à jour du correspondant N°' . $request->id;
+        $journal->save();
         return back()->with('update', 'Correspondant mise à jour avec success');
     }
 
@@ -50,7 +65,7 @@ class CorrespondantController extends Controller
         return view('correspondant.corbeille', compact(['rows']));
     }
 
-    // restaurer tous un element
+    // restaurer un element
     public function restore(int $id)
     {
         $delete = Correspondant::where('id', $id)->restore();
@@ -58,6 +73,12 @@ class CorrespondantController extends Controller
         if ($delete == 1) {
             $success = true;
             $message = "Correspondant restaurer avec success";
+
+            // ajout journal
+            $journal = new Journal();
+            $journal->user_id = Auth::user()->id;
+            $journal->libelle = 'restauration du correspondant N°' . $id;
+            $journal->save();
         } else {
             $success = true;
             $message = "Correspondant not found";
@@ -78,6 +99,12 @@ class CorrespondantController extends Controller
         if ($delete == 1) {
             $success = true;
             $message = "Tout les correspondants restaurés avec success";
+
+            // ajout journal
+            $journal = new Journal();
+            $journal->user_id = Auth::user()->id;
+            $journal->libelle = 'restaurer tout les correspondant';
+            $journal->save();
         } else {
             $success = true;
             $message = "La corbeille a été vider";
@@ -90,9 +117,14 @@ class CorrespondantController extends Controller
         ]);
     }
 
-     // supprimer un elements
+    // supprimer un elements
     public function delete(int $id)
     {
+        // ajout journal
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Suppression du correspondant N°' . $id;
+        $journal->save();
         $delete = Correspondant::destroy($id);
         // check data deleted or not
         if ($delete == 1) {

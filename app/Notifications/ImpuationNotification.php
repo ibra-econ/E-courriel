@@ -11,7 +11,7 @@ class ImpuationNotification extends Notification
 {
     use Queueable;
 
-    public $courrier = [];
+    public $courrier;
     /**
      * Create a new notification instance.
      *
@@ -30,7 +30,7 @@ class ImpuationNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['database'];
     }
 
     /**
@@ -41,13 +41,13 @@ class ImpuationNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line("Vous avez été imputer d'un nouveau courrier")
-                    ->line('Numero:'.$this->courrier->numero)
-                    ->line('Reference:'.$this->courrier->reference)
-                    ->line('Objet:'.$this->courrier->objet)
-                    ->line('Date arrivée:'.$this->courrier->date_arriver)
-                    ->line('Merci!');
+        // return (new MailMessage)
+        //             ->line("Vous avez été imputer d'un nouveau courrier")
+        //             ->line('Numero:'.$this->courrier->numero)
+        //             ->line('Reference:'.$this->courrier->reference)
+        //             ->line('Objet:'.$this->courrier->objet)
+        //             ->line('Date arrivée:'.$this->courrier->date_arriver)
+        //             ->line('Merci!');
     }
 
     /**
@@ -59,7 +59,7 @@ class ImpuationNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' =>"Vous avez été imputer d'un nouveau courrier",
+            'title' =>"Vous avez été imputer courrier N°".$this->courrier->numero,
         ];
     }
 }

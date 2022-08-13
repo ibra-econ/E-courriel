@@ -10,6 +10,10 @@ class CourrierPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability){
+        return $user->isAdmin();
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -18,7 +22,7 @@ class CourrierPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +34,7 @@ class CourrierPolicy
      */
     public function view(User $user, Courrier $courrier)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +45,7 @@ class CourrierPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -51,9 +55,21 @@ class CourrierPolicy
      * @param  \App\Models\Courrier  $courrier
      * @return \Illuminate\Auth\Access\Response|bool
      */
+
+    public function edit(User $user, Courrier $courrier)
+    {
+        return $user->isSuperuser();
+
+        // return $user->id === $courrier->user_id;
+    }
+
     public function update(User $user, Courrier $courrier)
     {
-        //
+        return $user->isSuperuser();
+        // dd($user->isSecretaire());
+        // return $user->isSecretaire();
+        // return $user->isSuperuser();
+        // return $user->id == $courrier->user_id;
     }
 
     /**
@@ -65,7 +81,8 @@ class CourrierPolicy
      */
     public function delete(User $user, Courrier $courrier)
     {
-        //
+
+        return $user->isSuperuser();
     }
 
     /**
@@ -77,7 +94,7 @@ class CourrierPolicy
      */
     public function restore(User $user, Courrier $courrier)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -89,6 +106,6 @@ class CourrierPolicy
      */
     public function forceDelete(User $user, Courrier $courrier)
     {
-        //
+        return $user->isAdmin();
     }
 }

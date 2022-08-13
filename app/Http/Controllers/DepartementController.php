@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departement;
-use App\Models\User;
+use App\Models\Journal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DepartementController extends Controller
 {
@@ -12,21 +13,24 @@ class DepartementController extends Controller
     {
         $request->validate([
             'nom' => ['required'],
-            'user' => ['required'],
             'code' => ['required'],
         ]);
         $departement = new Departement();
         $departement->nom = $request->nom;
         $departement->code = $request->code;
         $departement->save();
+        // add Journal
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Ajout nouveau departement';
+        $journal->save();
         return back()->with('insert', 'departement ajouter avec success');
     }
 
     public function edit(int $id)
     {
-        $departement = Departement::find($id);
-        $user = User::all();
-        return view('departement.update', compact(["departement", 'user']));
+        $departements = Departement::find($id);
+        return view('departement.update', compact(["departements"]));
     }
 
     public function update(Request $request)
@@ -35,6 +39,12 @@ class DepartementController extends Controller
         $departement->nom = $request->nom;
         $departement->code = $request->code;
         $departement->save();
+        // add Journal
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Mise à jour departement N°' . $request->id;
+        $journal->save();
+
         return back()->with('update', 'departement mise à jour avec success');
     }
 
@@ -48,6 +58,11 @@ class DepartementController extends Controller
     // restaurer tous un element
     public function restore(int $id)
     {
+
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Restoration du departement N°' . $id;
+        $journal->save();
         $delete = Departement::where('id', $id)->restore();
         // check data restore or not
         if ($delete == 1) {
@@ -87,6 +102,10 @@ class DepartementController extends Controller
 
     public function delete(int $id)
     {
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Suppression du Departement N°' . $id;
+        $journal->save();
         // si oui supprimer de la BD
         $delete = Departement::destroy($id);
         // check data deleted or not

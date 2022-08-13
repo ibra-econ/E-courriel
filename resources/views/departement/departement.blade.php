@@ -14,7 +14,7 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Departement Dashboard</h5>
+                    <h5 class="card-title">Listes des departements</h5>
                     <form class="form">
                         <div class="form-row">
                             <div class="form-group col-auto mr-auto">
@@ -32,8 +32,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Nom</th>
-                            <th>Utilisateur</th>
-                            <th>Imputations</th>
+                            <th>Utilisateurs</th>
+
                             <th>Code</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -44,12 +44,11 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nom }}</td>
-                            <td>{{ count($row->users) }}</td>
-                            <td>{{ count($row->imputations) }}</td>
+                            <td>{{ $row->users->count() }}</td>
+
                             <td>{{ $row->code }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
-                                <a href="" role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
                                 <a href="{{ route('edit.departement',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
@@ -99,7 +98,7 @@
                     </div>
                     <div class="text-center">
                         <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                        <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
 
                     </div>
                 </form>

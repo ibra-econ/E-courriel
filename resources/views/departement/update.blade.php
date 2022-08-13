@@ -17,18 +17,18 @@
     <div class="card-body">
         <form method="POST" action="{{ route('update.departement') }}" class="needs-validation p-3" novalidate>
             @csrf
-            <input type="hidden" name="id" value="{{ $departement->id }}">
+            <input type="hidden" name="id" value="{{ $departements->id }}">
             <div class="form-row">
                 <div class="col-md-6 mb-3">
                     <label for="validationCustom02">Nom</label>
-                    <input value="{{ $departement->nom }}" type="text" name="nom" class="form-control"
+                    <input value="{{ $departements->nom }}" type="text" name="nom" class="form-control"
                         id="validationCustom02" placeholder="Entrez le nom du departement" required>
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="validationCustom02">Code</label>
-                    <input type="text" value="{{ $departement->code }}" name="code" class="form-control"
+                    <input type="text" value="{{ $departements->code }}" name="code" class="form-control"
                         id="validationCustom02" placeholder="Entrez le code" required>
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
@@ -37,7 +37,7 @@
 
             <div class="text-center">
                 <a href="{{ route('Departement') }}" role="button" class="btn mb-2 btn-secondary">Annuler</a>
-                <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
 
             </div>
         </form>

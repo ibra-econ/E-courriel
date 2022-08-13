@@ -17,13 +17,15 @@
     <div class="card-body">
         <form action="{{ route('update.imputation') }}" method="POST" class="p-3 needs-validation" novalidate>
             @csrf
-            <input type="hidden" name="id" value="{{ $imputation->id }}">
+            <input type="hidden" name="id" value="{{ $item->id }}">
+            {{-- <input type="hidden" name="diffusion_id" value="{{ $item->id }}"> --}}
+            {{-- <input type="hidden" name="id" value="{{ $item->id }}"> --}}
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <label for="simple-select2">Courrier</label>
                     <select class="form-control select2" name="courrier" id="simple-select2" required>
                         @foreach ($courrier as $row)
-                        <option value="{{ $row->id }}" {{ $row->id == $imputation->courrier_id ? 'selected' : '' }}>Courrier N°{{
+                        <option value="{{ $row->id }}" {{ $row->id == $item->courrier_id ? 'selected' : '' }}>Courrier N°{{
                             $row->numero.'-ref '.$row->reference.'-Objet '.$row->objet }}</option>
                         @endforeach
                     </select>
@@ -35,7 +37,7 @@
                     <label for="simple-select2">Département/Service traitement</label>
                     <select class="form-control select2" name="departement" id="simple-select2" required>
                         @foreach ($departement as $row)
-                        <option value="{{ $row->id }}" {{ $row->id == $imputation->departement_id ? 'selected' : '' }}>{{ $row->nom }}</option>
+                        <option value="{{ $row->id }}" {{ $row->id == $item->departement_id ? 'selected' : '' }}>{{ $row->nom }}</option>
                         @endforeach
                     </select>
                     <div class="valid-feedback"></div>
@@ -46,10 +48,9 @@
                   <select class="form-control select2-multi" name="diffusion[]" multiple="multiple" id="validationCustom04">
                     <optgroup label="Departement">
                         @foreach ($departement as $row)
-                        @foreach ($imputation->departements as $row2)
-                          <option value="{{ $row->id }}" {{ $row->id == $row2->pivot->departement_id ? 'selected' : '' }}>{{ $row->nom }}</option>
+                        @foreach ($item->diffusions as $row2)
+                          <option value="{{ $row->id }}" {{ $row->id == $row2->departement_id ? 'selected' : '' }}>{{ $row->nom }}</option>
                         @endforeach
-                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
                         @endforeach
                     </optgroup>
                   </select>
@@ -64,17 +65,19 @@
             </div>
             <div class="row mt-5">
                 @foreach ($annotation as $row)
+                {{-- @foreach ($item->annotations as $row2) --}}
                 <div class="col-md-3">
                     <div class="custom-control custom-checkbox mb-3">
-                        <input type="checkbox" class="custom-control-input" value="{{ $row->id }}"
+                        <input type="checkbox" name="annotations[]" class="custom-control-input" value="{{ $row->id }}"
                             id="{{ $row->id }}">
                         <label class="custom-control-label" for="{{ $row->id }}">{{ $row->nom }}</label>
                     </div>
                 </div>
+                {{-- @endforeach --}}
                 @endforeach
             </div>
                 <div class="text-center">
-                    <button type="button" class="mb-2 btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <a href="{{ route('Imputation') }}" type="button" class="mb-2 btn btn-secondary" data-dismiss="modal">Annuler</a>
                     <button type="submit" class="mb-2 btn btn-success">Valider</button>
                 </div>
         </form>

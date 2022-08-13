@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Nature;
 use App\Models\Document;
+use App\Models\Diffusion;
 use App\Models\Annotation;
 use App\Models\Imputation;
 use App\Models\Departement;
@@ -89,6 +90,26 @@ class Courrier extends Model
     public function imputation(): HasOne
     {
         return $this->hasOne(Imputation::class);
+    }
+
+        /**
+     * Get the affectation associated with the Courrier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function affectation(): HasOne
+    {
+        return $this->hasOne(Affectation::class);
+    }
+
+    /**
+     * Get all of the diffusions for the Courrier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function diffusions(): HasMany
+    {
+        return $this->hasMany(Diffusion::class);
     }
 
 }

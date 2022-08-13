@@ -6,10 +6,15 @@ use App\Mail\Diffusion;
 use App\Models\Annotation;
 use App\Models\Courrier;
 use App\Models\Departement;
+use App\Models\Diffusion as ModelsDiffusion;
 use App\Models\Imputation;
+use App\Models\Journal;
 use App\Models\User;
+use App\Notifications\ImpuationEmailNotification;
 use App\Notifications\ImpuationNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 
 class ImputationController extends Controller
@@ -20,61 +25,123 @@ class ImputationController extends Controller
         $imputation = new Imputation();
         $imputation->courrier_id = $request->courrier;
         $imputation->departement_id = $request->departement;
-        $imputation->user_id = 1;
+        $imputation->user_id = Auth::user()->id;
         $imputation->observation = $request->observation;
         $imputation->save();
 
-        //    add annotation
+        // add courrier annotation dans la table pivot
         $courrier = Courrier::find($request->courrier);
         $courrier->annotations()->attach($request->annotation);
+
+        // get last imputation
+        $last = Imputation::latest()->first('id');
+
         // add diffusion pour avis
-        $imputation->departements()->attach($request->diffusion);
+        if (!empty($request->diffusion)):
+            foreach ($request->diffusion as $row):
+                $diffusion = new ModelsDiffusion();
+                $diffusion->courrier_id = $courrier->id;
+                $diffusion->departement_id = $request->departement;
+                $diffusion->imputation_id = $last->id;
+                $diffusion->user_id = Auth::user()->id;
+                $diffusion->save();
+            endforeach;
+        endif;
 
-        // $departement = Departement::whereIn('id',$request->diffusion)->get('code');
-
+        // update etat courrier
+        $update = Courrier::where('id', $request->courrier)->update(['etat' => 'Imputer']);
+        // get email chef de departement pour notification
+        $user = User::where([['departement_id', '=', $request->departement], ['role', '=', 'superuser']])->first();
 
         if ($request->notif === "OUI"):
-     // get email chef de departement
-     $user = User::where([['departement_id', '=', $request->departement]])->first();
-     // envoie de email pour notifiaction
-     $user->notify(new ImpuationNotification($courrier));
+            // envoie de email pour notifiaction
+            $user->notify(new ImpuationEmailNotification($courrier));
             // get email chef de departement en copie
-            $user_diffusion = User::whereIn('departement_id', $request->diffusion)->get('email');
+            $user_diffusion = User::whereIn('departement_id', $request->diffusion)->where('role', 'superuser')->orWhere('role', 'superuser')->get('email');
+
             foreach ($user_diffusion as $row):
+                // Envoie de email
                 Mail::to($row->email)->send(new Diffusion($courrier));
             endforeach;
             return back()->with('insert', 'imputation ajouter avec success et un email de notification a été envoyer');
         else:
 
+            $user->notify(new ImpuationNotification($courrier));
             return back()->with('insert', 'imputation ajouter avec success');
         endif;
 
+        // add Journal
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = "Ajout de l'imputation du courrier N°" . $courrier->numero;
+        $journal->save();
     }
 
-    public function edit(int $id)
+    public function edit(Imputation $imputation)
     {
-        $imputation = Imputation::with('departements')->find($id);
-        // dd($imputation);
+
+        // verification de l'autorisation
+        if (!Gate::allows('update-imputation', $imputation)) {
+            abort(403);
+        }
+        $item = Imputation::with('departement', 'courrier', 'diffusions')->find($imputation->id);
         $departement = Departement::all();
-        $courrier = Courrier::latest()->get();
-        $annotation = Annotation::all();
-        return view('imputation.update', compact(['imputation', 'departement', 'courrier', 'annotation']));
+        $courrier = Courrier::with('annotations')->latest()->get();
+        $annotation = Annotation::where('user_id', Auth::user()->id)->get();
+        return view('imputation.update', compact(['item', 'departement', 'courrier', 'annotation']));
     }
 
     public function update(Request $request)
     {
-        $imputation = Imputation::find($request->id);
+        // dd($request->diffusion);
+
+        $imputation = Imputation::with('diffusions')->find($request->id);
         $imputation->courrier_id = $request->courrier;
         $imputation->departement_id = $request->departement;
-        $imputation->date = $request->date;
         $imputation->save();
+
+        // update courrier annotation dans la table pivot
+        $courrier = Courrier::find($request->courrier);
+        $courrier->annotations()->syncWithoutDetaching($request->annotations);
+
+        // $diff = ModelsDiffusion::whereIn('departement_id', $imputation->diffusions)->get();
+         foreach($request->diffusion as $key => $value):
+            // dd($row);
+        // $diff = ModelsDiffusion::upsert(
+        //     ['departement_id' => $value,'user_id' => Auth::user()->id,'courrier_id' => $request->courrier,'imputation_id' => $request->id],
+        //     ['user_id' => Auth::user()->id,'courrier_id' => $request->courrier,'imputation_id' => $request->id],
+        // );
+        endforeach;
+        // dd($diff);
+        // $imputation->diffusions->updateOrcreate($request->diffusion);
+        dd('ok');
+        // update diffusion pour avis
+
+        foreach ($imputation->diffusions as $row):
+            // foreach ($request->diffusion as $key => $value):
+
+            //     if ($row->departement_id !== $value):
+            //         // dd('ok'.$value);
+            //         $diffusion = new ModelsDiffusion();
+            //         $diffusion->courrier_id = $request->courrier;
+            //         $diffusion->departement_id = $value;
+            //         $diffusion->imputation_id = $imputation->id;
+            //         $diffusion->user_id = Auth::user()->id;
+            //         $diffusion->save();
+            //     endif;
+            //     endforeach;
+        endforeach;
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Mise a jour de imputation N°' . $request->id;
+        $journal->save();
         return back()->with('update', 'imputation mise à jour avec success');
     }
 
     // imputation show
     public function show(int $id)
     {
-        $imputation = Imputation::with('courrier', 'departements')->find($id);
+        $imputation = Imputation::with('courrier', 'departement','diffusions')->find($id);
         return view('imputation.show', compact(['imputation']));
     }
 
@@ -132,8 +199,12 @@ class ImputationController extends Controller
         ]);
     }
 
-    public function delete(int $id)
+    public function delete(int $id, Imputation $imputation)
     {
+        $journal = new Journal();
+        $journal->user_id = Auth::user()->id;
+        $journal->libelle = 'Suppression de imputation N°' . $id;
+        $journal->save();
         // si oui supprimer de la BD
         $delete = Imputation::destroy($id);
         // check data deleted or not

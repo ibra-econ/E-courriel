@@ -19,10 +19,10 @@
             <div class="card-body">
                 <form action="{{ route('update.nature') }}" method="POST" class="needs-validation p-3" novalidate>
                     @csrf
-                    <input type="hidden" value="{{ $nature->id }}" name="id">
+                    <input type="hidden" value="{{ $natures->id }}" name="id">
                     <div class="mb-3">
                         <label for="validationCustom02">Nom</label>
-                        <input type="text" value="{{ $nature->nom }}" name="nom" class="form-control"
+                        <input type="text" value="{{ $natures->nom }}" name="nom" class="form-control"
                             id="validationCustom02" value="" placeholder="Entrez le nom de la nature" required>
                         <div class="invalid-feedback">Ce champ est obligatoire.</div>
                     </div>
@@ -31,7 +31,7 @@
                         <div class="text-center">
                             <a href="{{ route('Nature') }}" role="button" class="btn mb-2 btn-secondary"
                                 data-dismiss="modal">Annuler</a>
-                            <button type="submit" class="btn mb-2 btn-success">Valider</button>
+                            <button type="submit" class="btn mb-2 btn-green-1">Valider</button>
                         </div>
                     </div>
                 </form>

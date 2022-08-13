@@ -22,28 +22,27 @@
                     <thead class="thead-green">
                         <tr>
                             <th>ID</th>
+                            <th>Libelle</th>
                             <th>Nom</th>
                             <th>Email</th>
-                            <th>Poste</th>
+                            {{-- <th>Poste</th> --}}
                             <th>Departement</th>
                             <th>Role</th>
-                            <th>liblelle</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($rows as $row)
-
                         <tr>
                             <td>{{ $row->id }}</td>
+                            <td>{{ $row->libelle }}</td>
                             @isset($row->user)
                             <td>{{ $row->user->name }}</td>
                             <td>{{ $row->user->email }}</td>
-                            <td>{{ $row->user->poste->nom }}</td>
+                            {{-- <td>{{ $row->user->poste->nom }}</td> --}}
                             <td>{{ $row->user->departement->nom }}</td>
                             <td>{{ $row->user->role }}</td>
-                            <td>{{ $row->status }}</td>
                             <td>{{ $row->created_at->format('d/m/Y H:m:s') }}</td>
                             <td>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
@@ -77,7 +76,7 @@
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 type: 'POST',
-                url: "{{url('delete/user')}}/" + id,
+                url: "{{url('delete/journal')}}/" + id,
                 data: {_token: CSRF_TOKEN},
                 dataType: 'JSON',
                 success: function (results) {
@@ -102,4 +101,7 @@
     })
     }
 </Script>
+@endsection
+@section('scroll')
+      scrollX: true,
 @endsection
