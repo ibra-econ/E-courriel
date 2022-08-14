@@ -18,7 +18,7 @@
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="mb-2 border-0 btn btn-green-1" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
-                        @if (Auth::user()->role === "admin")
+                            @if (Auth::user()->isAdmin())
                         <a href="{{ route('corbeille.courrier') }}" role="button"
                             class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>
@@ -61,11 +61,14 @@
                                     class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-eye"></i></a>
                                 <a href="{{ route('fiche.courrier',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-download"></i></a>
+
                                 <a href="{{ route('edit.courrier',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-edit"></i></a>
 
-                                <button onclick="deleteConfirmation({{ $row->id }})" type="button"
-                                    class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-trash"></i></button>
+                                @if (Auth::user()->isAdmin())
+                                    <button onclick="deleteConfirmation({{ $row->id }})" type="button"
+                                        class="btn btn-sm btn-green-1  mt-1"><i class="fe fe-trash"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

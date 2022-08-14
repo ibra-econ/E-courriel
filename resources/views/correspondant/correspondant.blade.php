@@ -22,7 +22,7 @@
                             <div class="form-group col-auto mr-auto">
                                 <button type="button" class="btn mb-2 btn-green-1" data-toggle="modal"
                                     data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
-                                @if (Auth::user()->role === "admin")
+                                    @if (Auth::user()->isAdmin())
                                 <a href="{{ route('corbeille.correspondant') }}" role="button"
                                 class="btn mb-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
                                 $corbeille }}</a>

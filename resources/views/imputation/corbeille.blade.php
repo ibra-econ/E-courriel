@@ -7,7 +7,7 @@
         <div class="card shadow">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Imputation Corbeille Dashboard</h5>
+                    <h5 class="card-title">Corbeille Imputation</h5>
                     <form class="form">
                         <div class="form-row">
                             <div class="form-group col-auto mr-auto">
@@ -24,10 +24,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Utilisateur</th>
-                            <th>Poste</th>
                             <th>Réference</th>
                             <th>Numero</th>
-                            <th>Type</th>
+                            <th>Objet</th>
                             <th>Expediteur</th>
                             <th>Departement</th>
                             <th>Date arrivée</th>
@@ -38,26 +37,23 @@
                     </thead>
                     <tbody>
                         @foreach ($rows as $row)
-                        @foreach ($row->departements as $row2)
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->user->name }}</td>
-                            <td>{{ $row->user->poste }}</td>
                             <td>{{ $row->courrier->reference }}</td>
                             <td>{{ $row->courrier->numero }}</td>
-                            <td>{{ $row->courrier->type }}</td>
+                            <td>{{ $row->courrier->objet }}</td>
                             <td>{{ $row->courrier->correspondant->nom.' '.$row->courrier->correspondant->prenom }}</td>
-                            <td>{{ $row2->nom }}</td>
+                            <td>{{ $row->departement->nom }}</td>
                             <td>{{ date('d/m/Y',strtotime($row->courrier->date_arriver)) }}</td>
-                            {{-- <td>{{ $row->date }}</td> --}}
                             <td>{{ $row->fin_traitement }}</td>
-                            <td>{{ $row->deleted_at->format('d/m/Y') }}</td>
+                            <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-rotate-ccw"></i></button>
                             </td>
                         </tr>
-                        @endforeach
+
                         @endforeach
                     </tbody>
                 </table>

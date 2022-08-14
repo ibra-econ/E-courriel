@@ -10,21 +10,22 @@
         <div class="shadow card">
             <div class="p-5 card-body">
                 <div class="mb-5 row">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="avatar-lg">
-                                <img src="{{ asset('assets/images/favicon.png') }}" class="rounded mr-5" alt="">
+
+                    <div class="mb-4 text-center col-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="avatar-lg">
+                                    <img src="{{ asset('assets/images/favicon.png') }}" class="rounded mr-5" alt="">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <p> Morar-Bechtelar</p>
+                                <p>johnston.claudia@example.net</p>
+                                <p>Contact: +17475384534</p>
                             </div>
                         </div>
-
-                        <div class="col-md-6">
-                            <p> Morar-Bechtelar</p>
-                            <p>johnston.claudia@example.net</p>
-                            <p>Contact: +17475384534</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="mb-4 text-center col-12">
+                        <hr>
                         <h2 class="mb-0 text-uppercase">fiche d'imputation N° {{ $imputation->id.' du
                             '.$imputation->created_at->format('d/m/Y') }}</h2>
 
@@ -52,13 +53,7 @@
                             date('d/m/Y',strtotime($imputation->courrier->date)) }}</p>
                         <p class="mb-2 text-dark font-weight-bolder text-uppercase">Type: {{ $imputation->courrier->type
                             }}</p>
-                        <p class="mb-2 text-dark font-weight-bolder text-uppercase">Departement/Service:
-
-                            @foreach ($imputation->departements as $row)
-                            @if ($row->id = $imputation->departement_id)
-                            {{ $row->nom }}
-                            @endif
-                            @endforeach
+                        <p class="mb-2 text-dark font-weight-bolder text-uppercase">Departement/Service: {{ $imputation->departement->nom }}
                         </p>
                     </div>
 

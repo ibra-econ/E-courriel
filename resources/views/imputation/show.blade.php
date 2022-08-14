@@ -1,8 +1,50 @@
 @extends('layouts.app')
 @section('content')
+<button type="button" onClick="imprimer('fiche')" id="print" class="mb-2 btn btn-success">Imprimer</button>
+<div class="row">
+    {{-- courrier document --}}
+    <div class="col-12">
+        <div class="file-container border-top" id="document">
+            <div class="file-panel mt-4">
+                <div class="row my-4">
+                    @forelse ($imputation->courrier->documents as $row)
+                    <div class="col-md-3">
+                        <div class="card text-center mb-2 shadow">
+                            <div class="card-body file">
+                                <div class="file-action">
+                                    <a target="_blank" href="{{ route('show.document',['id'=> $row->id]) }}"
+                                        role="button" class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
+                                    <a href="{{ route('edit.document',['id'=> $row->id]) }}" role="button"
+                                        class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
+                                </div>
+                                <div class="circle circle-lg bg-light my-4">
+                                    <span class="fe fe-file fe-24 text-success"></span>
+                                </div>
+                                <div class="file-info">
+                                    <span class="badge badge-pill badge-light text-muted">PDF</span>
+                                </div>
+                            </div> <!-- .card-body -->
+                            <div class="card-footer bg-transparent border-0 fname">
+                                <strong>{{ $row->libelle }}</strong> <br>
+                                <strong>crée: {{ date('d/m/Y',strtotime($row->created_at)) }}</strong>
+                            </div> <!-- .card-footer -->
+                        </div> <!-- .card -->
+                    </div>
+                    @empty
+                    <div class="col-12 text-center">
+                        <h2>Aucun document</h2>
+                    </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- fin courrier document --}}
+</div>
 <div class="row">
 
-    <button type="button" onClick="imprimer('fiche')" id="print" class="mb-2 btn btn-success">Imprimer</button>
+
+
     <div class="col-md-12 my-4">
         <div class="shadow card">
             <div class="p-5 card-body" id="fiche">

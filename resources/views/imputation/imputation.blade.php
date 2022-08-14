@@ -20,11 +20,11 @@
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="mb-2 border-0 btn btn-green-1" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
-                            @if (Auth::user()->role === "admin")
+                        @if (Auth::user()->isAdmin())
                         <a href="{{ route('corbeille.imputation') }}" role="button"
                             class="btn mb-2 ml-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>
-                            @endif
+                        @endif
                     </div>
                 </div>
                 <table class="table datatables" id="dataTable-1">
@@ -32,10 +32,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Utilisateur</th>
-                            <th>Poste</th>
                             <th>Réference</th>
                             <th>Numero</th>
-                            <th>Type</th>
+                            <th>Objet</th>
                             <th>Expediteur</th>
                             <th>Departement</th>
                             <th>Date arrivée</th>
@@ -49,29 +48,31 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->user->name }}</td>
-                            <td>{{ $row->user->poste->nom }}</td>
                             <td>{{ $row->courrier->reference }}</td>
                             <td>{{ $row->courrier->numero }}</td>
-                            <td>{{ $row->courrier->type }}</td>
+                            <td>{{ $row->courrier->objet }}</td>
                             <td>{{ $row->courrier->correspondant->nom.' '.$row->courrier->correspondant->prenom }}</td>
                             <td>{{ $row->departement->nom }}</td>
                             <td>{{ date('d/m/Y',strtotime($row->courrier->date_arriver)) }}</td>
                             <td>{{ $row->fin_traitement }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
-                                @if (Auth::user()->role === "admin" || "secretaire" || "superuser")
+                                @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser() || Auth::user()->isSecretaire())
                                 <a href="{{ route('show.imputation', ['id' => $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-eye"></i></a>
+                                @endif
 
-                                    @endif
-                                    @if (Auth::user()->role === "admin" || "superuser")
-                                    <a href="{{ route('pdf.imputation', ['id' => $row->id]) }}" role="button"
-                                        class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-download"></i></a>
+                                @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
+                                <a href="{{ route('pdf.imputation', ['id' => $row->id]) }}" role="button"
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-download"></i></a>
                                 <a href="{{ route('edit.imputation', ['imputation' => $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-edit"></i></a>
+                                @endif
+
+                                @if (Auth::user()->isAdmin())
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-trash"></i></button>
-                                    @endif
+                                @endif
                             </td>
                         </tr>
 
@@ -175,7 +176,7 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="" class="form-label">Observation (Facultatif)</label>
-                                <textarea class="form-control" name="observation" id="" rows="3"></textarea>
+                                <textarea class="form-control" name="observation" rows="3"></textarea>
                             </div>
                         </div>
                     </div>

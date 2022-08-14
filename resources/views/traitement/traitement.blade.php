@@ -41,7 +41,7 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->user->name }}</td>
-                            <td>{{ $row->user->poste->nom }}</td>
+                            <td>{{ $row->user->poste }}</td>
                             <td>{{ $row->courrier->reference }}</td>
                             <td>{{ $row->courrier->numero }}</td>
                             <td>{{ $row->courrier->type }}</td>
@@ -56,7 +56,7 @@
                                     class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
 
                                 <a href="{{ route('pdf.imputation', ['id' => $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-settings"></i></a>
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-settings"></i></a>
                                 @endif
 
                             </td>

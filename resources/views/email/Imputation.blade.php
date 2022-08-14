@@ -1,5 +1,5 @@
 @component('mail::message')
-<p>Vous avez été imputer d'un nouveau courrier pour avis</p>
+<p>Vous avez été imputer d'un nouveau courrier</p>
 <h5>Reference: {{ $courrier["reference"] }}</h5>
 <h5>Numero: {{ $courrier["numero"] }}</h5>
 <h5>Priorité: {{ $courrier["priorite"] }}</h5>

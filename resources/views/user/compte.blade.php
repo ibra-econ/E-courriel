@@ -54,7 +54,7 @@
 
                             <td>{{ $row->email }}</td>
 
-                            <td>{{ $row->poste->nom }}</td>
+                            <td>{{ $row->poste }}</td>
                             <td>{{ $row->departement->nom }}</td>
                             <td>{{ $row->role }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>

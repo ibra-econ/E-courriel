@@ -60,7 +60,7 @@ class AuthenticatedSessionController extends Controller
         $journal->libelle = 'Deconnexion';
         $journal->save();
 
-        $user = User::where('id',$request->id)->update(['etat' => 0]);
+        $user = User::where('id',$request->id)->update(['etat' => '0']);
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();

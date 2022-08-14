@@ -57,21 +57,14 @@
                         <option value="superuser">Superuser (Chef departement, Directeur)</option>
                         <option value="agent">Secretaire (Secretariat)</option>
                         <option value="agent">Agent (Agent courrier)</option>
-                        {{-- <option value="stantard">Stantard (Personnel de departement)</option> --}}
                     </select>
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
                     <div class="valid-feedback"></div>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="simple-select3">Poste</label>
-                    <select class="form-control select2" name="poste" id="simple-select3" required>
-                        <option selected disabled value="">Selectionner</option>
-                        @forelse ($poste as $row)
-                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                        @empty
-                        <option value="">Aucun poste</option>
-                        @endforelse
-                    </select>
+                    <input type="text" class="form-control" id="validationCustom02" name="poste"
+                    placeholder="Entrez le poste" required>
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
                     <div class="valid-feedback"></div>
                 </div>
@@ -90,7 +83,7 @@
                     <div class="valid-feedback"></div>
                 </div>
                 @endif
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="password">Mot de passe</label>
                     <input type="password" name="password" required type="text" class="form-control" id="password"
                         autocomplete="new-password">
@@ -98,7 +91,7 @@
                     <div class="invalid-feedback">Ce champ est obligatoire.</div>
 
                 </div>
-                <div class="col-md-12 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="password_confirmation">Confirmer le mot de passe</label>
                     <input type="password" name="password_confirmation" required type="text" class="form-control"
                         id="password_confirmation">

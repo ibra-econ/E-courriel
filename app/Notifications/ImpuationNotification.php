@@ -41,13 +41,7 @@ class ImpuationNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        // return (new MailMessage)
-        //             ->line("Vous avez été imputer d'un nouveau courrier")
-        //             ->line('Numero:'.$this->courrier->numero)
-        //             ->line('Reference:'.$this->courrier->reference)
-        //             ->line('Objet:'.$this->courrier->objet)
-        //             ->line('Date arrivée:'.$this->courrier->date_arriver)
-        //             ->line('Merci!');
+
     }
 
     /**
@@ -59,7 +53,7 @@ class ImpuationNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' =>"Vous avez été imputer courrier N°".$this->courrier->numero,
+            'title' =>"Vous avez été imputer du courrier N°".$this->courrier->numero,
         ];
     }
 }

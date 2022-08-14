@@ -13,7 +13,6 @@ use App\Models\Departement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,7 +32,7 @@ class User extends Authenticatable
         'email',
         'password',
         'departement_id',
-        'poste_id',
+        'poste',
         'role',
         'photo',
     ];
@@ -112,17 +111,6 @@ class User extends Authenticatable
     public function journals(): HasMany
     {
         return $this->hasMany(Journal::class);
-    }
-
-    /**
-     * Get the poste that owns the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-
-    public function poste(): BelongsTo
-    {
-        return $this->belongsTo(Poste::class);
     }
 
     /**

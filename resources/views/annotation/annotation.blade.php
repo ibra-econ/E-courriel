@@ -20,7 +20,7 @@
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn mb-2 btn-green-1 border-0" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
-                        @if (Auth::user()->role === "admin")
+                            @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
                         <a href="{{ route('corbeille.annotation') }}" role="button"
                             class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>

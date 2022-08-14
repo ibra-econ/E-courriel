@@ -61,16 +61,6 @@ class Departement extends Model
     }
 
     /**
-     * Get all of the postes for the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function postes(): HasMany
-    {
-        return $this->hasMany(Poste::class);
-    }
-
-    /**
      * Get all of the di for the Departement
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

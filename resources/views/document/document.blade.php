@@ -11,7 +11,7 @@
                     <form class="form">
                         <div class="form-row">
                             <div class="col-auto mr-auto form-group">
-                                @if (Auth::user()->role === "admin")
+                                @if (Auth::user()->isAdmin())
                                 <a href="{{ route('corbeille.document') }}" role="button"
                                     class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille
                                     {{

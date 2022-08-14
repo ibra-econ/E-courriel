@@ -10,7 +10,7 @@
                     <h5 class="card-title">Listes des diffusions</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
 
-                        @if (Auth::user()->role === "admin")
+                        @if (Auth::user()->isAdmin())
                         <a href="{{ route('corbeille.diffusion') }}" role="button"
                             class="btn mb-2 ml-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
                             $corbeille }}</a>

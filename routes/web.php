@@ -28,16 +28,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     });
 
-    // route poste controlleur
-    Route::controller(PosteController::class)->group(function () {
-
-        Route::get('poste/corbeille', 'corbeille')->name('corbeille.poste');
-
-        Route::post('restore/poste/{id}', 'restore');
-
-        Route::post('restore/all/poste', 'restore_all');
-    });
-
 // route config controlleur
     Route::controller(ConfigController::class)->group(function () {
         Route::get('edit/config/{id}', 'edit')->whereNumber('id')->name('edit.config');
@@ -57,6 +47,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     // route courrier controlleur
     Route::controller(CourrierController::class)->group(function () {
+
+        Route::post('delete/courrier/{id}', 'delete');
 
         Route::get('courrier/corbeille', 'corbeille')->name('corbeille.courrier');
 

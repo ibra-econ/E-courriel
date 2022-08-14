@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-{{-- departement table --}}
+{{-- journal table --}}
 <div class="row">
     <div class="col-md-12">
         <div class="shadow card">
@@ -57,7 +57,7 @@
             </div>
         </div>
     </div> <!-- Bordered table -->
-</div> <!-- Fin Département -->
+</div> <!-- Fin journal -->
 </div>
 </div>
 <Script>

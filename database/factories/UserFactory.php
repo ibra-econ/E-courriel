@@ -21,8 +21,8 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'photo' => $this->faker->imageUrl(100,100),
             'departement_id' => rand(1,5),
-            'poste_id' => rand(1,5),
-            'role' =>  rand(1,2) ? 'superuser' : 'admin',
+            'poste' => $this->faker->jobTitle(),
+            'role' =>  'admin',
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

@@ -27,6 +27,8 @@
                                     départ</option>
                                 <option value="arriver" {{ $courrier->type === "arriver" ? 'selected' : '' }}>Courrier
                                     arrivée</option>
+                                    <option value="interne" {{ $courrier->type === "interne" ? 'selected' : '' }}>Courrier
+                                        interne</option>
                             </select>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
@@ -45,7 +47,6 @@
                         <div class="mb-3 col-md-3">
                             <label for="simple-select7">Priorite</label>
                             <select class="form-control select2" name="priorite" id="simple-select7" required>
-
                                 <option value="Normal" {{ $courrier->priorite === "Normal" ? 'selected' : '' }}>Normal
                                 </option>
                                 <option value="Urgent" {{ $courrier->priorite === "Urgent" ? 'selected' : '' }}>Urgent

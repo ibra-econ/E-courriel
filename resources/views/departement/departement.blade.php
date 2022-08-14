@@ -33,7 +33,6 @@
                             <th>ID</th>
                             <th>Nom</th>
                             <th>Utilisateurs</th>
-
                             <th>Code</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -45,7 +44,6 @@
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nom }}</td>
                             <td>{{ $row->users->count() }}</td>
-
                             <td>{{ $row->code }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>

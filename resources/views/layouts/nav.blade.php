@@ -15,8 +15,8 @@
             {{-- total des notifacation user --}}
             <a class="nav-link text-muted my-2" href="./#" data-toggle="modal" data-target=".modal-notif">
                 <span class="fe fe-bell fe-16"></span>
-                <span class="badge badge-pill badge-success text-white">{{ Auth::user()->notifications->count() }}</span>
-
+                <span class="badge badge-pill badge-success text-white">{{ Auth::user()->notifications->count()
+                    }}</span>
             </a>
         </li>
         <li class="nav-item dropdown">
@@ -55,8 +55,7 @@
                 <div class="logo-perso-bloc">
                     {{-- <img src="{{ asset('assets/images/logo_icon.png') }}" class="img-fluid logo-icon-perso"
                         height="32" width="32" alt="logo"> --}}
-                    <img src="{{ asset('assets/images/logo_white.png') }}" class="img-fluid logo full-logo"
-                        alt="logo">
+                    <img src="{{ asset('assets/images/logo_white.png') }}" class="img-fluid logo full-logo" alt="logo">
                 </div>
 
             </a>
@@ -73,11 +72,11 @@
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Archive lien --}}
             <li class="nav-item dropdown">
-                <a href="#Courrier" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle nav-link">
+                <a href="#Courrier" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                     <i class="fe fe-mail fe-16"></i>
-                    <span class="ml-3 item-text">Courrier</span>
+                    <span class="ml-3 item-text">Courrier</span><span class="sr-only">(current)</span>
                 </a>
-                <ul class="list-unstyled pl-4 w-100 collapse show" id="Courrier" style="">
+                <ul class="list-unstyled pl-4 w-100 collapse" id="Courrier">
                     <li class="nav-item">
                         <a class="nav-link pl-3" href="{{ route('Depart') }}"><span
                                 class="ml-1 item-text">Départ</span></a>
@@ -123,7 +122,7 @@
                 </a>
             </li>
         </ul>
-        @if (Auth::user()->role === "superuser" || "admin" || "secretaire")
+        @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser() || Auth::user()->isSecretaire())
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- imputation lien --}}
             <li class="nav-item w-100">
@@ -134,7 +133,7 @@
             </li>
         </ul>
         @endif
-        @if (Auth::user()->role === "superuser" || "admin")
+        @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Archive lien --}}
             <li class="nav-item w-100">
@@ -145,81 +144,74 @@
             </li>
         </ul>
         @endif
-        <p class="mt-4 mb-1 text-white nav-heading">
+        {{-- <p class="mt-4 mb-1 text-white nav-heading">
             <span>Paramètre</span>
-        </p>
+        </p> --}}
         <ul class="mb-2 navbar-nav flex-fill w-100">
+            @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
             <ul class="mb-2 navbar-nav flex-fill w-100">
                 {{-- Utilisateurs lien --}}
                 <li class="nav-item dropdown">
-                    <a href="#Compte" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle nav-link">
-                        <i class="fe fe-users fe-16"></i>
-                        <span class="ml-3 item-text">Utiisateurs</span>
+                    <a href="#Compte" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                        <i class="fe fe-tool fe-16"></i>
+                        <span class="ml-3 item-text">Paramètre</span>
                     </a>
-                    <ul class="list-unstyled pl-4 w-100 collapse show" id="Compte" style="">
-                        @if (Auth::user()->role === "superuser" || "admin")
-                        <li class="nav-item">
-                            <a class="nav-link pl-3" href="{{ route('Compte') }}"><span
-                                    class="ml-1 item-text">Compte</span></a>
+                    <ul class="list-unstyled pl-4 w-100 collapse" id="Compte">
+
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Compte') }}">
+                                <i class="fe fe-users fe-16"></i>
+                                <span class="ml-1 item-text">Utiisateurs</span></a>
+                        </li>
+                        @if (Auth::user()->isAdmin())
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Journal') }}">
+                                <i class="fe fe-book-open fe-16"></i>
+                                <span class="ml-1 item-text">Journal</span></a>
                         </li>
                         @endif
-                        @if (Auth::user()->role === "admin")
-                        <li class="nav-item">
-                            <a class="nav-link pl-3" href="{{ route('Journal') }}"><span
-                                    class="ml-1 item-text">Journal</span></a>
+                        {{-- correspondant lien --}}
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Correspondant') }}">
+                                <i class="fe fe-user-check fe-16"></i>
+                                <span class="ml-3 item-text">Correspondants</span>
+                            </a>
+                        </li>
+                        {{-- Nature lien --}}
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Nature') }}">
+                                <i class="fe fe-award fe-16"></i>
+                                <span class="ml-3 item-text">Nature</span>
+                            </a>
+                        </li>
+                        @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
+                        {{-- Annotation lien --}}
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Annotation') }}">
+                                <i class="fe fe-clipboard fe-16"></i>
+                                <span class="ml-3 item-text">Annotations</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if (Auth::user()->isAdmin())
+                        {{-- Departement lien --}}
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Departement') }}">
+                                <i class="fe fe-layers fe-16"></i>
+                                <span class="ml-3 item-text">Departements</span>
+                            </a>
+                        </li>
+                        {{-- General (infos de la structure) lien --}}
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('Config') }}">
+                                <i class="fe fe-tool fe-16"></i>
+                                <span class="ml-3 item-text">Configuration</span>
+                            </a>
                         </li>
                         @endif
                     </ul>
                 </li>
             </ul>
-            {{-- correspondant lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Correspondant') }}">
-                    <i class="fe fe-user-check fe-16"></i>
-                    <span class="ml-3 item-text">Correspondants</span>
-                </a>
-            </li>
-            {{-- Nature lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Nature') }}">
-                    <i class="fe fe-award fe-16"></i>
-                    <span class="ml-3 item-text">Nature</span>
-                </a>
-            </li>
-            @if (Auth::user()->role === "admin" || "superuser")
-
-            {{-- Annotation lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Annotation') }}">
-                    <i class="fe fe-clipboard fe-16"></i>
-                    <span class="ml-3 item-text">Annotations</span>
-                </a>
-            </li>
-            {{-- Poste lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Poste') }}">
-                    <i class="fe fe-airplay fe-16"></i>
-                    <span class="ml-3 item-text">Poste</span>
-                </a>
-            </li>
-            @endif
-
-
-            @if (Auth::user()->role === "admin")
-             {{-- Departement lien --}}
-             <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Departement') }}">
-                    <i class="fe fe-layers fe-16"></i>
-                    <span class="ml-3 item-text">Departements</span>
-                </a>
-            </li>
-            {{-- General (infos de la structure) lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Config') }}">
-                    <i class="fe fe-tool fe-16"></i>
-                    <span class="ml-3 item-text">Configuration</span>
-                </a>
-            </li>
             @endif
         </ul>
     </nav>
@@ -240,14 +232,15 @@
                         <div class="row align-items-center">
 
                             @forelse (Auth::user()->notifications as $row)
-                            <div class="col-auto">
+                            <div class="col-4">
                                 <span class="fe fe-mail fe-24"></span>
                             </div>
-                            <div class="col">
-                                <small><strong>{{ $row->data['title'] }}</strong></small>
+                            <div class="col-8">
+                                <small><strong>{{ $row->data['title'] }}</strong></small> <br>
                                 <small class="badge badge-pill badge-light text-muted">{{
                                     $row->created_at->diffForHumans() }}</small>
                             </div>
+                            <hr>
                             @empty
                             <h3>Vous avez aucune notification</h3>
                             @endforelse

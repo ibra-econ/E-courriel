@@ -22,14 +22,12 @@ class UserController extends Controller
     public function register()
     {
         if(Auth::user()->role === "admin"):
-        $poste = Poste::all();
         $departement = Departement::all();
         endif;
         if(Auth::user()->role === "superuser"):
-            $poste = Poste::where('departement_id',Auth::user()->departement_id);
             $departement = Departement::where('id',Auth::user()->departement_id);
         endif;
-        return view('user.create', compact(['departement','poste']));
+        return view('user.create', compact(['departement']));
     }
 
     /**
@@ -56,11 +54,11 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;
-        $user->poste_id = $request->poste;
+        $user->poste = $request->poste;
         if(Auth::user()->role === "admin"):
         $user->departement_id = $request->departement;
         endif;
-        $user->password =  Hash::make($request->password);
+        $user->password = Hash::make($request->password);
         if (!empty($request->file('photo'))):
             // renome le document
             $filename = Str::random(10) . '.' . $request->photo->extension();
@@ -80,7 +78,7 @@ class UserController extends Controller
 
     public function show(int $id)
     {
-        $user = User::with('departement', 'journals', 'poste')->withCount('courriers', 'imputations')->find($id);
+        $user = User::with('departement', 'journals')->withCount('courriers', 'imputations')->find($id);
         return view('user.show', compact(['user']));
     }
 
@@ -88,17 +86,15 @@ class UserController extends Controller
     {
         $user = User::with('poste')->find($id);
         $departement = Departement::all();
-        $poste = Poste::all();
-        return view('user.update', compact(['user', 'departement', 'poste']));
+        return view('user.update', compact(['user', 'departement']));
     }
 
     public function update(Request $request)
     {
         $user = User::find($request->id);
         $user->name = $request->name;
-
         $user->email = $request->email;
-        $user->poste_id = $request->poste;
+        $user->poste = $request->poste;
         // si user is admin
         if (Auth::user()->role === "admin"):
             $user->role = $request->role;

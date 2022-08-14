@@ -38,14 +38,14 @@ class RouteController extends Controller
         $arriver = Courrier::where('type', 'arriver')->count();
         // Total courrier depart
         $depart = Courrier::where('type', 'depart')->count();
+         // Total courrier interne
+         $interne = Courrier::where('type', 'interne')->count();
         // Total utilisatiers
         $user = User::count();
         // Total departement
         $departement = Departement::count();
-        // Total notification
-        $notification = User::withCount('notifications')->find(Auth::user()->id);
 
-        return view('dashboard', compact(['correspondant', 'arriver', 'depart', 'user', 'departement', 'notification']));
+        return view('dashboard', compact(['correspondant', 'arriver', 'depart', 'user', 'departement', 'interne']));
     }
 
     // Route courrier depart function
@@ -125,7 +125,7 @@ class RouteController extends Controller
         else:
             $rows = Courrier::with('nature', 'user', 'correspondant')
                 ->where('type', 'interne')
-                ->where('etat','Enregistré')->latest()->get();
+                ->where('etat', 'Enregistré')->latest()->get();
 
         endif;
         // get tous les correspondant courrier
@@ -148,18 +148,16 @@ class RouteController extends Controller
     {
         // si pas admin
         if (Auth::user()->role === "superuser"):
-            $rows = User::with('departement', 'poste')->where('departement_id', Auth::user()->departement_id)->latest()->get();
-            $poste = Poste::where('departement_id', Auth::user()->departement_id);
+            $rows = User::with('departement')->where('departement_id', Auth::user()->departement_id)->latest()->get();
             $departement = Departement::where('id', Auth::user()->departement_id);
         endif;
 
         if (Auth::user()->role === "admin"):
-            $rows = User::with('departement', 'poste')->latest()->get();
-            $poste = Poste::all();
+            $rows = User::with('departement')->latest()->get();
             $departement = Departement::all();
         endif;
         $corbeille = User::onlyTrashed()->count();
-        return view('user.compte', compact(['rows', 'poste', 'departement', 'corbeille']));
+        return view('user.compte', compact(['rows', 'departement', 'corbeille']));
     }
 
     // Route config function
@@ -221,7 +219,6 @@ class RouteController extends Controller
     {
         if (Auth::user()->role === "admin"):
             $rows = Imputation::with('departement', 'user', 'courrier')->latest()->get();
-            // dd($rows);
         endif;
 
         if (Auth::user()->role === "superuser"):
@@ -243,7 +240,7 @@ class RouteController extends Controller
         // get departemnt
         $departement = Departement::all();
         // get courrier
-        $courrier = Courrier::latest()->get();
+        $courrier = Courrier::where('type','arriver')->where('etat', 'Enregistré')->latest()->get();
         // get annotation
         $annotation = Annotation::where('user_id', Auth::user()->id)->get();
         return view('imputation.imputation', compact(['rows', 'corbeille', 'courrier', 'departement', 'annotation']));
@@ -323,18 +320,5 @@ class RouteController extends Controller
         return view('journal.journal', compact(['rows', 'corbeille']));
     }
 
-    // Route poste function
-    public function poste()
-    {
-        if (Auth::user()->role === "admin"):
-            $rows = Poste::with('user', 'departement')->get();
-        endif;
 
-        if (Auth::user()->role === "superuser"):
-            $rows = Poste::with('user', 'departement')->where('departement_id', Auth::user()->departement_id)->latest()->get();
-        endif;
-        $departement = Departement::all();
-        $corbeille = Poste::onlyTrashed()->count();
-        return view('poste.poste', compact(['rows', 'corbeille', 'departement']));
-    }
 }

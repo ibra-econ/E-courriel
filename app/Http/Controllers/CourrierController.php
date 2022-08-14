@@ -156,9 +156,9 @@ class CourrierController extends Controller
     }
 
     // restaurer tous un element
-    public function restore(int $id, Courrier $courrier)
+    public function restore(int $id)
     {
-        $this->authorize('restore', $courrier);
+
         $delete = Courrier::where('id', $id)->restore();
         // check data restore or not
         if ($delete == 1) {
@@ -206,8 +206,6 @@ class CourrierController extends Controller
         $journal->save();
         // si oui supprimer de la BD
         $delete = Courrier::destroy($id);
-
-
         // check data deleted or not
         if ($delete == 1) {
             $success = true;

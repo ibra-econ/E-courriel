@@ -38,18 +38,13 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label for="simple-select2">Poste</label>
-                        <select class="form-control select2" name="poste" id="simple-select2">
-                            @foreach ($poste as $row)
-                            @if ($row->departement_id == Auth::user()->departement_id)
-                            <option value="{{ $row->id }}" {{ $row->id == $user->poste_id ? 'selected' : ''
-                                }}>{{ $row->nom }}</option>
-                            @endif
-                            @if (Auth::user()->role === "admin")
-                            <option value="{{ $row->id }}" {{ $row->id == $user->poste_id ? 'selected' : ''
-                                }}>{{ $row->nom }}</option>
-                            @endif
-                            @endforeach
-                        </select>
+                        <div class="mb-3 col-md-6">
+                            <label for="simple-select3">Poste</label>
+                            <input value="{{ $user->poste }}" type="text" class="form-control" id="validationCustom02" name="name"
+                            placeholder="Entrez le poste" required>
+                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+                            <div class="valid-feedback"></div>
+                        </div>
                     </div>
                 </div>
                 @if (Auth::user()->role === "admin")
