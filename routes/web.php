@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AnnotationController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CorrespondantController;
@@ -10,8 +11,8 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ImputationController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\NatureController;
-use App\Http\Controllers\PosteController;
 use App\Http\Controllers\RouteController;
+use App\Http\Controllers\TraitementController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -172,13 +173,10 @@ Route::middleware(['auth', 'IsSuperuser'])->group(function () {
 
     });
 
-// route imputation courrier
-    Route::controller(ImputationController::class)->group(function () {
-        Route::post('new/imputation', 'create')->name('new.imputation');
-
-        Route::get('edit/imputation/{imputation}', 'edit')->whereNumber('id')->name('edit.imputation');
-
-        Route::post('update/imputation', 'update')->name('update.imputation');
+    // route imputation courrier
+    Route::controller(TraitementController::class)->group(function () {
+        Route::get('edit/traitement/{id}', 'show')->whereNumber('id')->name('edit.traitement');
+        Route::post('update/traitement', 'save_traitement')->name('save.traitement');
     });
 
     // route diffusion controlleur
@@ -215,17 +213,6 @@ Route::middleware(['auth', 'IsSuperuser'])->group(function () {
 
     });
 
-    // route poste controlleur
-    Route::controller(PosteController::class)->group(function () {
-        Route::post('new/poste', 'create')->name('new.poste');
-
-        Route::get('edit/poste/{id}', 'edit')->whereNumber('id')->name('edit.poste');
-
-        Route::post('update/poste', 'update')->name('update.poste');
-
-        // Route::post('delete/poste/{id}', 'delete');
-    });
-
     // route correspondant controlleur
     Route::controller(CorrespondantController::class)->group(function () {
         Route::post('delete/correspondant/{id}', 'delete');
@@ -238,9 +225,8 @@ Route::middleware(['auth', 'IsSuperuser'])->group(function () {
     });
 });
 
-// si user is Secretaire
+// si user est Secretaire
 Route::middleware(['auth', 'IsSecretaire'])->group(function () {
-
     // route des dashboard
     Route::controller(RouteController::class)->group(function () {
 
@@ -249,18 +235,6 @@ Route::middleware(['auth', 'IsSecretaire'])->group(function () {
         Route::get('imputation', 'imputation')->name('Imputation');
     });
 
-// route imputation courrier
-    Route::controller(ImputationController::class)->group(function () {
-        Route::post('new/imputation', 'create')->name('new.imputation');
-
-        Route::get('show/imputation/{id}', 'show')->whereNumber('id')->name('show.imputation');
-
-        Route::get('pdf/imputation/{id}', 'fiche')->whereNumber('id')->name('pdf.imputation');
-
-    });
-
-
-
 // route document controlleur
     Route::controller(DocumentController::class)->group(function () {
         Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.document');
@@ -268,6 +242,19 @@ Route::middleware(['auth', 'IsSecretaire'])->group(function () {
         Route::get('file_view/document/{id}', 'file_view')->whereNumber('id')->name('show.document');
 
         Route::post('update/document', 'update')->name('update.document');
+    });
+
+    // route imputation courrier
+    Route::controller(ImputationController::class)->group(function () {
+        Route::post('new/imputation', 'create')->name('new.imputation');
+
+        Route::get('show/imputation/{id}', 'show')->whereNumber('id')->name('show.imputation');
+
+        Route::get('pdf/imputation/{id}', 'fiche')->whereNumber('id')->name('pdf.imputation');
+
+        Route::get('edit/imputation/{imputation}', 'edit')->whereNumber('id')->name('edit.imputation');
+
+        Route::post('update/imputation', 'update')->name('update.imputation');
     });
 
 });
@@ -291,6 +278,8 @@ Route::middleware(['auth', 'IsAgent'])->group(function () {
         Route::get('archive/courrier', 'archive')->name('Archive');
 
         Route::get('document', 'document')->name('document');
+
+        Route::get('agenda', 'agenda')->name('Agenda');
 
     });
 
@@ -324,30 +313,29 @@ Route::middleware(['auth', 'IsAgent'])->group(function () {
 
 // route correspondant controlleur
     Route::controller(CorrespondantController::class)->group(function () {
-
         Route::post('new/correspondant', 'create')->name('new.correspondant');
 
         Route::get('edit/correspondant/{id}', 'edit')->whereNumber('id')->name('edit.correspondant');
 
         Route::post('update/correspondant', 'update')->name('update.correspondant');
     });
+
+    // route agenda controlleur
+    Route::controller(AgendaController::class)->group(function () {
+        Route::post('new/agenda', 'create')->name('new.agenda');
+
+        Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.agenda');
+
+        Route::post('update/agenda', 'update')->name('update.agenda');
+
+        Route::post('delete/agenda/{id}', 'delete');
+
+        Route::get('agenda/corbeille', 'corbeille')->name('corbeille.agenda');
+
+        Route::post('restore/agenda/{id}', 'restore');
+
+        Route::post('restore/all/agenda', 'restore_all');
+    });
 });
-
-// route document controlleur
-// Route::controller(DocumentController::class)->group(function () {
-//     Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.document');
-
-//     Route::get('file_view/document/{id}', 'file_view')->whereNumber('id')->name('show.document');
-
-//     Route::post('update/document', 'update')->name('update.document');
-
-//     Route::post('delete/document/{id}', 'delete');
-
-//     Route::get('document/corbeille', 'corbeille')->name('corbeille.document');
-
-//     Route::post('restore/document/{id}', 'restore');
-
-//     Route::post('restore/all/document', 'restore_all');
-// });
 
 require __DIR__ . '/auth.php';

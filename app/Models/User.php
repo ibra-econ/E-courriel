@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Poste;
+use App\Models\Agenda;
 use App\Models\Journal;
 use App\Models\Courrier;
 use App\Models\Diffusion;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -131,5 +133,15 @@ class User extends Authenticatable
     public function diffusons(): HasMany
     {
         return $this->hasMany(Diffusion::class);
+    }
+
+    /**
+     * The agendas that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function agendas(): BelongsToMany
+    {
+        return $this->belongsToMany(Agenda::class)->withPivot('user_id','agenda_id')->withTimestamps();
     }
 }

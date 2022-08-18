@@ -18,8 +18,10 @@
                 <div class="toolbar">
                     <h5 class="card-title">Listes des imputations</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
+                        {{-- @if (Auth::user()->isSuperuser()) --}}
                         <button type="button" class="mb-2 border-0 btn btn-green-1" data-toggle="modal"
                             data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
+                        {{-- @endif --}}
                         @if (Auth::user()->isAdmin())
                         <a href="{{ route('corbeille.imputation') }}" role="button"
                             class="btn mb-2 ml-2 btn-danger text-white"> <i class="fe fe-trash-2"></i> Corbeille {{
@@ -126,7 +128,7 @@
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="simple-select2">Département/Service traitement</label>
                             <select class="form-control select2" name="departement" id="simple-select2" required>
                                 <option selected disabled value="">Selectionner</option>
@@ -139,8 +141,11 @@
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>
-
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
+                           <label for="delai">Delai de traitement (Facultatif)</label>
+                            <input type="date" name="delai" id="delai">
+                        </div>
+                        <div class="col-md-4 mb-3">
                             <label for="validationCustom04">Diffusion (Pour avis) Facultatif</label>
                             <select class="form-control select2-multi" name="diffusion[]" multiple="multiple"
                                 id="validationCustom04">

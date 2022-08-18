@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agenda;
 use App\Models\Annotation;
 use App\Models\Config;
 use App\Models\Correspondant;
@@ -198,7 +199,8 @@ class RouteController extends Controller
     public function nature()
     {
         $rows = Nature::all();
-        return view('nature.nature', compact(['rows']));
+        $corbeille = Nature::onlyTrashed()->count();
+        return view('nature.nature', compact(['rows','corbeille']));
     }
 
     // Route Annotation function
@@ -319,6 +321,15 @@ class RouteController extends Controller
         $corbeille = Journal::onlyTrashed()->count();
         return view('journal.journal', compact(['rows', 'corbeille']));
     }
+
+      // Route agenda function
+      public function agenda()
+      {
+          $rows = Agenda::with('users')->latest()->get();
+          $user = User::with('departement')->get();
+          $corbeille = Agenda::onlyTrashed()->count();
+          return view('agenda.agenda', compact(['rows', 'corbeille','user']));
+      }
 
 
 }

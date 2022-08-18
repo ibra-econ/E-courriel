@@ -14,10 +14,9 @@
         <div class="shadow card">
             <div class="card-body">
                 <div class="toolbar">
-                    <h5 class="card-title">Courrier Dashboard</h5>
+                    <h5 class="card-title">Listes des archives</h5>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="mb-2 border-0 btn btn-green-1" data-toggle="modal"
-                            data-target="#verticalModal"> <i class="fe fe-plus"></i> Nouveau</button>
+
                         @if (Auth::user()->role === "admin")
                         <a href="{{ route('corbeille.courrier') }}" role="button"
                             class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille {{

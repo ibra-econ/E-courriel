@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('courrier_id')->references('id')->on('courriers')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('departement_id');
             $table->foreign('departement_id')->references('id')->on('departements')->onUpdate('cascade')->onDelete('cascade');
+            $table->date('delai')->nullable();
             $table->date('fin_traitement')->nullable();
             $table->string('observation')->nullable();
             $table->timestamps();

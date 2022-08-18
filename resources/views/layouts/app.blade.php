@@ -13,10 +13,12 @@
         rel="stylesheet">
     <!-- Icons CSS -->
     <link rel="stylesheet" href="{{ asset('css/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fullcalendar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.steps.css') }}">
     <link rel="stylesheet" href="{{ asset('css/quill.snow.css') }}">
+
 
     <!-- Date Range Picker CSS -->
     <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
@@ -24,6 +26,7 @@
     <link rel="stylesheet" href="{{ asset('css/app-light.css') }}" id="lightTheme">
     <link rel="stylesheet" href="{{ asset('css/app-dark.css') }}" id="darkTheme" disabled>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ asset('assets/progress.css') }}">
     {{-- button export plugin css --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
 
@@ -82,6 +85,8 @@
     <script src='{{ asset('js/quill.min.js') }}'></script>
     <script src="{{ asset('js/topojson.min.js') }}"></script>
     <script src="{{ asset('js/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/fullcalendar.js') }}"></script>
+    <script src="{{ asset('js/fullcalendar.custom.js') }}"></script>
     <script src="{{ asset('js/apexcharts.min.js') }}"></script>
 
     {{-- button export plugin js --}}

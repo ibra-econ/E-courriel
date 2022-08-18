@@ -22,16 +22,15 @@ class NatureController extends Controller
         return back()->with('insert', 'nature ajouter avec success');
     }
 
-    public function edit(int $id, Nature $nature)
+    public function edit(int $id)
     {
-        $this->authorize('update', $nature);
         $nature = Nature::find($id);
         return view('nature.update', compact(["nature"]));
     }
 
-    public function update(Request $request, Nature $nature)
+    public function update(Request $request)
     {
-        $this->authorize('update', $nature);
+
         $nature = nature::find($request->id);
         $nature->nom = $request->nom;
         $nature->save();
@@ -47,9 +46,8 @@ class NatureController extends Controller
      }
 
      // restaurer tous un element
-     public function restore(int $id, Nature $nature)
+     public function restore(int $id)
      {
-         $this->authorize('restore', $nature);
          $delete = Nature::where('id', $id)->restore();
          // check data restore or not
          if ($delete == 1) {
@@ -87,9 +85,9 @@ class NatureController extends Controller
          ]);
      }
 
-    public function delete(int $id, Nature $nature)
+    public function delete(int $id)
     {
-        $this->authorize('delete', $nature);
+
         $journal = new Journal();
         $journal->user_id = Auth::user()->id;
         $journal->libelle = 'Suppression de la nature N°' . $id;

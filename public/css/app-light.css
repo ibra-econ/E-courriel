@@ -3663,11 +3663,10 @@ input[type="button"].btn-block {
 }
 .custom-control-input:checked ~ .custom-control-label::before {
     color: #ffffff;
-    border-color: #1b68ff;
-    background-color: #1b68ff;
+    background-color: #00704D;
 }
 .custom-control-input:focus ~ .custom-control-label::before {
-    box-shadow: 0 0 0 0.2rem rgba(27, 104, 255, 0.25);
+    box-shadow: 0 0 0 0.2rem #00704D;
 }
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
     border-color: #9bbcff;
@@ -11003,14 +11002,13 @@ strong {
 }
 .fc-bootstrap .fc-toolbar .btn.active {
     color: #ffffff;
-    background-color: #1b68ff;
-    border-color: #1b68ff;
+    background-color: #00704D;
 }
 
 .fc-bootstrap .fc-event {
     color: #ffffff;
-    background-color: #3ad29f;
-    border-color: #3ad29f;
+    background-color: #00704D;
+    /* border-color: #3ad29f; */
 }
 .fc-bootstrap .fc-event:hover {
     color: #ffffff;

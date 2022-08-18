@@ -1,15 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="">
-    @if (Session::has('insert'))
-    <div class="text-center alert alert-info alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong> {{ Session::get('insert') }}</strong>
-    </div>
-    @endif
-</div>
+
 {{-- courrier imputation table --}}
 <div class="row">
     <div class="my-2 col-md-12">
@@ -51,14 +42,10 @@
                             <td>{{ $row->fin_traitement }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
-                                @if (Auth::user()->role === "admin" || "secretaire" || "superuser")
-                                <a href="{{ route('show.imputation', ['id' => $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-
-                                <a href="{{ route('pdf.imputation', ['id' => $row->id]) }}" role="button"
+                                @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
+                                <a href="{{ route('edit.traitement', ['id' => $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-settings"></i></a>
                                 @endif
-
                             </td>
                         </tr>
 

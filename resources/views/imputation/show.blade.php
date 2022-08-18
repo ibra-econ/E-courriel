@@ -1,6 +1,29 @@
 @extends('layouts.app')
 @section('content')
 <button type="button" onClick="imprimer('fiche')" id="print" class="mb-2 btn btn-success">Imprimer</button>
+<h2 class="col-12 text-center">Evolution du courrier N° {{ $imputation->courrier->numero }} </h2>
+<div class="stepper-wrapper pt-3">
+    <div class="stepper-item {{  $imputation->courrier->etat === "Enregistré" || "Imputer" ? 'completed' : '' }}">
+        <div class="step-counter"><i class="{{  $imputation->courrier->etat === " Enregistré" || "Imputer"
+                ? 'fe fe-check' : '' }}"></i></div>
+        <div class="step-name">Enregistrer</div>
+    </div>
+    <div class="stepper-item {{ $imputation->courrier->etat === "Imputer" || "Enregistré" ? 'completed' : '' }}">
+        <div class="step-counter"><i class="{{ $imputation->courrier->etat === "Imputer" || "Enregistré" ? 'fe fe-check' : '' }}"></i>
+        </div>
+        <div class="step-name">Imputer</div>
+    </div>
+    <div class="stepper-item">
+        <div class="step-counter {{ $imputation->courrier->etat === "Traiter" || "Imputer" ? 'completed' : '' }}"><i class="{{
+            $imputation->courrier->etat === "Traiter" || "Imputer" ? 'fe fe-check' : ''}}"></i></div>
+        <div class="step-name">Valider</div>
+    </div>
+    <div class="stepper-item">
+        <div class="step-counter {{ $imputation->courrier->etat === "Archiver" ? 'completed' : '' }}">
+        <i class="{{ $imputation->courrier->etat === "Archiver" || "Enregistré" || "Imputer" || "Traiter" ? 'fe fe-check' : ''}}"></i></div>
+        <div class="step-name">Archiver</div>
+    </div>
+</div>
 <div class="row">
     {{-- courrier document --}}
     <div class="col-12">
@@ -42,9 +65,6 @@
     {{-- fin courrier document --}}
 </div>
 <div class="row">
-
-
-
     <div class="col-md-12 my-4">
         <div class="shadow card">
             <div class="p-5 card-body" id="fiche">
@@ -58,7 +78,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <p> Morar-Bechtelar</p>
+                                <p>Direction nationale de l'economie</p>
                                 <p>johnston.claudia@example.net</p>
                                 <p>Contact: +17475384534</p>
                             </div>
@@ -91,7 +111,8 @@
                             date('d/m/Y',strtotime($imputation->courrier->date)) }}</p>
                         <p class="mb-2 text-dark font-weight-bolder text-uppercase">Type: {{ $imputation->courrier->type
                             }}</p>
-                        <p class="mb-2 text-dark font-weight-bolder text-uppercase">Departement/Service: {{ $imputation->departement->nom}}</p>
+                        <p class="mb-2 text-dark font-weight-bolder text-uppercase">Departement/Service: {{
+                            $imputation->departement->nom}}</p>
 
                         <p class="mb-2 text-dark font-weight-bolder text-uppercase">Diffusion(Pour avis):
                             @foreach ($imputation->diffusions as $row)
@@ -118,5 +139,5 @@
         window.print();
         document.body.innerHTML = originalContents;
     }
-    </script>
+</script>
 @endsection

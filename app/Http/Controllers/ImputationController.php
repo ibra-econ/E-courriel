@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Diffusion;
-use App\Mail\Imputation as MailImputation;
-use App\Models\Annotation;
-use App\Models\Courrier;
-use App\Models\Departement;
-use App\Models\Diffusion as ModelsDiffusion;
-use App\Models\Imputation;
-use App\Models\Journal;
 use App\Models\User;
-use App\Notifications\ImpuationNotification;
+use App\Mail\Diffusion;
+use App\Models\Journal;
+use App\Models\Courrier;
+use App\Models\Annotation;
+use App\Models\Imputation;
+use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\Imputation as MailImputation;
+use App\Models\Diffusion as ModelsDiffusion;
+use App\Notifications\ImpuationNotification;
+use Illuminate\Support\Facades\Notification;
 
 class ImputationController extends Controller
 {
@@ -26,6 +27,7 @@ class ImputationController extends Controller
         $imputation->courrier_id = $request->courrier;
         $imputation->departement_id = $request->departement;
         $imputation->user_id = Auth::user()->id;
+        $imputation->delai = $request->delai;
         $imputation->observation = $request->observation;
         $imputation->save();
 
@@ -51,22 +53,23 @@ class ImputationController extends Controller
         // update etat courrier
         $update = Courrier::where('id', $request->courrier)->update(['etat' => 'Imputer']);
         // get email chef de departement pour notification
-        $user = User::where([['departement_id', '=', $request->departement], ['role', '=', 'superuser']])->first();
+        $user = User::where('departement_id', $request->departement)->where('role','superuser')->orwhere('role','superuser')->first();
         // dd($user);
+        // get email chef de departement en copie
+        $user_diffusion = User::whereIn('departement_id', $request->diffusion)->where('role', 'superuser')->get();
         if ($request->notif === "OUI"):
             // envoie de email pour notifiaction
             Mail::to($user->email)->send(new MailImputation($courrier));
-            // get email chef de departement en copie
-            $user_diffusion = User::whereIn('departement_id', $request->diffusion)->where('role', 'superuser')->get('email');
 
             foreach ($user_diffusion as $row):
                 // Envoie de email
                 Mail::to($row->email)->send(new Diffusion($courrier));
             endforeach;
+            $user->notify(new ImpuationNotification($courrier));
             return back()->with('insert', 'imputation ajouter avec success et un email de notification a été envoyer');
         else:
-
-            $user->notify(new ImpuationNotification($courrier));
+            Notification::send($user_diffusion, new ImpuationNotification($courrier));
+            // $user->notify(new ImpuationNotification($courrier));
             return back()->with('insert', 'imputation ajouter avec success');
         endif;
 
