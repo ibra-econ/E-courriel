@@ -1,48 +1,38 @@
 @extends('layouts.app')
 @section('content')
 
-<h2 class="col-12 text-center">Evolution du courrier N° {{ $imputation->courrier->numero }} </h2>
-<div class="">
-    @if (Session::has('update'))
-    <div class="text-center alert alert-info alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong> {{ Session::get('update') }}</strong>
-    </div>
-    @endif
-</div>
+<h2 class="col-12 text-center">Evolution du courrier N° {{ $courrier->numero }} </h2>
 <div class="stepper-wrapper pt-3">
-    <div class="stepper-item {{ $imputation->courrier->etat === "Enregistré" || "Imputer" ? 'completed' : '' }}">
+    <div class="stepper-item {{ $courrier->etat === "Enregistré" || "Imputer" ? 'completed' : '' }}">
       <div class="step-counter">
         <i class="fe fe-check"></i>
       </div>
       <div class="step-name">
-       {{ $imputation->courrier->created_at->format('d/m/Y') }}
+       {{ $courrier->created_at->format('d/m/Y') }}
     </div>
     <div class="step-name">
         Enregistrer
     </div>
     </div>
-    <div class="stepper-item {{ $imputation->courrier->etat === "Imputer" ? 'completed' : '' }} {{ $imputation->courrier->etat === "Traiter" || "Archiver" ? 'completed' : '' }}">
+    <div class="stepper-item {{ $courrier->etat === "Imputer" ? 'completed' : '' }} {{ $courrier->etat === "Traiter" || "Archiver" ? 'completed' : '' }}">
       <div class="step-counter">
         <i class="fe fe-check"></i>
       </div>
       <div class="step-name">
-        {{ $imputation->created_at->format('d/m/Y') }}
+        {{ $courrier->created_at->format('d/m/Y') }}
      </div>
       <div class="step-name">Imputer</div>
     </div>
-    <div class="stepper-item {{ $imputation->courrier->etat === "Traiter" ? 'completed' : '' }} {{ $imputation->courrier->etat === "Archiver" ? 'completed' : '' }}">
+    <div class="stepper-item {{ $courrier->etat === "Traiter" ? 'completed' : '' }} {{ $courrier->etat === "Archiver" ? 'completed' : '' }}">
       <div class="step-counter">
         <i class="fe fe-check"></i>
       </div>
       <div class="step-name">
-        {{ $imputation->fin_traitement !== null ? date('d/m/Y',strtotime($imputation->fin_traitement)) : '' }}
+        {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($imputation->fin_traitement)) : '' }}
      </div>
       <div class="step-name">Valider</div>
     </div>
-    <div class="stepper-item  {{ $imputation->courrier->etat === "Archiver" ? 'completed' : '' }}">
+    <div class="stepper-item  {{ $courrier->etat === "Archiver" ? 'completed' : '' }}">
       <div class="step-counter">
         <i class="fe fe-check"></i>
     </div>
@@ -67,7 +57,7 @@
                             <div class="file-container border-top" id="document">
                                 <div class="file-panel mt-4">
                                     <div class="row my-4">
-                                        @forelse ($imputation->courrier->documents as $row)
+                                        @forelse($courrier->documents as $row)
                                         <div class="col-md-3">
                                             <div class="card text-center mb-2 shadow">
                                                 <div class="card-body file">
@@ -137,43 +127,43 @@
                                             </div>
                                             <hr>
                                             <h3 class="mb-0 text-uppercase">
-                                                FICHE DE CIRCULATION COURRIER ARRIVEE N° {{ $imputation->courrier->id.'
+                                                FICHE DE CIRCULATION COURRIER ARRIVEE N° {{ $courrier->id.'
                                                 du
-                                                '.$imputation->courrier->created_at->format('d/m/Y') }}</h3>
+                                                '.$courrier->created_at->format('d/m/Y') }}</h3>
                                         </div>
                                         <div class="col-md-6">
                                             <p class="mb-2 text-dark text-uppercase font-weight-bolder">Numéro
                                                 d’arrivée: N°{{
-                                                $imputation->courrier->numero }}</p>
+                                                $courrier->numero }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Références: {{
-                                                $imputation->courrier->reference
+                                                $courrier->reference
                                                 }}
                                             </p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Origine: {{
-                                                $imputation->courrier->correspondant->prenom.' '.
-                                                $imputation->courrier->correspondant->nom }}
+                                                $courrier->correspondant->prenom.' '.
+                                                $courrier->correspondant->nom }}
                                             </p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Objet: {{
-                                                $imputation->courrier->objet }}</p>
+                                                $courrier->objet }}</p>
                                         </div>
 
                                         <div class="col-md-6">
                                             <p class="mb-2 text-dark text-uppercase font-weight-bolder">Date d'arrivée :
                                                 {{
-                                                date('d/m/Y',strtotime($imputation->courrier->date_arriver)) }}</p>
+                                                date('d/m/Y',strtotime($courrier->date_arriver)) }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">En date du: {{
-                                                date('d/m/Y',strtotime($imputation->courrier->date)) }}</p>
+                                                date('d/m/Y',strtotime($courrier->date)) }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Type: {{
-                                                $imputation->courrier->type }}</p>
+                                                $courrier->type }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">
-                                                Departement/Service: {{ $imputation->departement->nom }}</p>
+                                                {{-- Departement/Service: {{ $courrier->departement->nom }}</p> --}}
                                         </div>
                                         <div class="my-4 text-center col-12">
                                             <h3 class="mb-0 text-uppercase">Annotations</h3>
                                         </div>
                                         <div class="row">
                                             @foreach ($annotation as $row)
-                                            @foreach($imputation->courrier->annotations as $row2)
+                                            @foreach($courrier->annotations as $row2)
                                             @if ($row->id == $row2->pivot->annotation_id)
                                             <div class="col-md-3">
                                                 <i class="fe fe-check fe-16 font-bold"></i> {{ $row->nom }}
@@ -195,8 +185,6 @@
                                             <p class="text-dark">AUTRES ANNOTATIONS:</p>
                                         </div>
                                     </div>
-
-
                                     <!-- /.row -->
 
                                 </div> <!-- /.card-body -->
@@ -216,9 +204,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <button type="button" onClick="imputation('imputation')"
+                                <button type="button" onClick="courrier('courrier')"
                                     class="mb-2 btn btn-success">Imprimer</button>
-                                <div class="p-5" id="imputation">
+                                <div class="p-5" id="courrier">
                                     <div class="mb-5 row">
                                         <div class="mb-4 text-center col-12">
                                             <div class="row">
@@ -235,54 +223,50 @@
                                                 </div>
                                             </div>
                                             <hr>
-                                            <h2 class="mb-0 text-uppercase">fiche d'imputation N° {{ $imputation->id.'
+                                            <h2 class="mb-0 text-uppercase">fiche d'imputation N° {{ $courrier->numero.'
                                                 du
-                                                '.$imputation->created_at->format('d/m/Y') }}</h2>
+                                                '.$courrier->created_at->format('d/m/Y') }}</h2>
 
                                         </div>
                                         <div class="col-md-5">
                                             <p class="mb-2 text-dark text-uppercase font-weight-bolder">Numéro
                                                 d’arrivée: N°{{
-                                                $imputation->courrier->numero }}</p>
+                                                $courrier->numero }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Références: {{
-                                                $imputation->courrier->reference }}
+                                                $courrier->reference }}
                                             </p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Expediteur: {{
-                                                $imputation->courrier->correspondant->prenom.' '.
-                                                $imputation->courrier->correspondant->nom
+                                                $courrier->correspondant->prenom.' '.
+                                                $courrier->correspondant->nom
                                                 }}
                                             </p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Objet: {{
-                                                $imputation->courrier->objet }}</p>
+                                                $courrier->objet }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Date de fin
-                                                traitement: {{
-                                                $imputation->fin_traitement }}</p>
+                                                traitement:
+                                                {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($imputation->fin_traitement)) : '' }}
+                                            </p>
                                         </div>
 
                                         <div class="col-md-7">
                                             <p class="mb-2 text-dark text-uppercase font-weight-bolder">Date d'arrivée :
                                                 {{
-                                                date('d/m/Y',strtotime($imputation->courrier->date_arriver)) }}</p>
+                                                date('d/m/Y',strtotime($courrier->date_arriver)) }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">En date du: {{
-                                                date('d/m/Y',strtotime($imputation->courrier->date)) }}</p>
+                                                date('d/m/Y',strtotime($courrier->date)) }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Type: {{
-                                                $imputation->courrier->type
+                                                $courrier->type
                                                 }}</p>
-                                            <p class="mb-2 text-dark font-weight-bolder text-uppercase">
-                                                Departement/Service: {{
-                                                $imputation->departement->nom}}</p>
 
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Listes des intervenants:
-                                                @foreach ($imputation->diffusions as $row)
+                                                @foreach ($courrier->diffusions as $row)
                                                 {{ $row->departement->code }},
                                                 @endforeach
                                             </p>
                                         </div>
 
                                     </div>
-
                                     <!-- /.row -->
-
                                 </div> <!-- /.card-body -->
                             </div>
                         </div>
@@ -291,35 +275,11 @@
             </div>
         </div>
     </div>
-    <div class="row  mx-auto">
-
-        <form class="d-flex" action="{{ route('save.traitement') }}" method="post">
-            @csrf
-        <input type="hidden" name="id" value="{{ $imputation->courrier->id }}">
-        <input type="hidden" name="imputation" value="{{ $imputation->id }}">
-        <div class="col-md-4 mx-auto mb-3">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" name="valider" {{ $imputation->courrier->etat === "Traiter" ? 'checked' : '' }} {{ $imputation->courrier->etat === "Archiver" ? 'checked' : '' }} class="custom-control-input" id="Valider">
-                <label class="custom-control-label" for="Valider">Traiter</label>
-            </div>
-        </div>
-        <div class="col-md-4 mx-auto mb-3">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" name="archiver" {{ $imputation->courrier->etat === "Archiver" ? 'checked' : '' }} class="custom-control-input" id="Archiver">
-                <label class="custom-control-label" for="Archiver">Archiver</label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <button type="submit" class="mb-2 btn btn-success">Enregistré</button>
-        </div>
-    </form>
-
-    </div>
     {{-- fin courrier document --}}
 </div>
 
 <script>
-    function imputation(divName)
+    function courrier(divName)
     {
         var printContents = document.getElementById(divName).innerHTML;
         var originalContents = document.body.innerHTML; document.body.innerHTML = printContents;

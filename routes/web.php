@@ -271,6 +271,8 @@ Route::middleware(['auth', 'IsAgent'])->group(function () {
 
         Route::get('courrier/interne', 'interne')->name('Interne');
 
+        Route::get('courrier/suivie', 'suivie')->name('Suivie');
+
         Route::get('nature', 'nature')->name('Nature');
 
         Route::get('correspondant', 'correspondant')->name('Correspondant');
@@ -290,6 +292,8 @@ Route::middleware(['auth', 'IsAgent'])->group(function () {
         Route::get('edit/courrier/{id}', 'edit')->whereNumber('id')->name('edit.courrier');
 
         Route::get('show/courrier/{id}', 'show')->whereNumber('id')->name('show.courrier');
+
+        Route::get('suivie/courrier/{id}', 'show_suivie')->whereNumber('id')->name('suivie.courrier');
 
         Route::get('fiche/courrier/{id}', 'fiche')->whereNumber('id')->name('fiche.courrier');
 

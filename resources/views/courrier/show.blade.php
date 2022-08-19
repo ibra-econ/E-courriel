@@ -4,20 +4,40 @@
 <button type="button" onclick="imprimer('fiche')" class="btn btn-green-1">Imprimer</button>
 <h2 class="col-12 text-center" >Evolution du courrier N° {{ $courrier->numero }} </h2>
 <div class="stepper-wrapper pt-3">
-    <div class="stepper-item {{  $courrier->etat === "Enregistré" ? 'completed' : ''}}">
-      <div class="step-counter"><i class="{{  $courrier->etat === "Enregistré" ? 'fe fe-check' : ''}}"></i></div>
-      <div class="step-name">Enregistrer</div>
+    <div class="stepper-item {{ $courrier->etat === "Enregistré" || "Imputer" ? 'completed' : '' }}">
+      <div class="step-counter">
+        <i class="fe fe-check"></i>
+      </div>
+      <div class="step-name">
+       {{ $courrier->created_at->format('d/m/Y') }}
     </div>
-    <div class="stepper-item {{ $courrier->etat === "Imuputer" ? 'completed' : ''}} completed">
-      <div class="step-counter">{{ $courrier->etat === "Imuputer" ? '<i class="fe fe-check"></i>' : ''}}</div>
+    <div class="step-name">
+        Enregistrer
+    </div>
+    </div>
+    <div class="stepper-item {{ $courrier->etat === "Imputer" ? 'completed' : '' }} {{ $courrier->etat === "Traiter" || "Archiver" ? 'completed' : '' }}">
+      <div class="step-counter">
+        <i class="fe fe-check"></i>
+      </div>
+      <div class="step-name">
+        {{ $courrier->imputation !== null ? $courrier->imputation->created_at->format('d/m/Y') : '' }}
+
+     </div>
       <div class="step-name">Imputer</div>
     </div>
-    <div class="stepper-item">
-      <div class="step-counter {{ $courrier->etat === "Traiter" ? 'completed' : ''}} completed">{{ $courrier->etat === "Traiter" ? '<i class="fe fe-check"></i>' : ''}}</div>
+    <div class="stepper-item {{ $courrier->etat === "Traiter" ? 'completed' : '' }} {{ $courrier->etat === "Archiver" ? 'completed' : '' }}">
+      <div class="step-counter">
+        <i class="fe fe-check"></i>
+      </div>
+      <div class="step-name">
+        {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($courrier->imputation->fin_traitement)) : '' }}
+     </div>
       <div class="step-name">Valider</div>
     </div>
-    <div class="stepper-item">
-      <div class="step-counter {{ $courrier->etat === "Archiver" ? 'completed' : ''}}">{{ $courrier->etat === "Archiver" ? '<i class="fe fe-check"></i>' : ''}}</div>
+    <div class="stepper-item  {{ $courrier->etat === "Archiver" ? 'completed' : '' }}">
+      <div class="step-counter">
+        <i class="fe fe-check"></i>
+    </div>
       <div class="step-name">Archiver</div>
     </div>
   </div>

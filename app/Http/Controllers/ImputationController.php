@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Mail\Diffusion;
-use App\Models\Journal;
-use App\Models\Courrier;
+use App\Mail\Imputation as MailImputation;
+use App\Models\Agenda;
 use App\Models\Annotation;
-use App\Models\Imputation;
+use App\Models\Courrier;
 use App\Models\Departement;
+use App\Models\Diffusion as ModelsDiffusion;
+use App\Models\Imputation;
+use App\Models\Journal;
+use App\Models\User;
+use App\Notifications\AgendaNotification;
+use App\Notifications\ImpuationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Imputation as MailImputation;
-use App\Models\Diffusion as ModelsDiffusion;
-use App\Notifications\ImpuationNotification;
 use Illuminate\Support\Facades\Notification;
 
 class ImputationController extends Controller
@@ -35,25 +37,36 @@ class ImputationController extends Controller
         $courrier = Courrier::find($request->courrier);
         $courrier->annotations()->attach($request->annotation);
 
-        // get last imputation
-        $last = Imputation::latest()->first('id');
-
         // add diffusion pour avis
         if (!empty($request->diffusion)):
             foreach ($request->diffusion as $row):
                 $diffusion = new ModelsDiffusion();
                 $diffusion->courrier_id = $courrier->id;
                 $diffusion->departement_id = $request->departement;
-                $diffusion->imputation_id = $last->id;
+                $diffusion->imputation_id = $imputation->id;
                 $diffusion->user_id = Auth::user()->id;
                 $diffusion->save();
             endforeach;
         endif;
+        // add new agenda
+        $agenda = new Agenda();
+        $agenda->user_id = Auth::user()->id;
+        $agenda->titre = 'Traitement du courrier N°'.$courrier->numero;
+        $agenda->type = 0;
+        $agenda->objet = 'Courrier a traiter avant la date';
+        $agenda->debut = now();
+        $agenda->fin = $request->delai;
+        $agenda->heure_debut = date('h:i:s');
+        $agenda->heure_fin = '00:00';
+        $agenda->save();
+        // add data dans la table pivot
+        $agenda->users()->attach($request->diffusion);
+
 
         // update etat courrier
         $update = Courrier::where('id', $request->courrier)->update(['etat' => 'Imputer']);
         // get email chef de departement pour notification
-        $user = User::where('departement_id', $request->departement)->where('role','superuser')->orwhere('role','superuser')->first();
+        $user = User::where('departement_id', $request->departement)->where('role', 'superuser')->orwhere('role', 'superuser')->first();
         // dd($user);
         // get email chef de departement en copie
         $user_diffusion = User::whereIn('departement_id', $request->diffusion)->where('role', 'superuser')->get();
@@ -69,7 +82,6 @@ class ImputationController extends Controller
             return back()->with('insert', 'imputation ajouter avec success et un email de notification a été envoyer');
         else:
             Notification::send($user_diffusion, new ImpuationNotification($courrier));
-            // $user->notify(new ImpuationNotification($courrier));
             return back()->with('insert', 'imputation ajouter avec success');
         endif;
 

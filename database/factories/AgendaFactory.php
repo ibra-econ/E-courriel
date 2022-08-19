@@ -17,7 +17,14 @@ class AgendaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => rand(1,5),
+            'titre' => $this->faker->jobTitle(),
+            'type' => $this->faker->boolean(50),
+            'objet' => $this->faker->sentence(2),
+            'debut' => $this->faker->dateTimeBetween('-3 days','now'),
+            'fin' => $this->faker->dateTimeBetween('now'),
+            'heure_debut' => $this->faker->time(),
+            'heure_fin' => $this->faker->time(),
         ];
     }
 }

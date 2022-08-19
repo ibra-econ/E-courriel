@@ -21,9 +21,9 @@ return new class extends Migration
             $table->boolean('type');
             $table->string('objet');
             $table->date('debut');
-            $table->time('heure_debut');
+            $table->time('heure_debut')->nullable();
             $table->date('fin');
-            $table->time('heure_fin');
+            $table->time('heure_fin')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

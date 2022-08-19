@@ -60,8 +60,10 @@
                             <td>
                                 <a href="{{ route('edit.correspondant',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
+                                    @if (Auth::user()->isAdmin())
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-trash"></i></button>
+                                    @endif
                             </td>
                         </tr>
                         @endforeach

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Agenda;
 use App\Models\Annotation;
 use App\Models\Config;
 use App\Models\Correspondant;
@@ -12,7 +13,6 @@ use App\Models\Departement;
 use App\Models\Imputation;
 use App\Models\Journal;
 use App\Models\Nature;
-use App\Models\Poste;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
         Annotation::factory(5)->create();
         Courrier::factory(5)->create();
         Imputation::factory(5)->create();
+        Agenda::factory(15)->create();
 
     }
 }

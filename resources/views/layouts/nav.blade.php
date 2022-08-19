@@ -96,6 +96,11 @@
                             <i class="fe fe-repeat fe-16"></i>
                             <span class="ml-1 item-text">Interne</span></a>
                     </li>
+                    <li class="nav-item w-100">
+                        <a class="nav-link pl-3" href="{{ route('Suivie') }}">
+                            <i class="fe fe-eye fe-16"></i>
+                            <span class="ml-1 item-text">Suivie</span></a>
+                    </li>
 
                 </ul>
             </li>
@@ -161,7 +166,7 @@
         @endif
 
         <ul class="mb-2 navbar-nav flex-fill w-100">
-            @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
+            {{-- @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser()) --}}
             <ul class="mb-2 navbar-nav flex-fill w-100">
                 {{-- Utilisateurs lien --}}
                 <li class="nav-item dropdown">
@@ -170,13 +175,14 @@
                         <span class="ml-3 item-text">Paramètre</span>
                     </a>
                     <ul class="list-unstyled pl-4 w-100 collapse" id="Compte">
-
+                        @if (Auth::user()->isSuperuser() || Auth::user()->isAdmin())
                         <li class="nav-item w-100">
                             <a class="nav-link" href="{{ route('Compte') }}">
                                 <i class="fe fe-users fe-16"></i>
                                 <span class="ml-1 item-text">Utiisateurs</span>
                             </a>
                         </li>
+                        @endif
                         @if (Auth::user()->isAdmin())
                         <li class="nav-item w-100">
                             <a class="nav-link" href="{{ route('Journal') }}">
@@ -226,7 +232,7 @@
                     </ul>
                 </li>
             </ul>
-            @endif
+            {{-- @endif --}}
         </ul>
     </nav>
 </aside>

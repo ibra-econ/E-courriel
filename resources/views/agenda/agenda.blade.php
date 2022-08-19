@@ -1,5 +1,17 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .hover-end {
+        padding: 0;
+        margin: 0;
+        font-size: 75%;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        opacity: .8
+    }
+</style>
 <div class="">
     @if (Session::has('insert'))
     <div class="text-center alert alert-info alert-dismissible fade show" role="alert">
@@ -64,7 +76,7 @@
                             <label for="eventType">Destinateurs</label>
                             <select class="form-control select2-multi" name="destinateurs[]" multiple="multiple"
                                 id="validationCustom04" required>
-                                <optgroup label="Personnel">
+                                <optgroup label="Liste du personnel">
                                     @forelse ($user as $row)
                                     <option value="{{ $row->id }}">{{ $row->name.' - '.$row->departement->nom }}
                                     </option>
@@ -124,7 +136,8 @@
                                     <div class="input-group-text" id="button-addon-time"><span
                                             class="fe fe-clock fe-16"></span></div>
                                 </div>
-                                <input type="time"  name="heure_fin" class="form-control time-input" id="end-time" placeholder="11:00 AM">
+                                <input type="time" name="heure_fin" class="form-control time-input" id="end-time"
+                                    placeholder="11:00 AM">
                             </div>
                         </div>
                     </div>
@@ -138,6 +151,8 @@
     </div>
 </div> <!-- new event modal -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/locales-all.min.js"></script>
+{{-- <script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'></script> --}}
+{{-- <script src='https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js'></script> --}}
 <script>
     /** full calendar */
     var calendarEl = document.getElementById('calendar');
@@ -148,9 +163,7 @@
         var calendar = new FullCalendar.Calendar(calendarEl,
         {
             locale: 'fr',
-          plugins: ['dayGrid', 'timeGrid', 'list', 'bootstrap','interactionPlugin','dayGridPlugin '],
-          selectable: true,
-          droppable: true,
+          plugins: ['dayGrid', 'timeGrid', 'list', 'bootstrap'],
           timeZone: 'UTC',
           themeSystem: 'bootstrap',
           header:
@@ -173,18 +186,37 @@
             day:      'Jour',
             list:     'liste'
         },
+
           weekNumbers: true,
           eventLimit: true, // allow "more" link when too many events
+
           events: [
             @foreach ($rows as $row)
+
                         {
-                title  : "{{ $row->titre }} objet:{{ $row->objet }}",
+                title  : "{{ $row->titre }}",
                 start  : "{{ $row->debut }}T{{ $row->heure_debut }}",
                 end  : "{{ $row->fin }}T{{ $row->heure_fin }}",
                 },
             @endforeach
-          ]
-        });
+            @foreach ($rows as $row)
+            @foreach ($row->users as $row2)
+                        {
+                title  : "{{ $row->titre }}",
+                start  : "{{ $row->debut }}T{{ $row->heure_debut }}",
+                end  : "{{ $row->fin }}T{{ $row->heure_fin }}",
+                },
+            @endforeach
+            @endforeach
+          ],
+          eventClick: function(info) {
+    alert('Event: ' + info.event.title);
+  },
+
+        }
+
+        );
+
         calendar.render();
       });
     }

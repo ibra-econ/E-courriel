@@ -21,7 +21,6 @@ class AgendaController extends Controller
         $agenda->titre = $request->titre;
         $agenda->type = $request->type;
         $agenda->objet = $request->objet;
-        $agenda->objet = $request->objet;
         $agenda->debut = $request->debut;
         $agenda->fin = $request->fin;
         $agenda->heure_debut = $request->heure_debut;

@@ -19,18 +19,24 @@ class TraitementController extends Controller
 
     public function save_traitement(Request $request)
     {
-        // dd($request->valider);
+
         $courrier = Courrier::find($request->id);
+
         if ($request->archiver === "on" and $request->valider === "on"):
             $courrier->etat = "Archiver";
+            $imputation = Imputation::where('id',$request->imputation)->update(['fin_traitement'=> now()]);
         endif;
         if ($request->archiver == null and $request->valider === "on"):
             $courrier->etat = "Traiter";
+            $imputation = Imputation::where('id',$request->imputation)->update(['fin_traitement'=> now()]);
         endif;
         if ($request->archiver == null and $request->valider == null):
             $courrier->etat = "Imputer";
+            $imputation = Imputation::where('id',$request->imputation)->update(['fin_traitement'=> null]);
+            // $imputation->fin_traitement = null;
         endif;
         $courrier->save();
+        // $imputation->save();
         return back()->with('update', 'Traitement effectuer avec success');
     }
 }

@@ -13,7 +13,6 @@ use App\Models\Document;
 use App\Models\Imputation;
 use App\Models\Journal;
 use App\Models\Nature;
-use App\Models\Poste;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,8 +38,8 @@ class RouteController extends Controller
         $arriver = Courrier::where('type', 'arriver')->count();
         // Total courrier depart
         $depart = Courrier::where('type', 'depart')->count();
-         // Total courrier interne
-         $interne = Courrier::where('type', 'interne')->count();
+        // Total courrier interne
+        $interne = Courrier::where('type', 'interne')->count();
         // Total utilisatiers
         $user = User::count();
         // Total departement
@@ -144,6 +143,26 @@ class RouteController extends Controller
         return view('courrier.interne', compact(['rows', 'correspondant', 'nature', 'corbeille', 'numero']));
     }
 
+    // Route suivie courrier arriver function
+    public function suivie()
+    {
+        // si pas admin
+        if (Auth::user()->role !== "admin"):
+            // Total courrier arriver
+            $rows = Courrier::with('nature', 'user', 'correspondant')
+                ->where('type', 'arriver')
+                ->where('user_id', Auth::user()->id)
+                ->where('etat', 'Enregistré')->latest()->get();
+
+        else:
+            $rows = Courrier::with('nature', 'user', 'correspondant')
+                ->where('type', 'arriver')
+                ->where('etat', 'Enregistré')->latest()->get();
+        endif;
+
+        return view('courrier.suivie', compact(['rows']));
+    }
+
     // Route compte function
     public function compte()
     {
@@ -200,7 +219,7 @@ class RouteController extends Controller
     {
         $rows = Nature::all();
         $corbeille = Nature::onlyTrashed()->count();
-        return view('nature.nature', compact(['rows','corbeille']));
+        return view('nature.nature', compact(['rows', 'corbeille']));
     }
 
     // Route Annotation function
@@ -242,7 +261,7 @@ class RouteController extends Controller
         // get departemnt
         $departement = Departement::all();
         // get courrier
-        $courrier = Courrier::where('type','arriver')->where('etat', 'Enregistré')->latest()->get();
+        $courrier = Courrier::where('type', 'arriver')->where('etat', 'Enregistré')->latest()->get();
         // get annotation
         $annotation = Annotation::where('user_id', Auth::user()->id)->get();
         return view('imputation.imputation', compact(['rows', 'corbeille', 'courrier', 'departement', 'annotation']));
@@ -252,21 +271,19 @@ class RouteController extends Controller
     public function traitement()
     {
         if (Auth::user()->role === "admin"):
-            $rows = Imputation::with('departement', 'user', 'courrier')->latest()->get();
-            // dd($rows);
+            $rows = Imputation::with('departement', 'user', 'courrier')->where('etat', null)->latest()->get();
         endif;
 
         if (Auth::user()->role === "superuser"):
             $rows = Imputation::with('departement', 'user', 'courrier')
-                ->where('user_id', Auth::user()->id)
+                ->where('user_id', Auth::user()->id)->where('etat', null)
                 ->latest()->get();
         endif;
 
         if (Auth::user()->role === "secretaire"):
             $rows = Imputation::with('departement', 'user', 'courrier')
-                ->where('departement_id', Auth::user()->departement_id)
+                ->where('departement_id', Auth::user()->departement_id)->where('etat', null)
                 ->latest()->get();
-
         endif;
         return view('traitement.traitement', compact(['rows']));
     }
@@ -317,19 +334,24 @@ class RouteController extends Controller
     // Route journal function
     public function journal()
     {
+        if (Auth::user()->role === 'admin'):
         $rows = Journal::with('user')->latest()->get();
+        endif;
         $corbeille = Journal::onlyTrashed()->count();
         return view('journal.journal', compact(['rows', 'corbeille']));
     }
 
-      // Route agenda function
-      public function agenda()
-      {
-          $rows = Agenda::with('users')->latest()->get();
-          $user = User::with('departement')->get();
-          $corbeille = Agenda::onlyTrashed()->count();
-          return view('agenda.agenda', compact(['rows', 'corbeille','user']));
-      }
-
+    // Route agenda function
+    public function agenda()
+    {
+        if (Auth::user()->role !== 'admin'):
+        $rows = Agenda::with('users')->where('user_id',Auth::user()->id)->latest()->get();
+        else:
+            $rows = Agenda::with('users')->latest()->get();
+        endif;
+        $user = User::with('departement')->get();
+        $corbeille = Agenda::onlyTrashed()->count();
+        return view('agenda.agenda', compact(['rows', 'corbeille', 'user']));
+    }
 
 }

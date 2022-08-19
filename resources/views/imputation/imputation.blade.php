@@ -143,7 +143,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                            <label for="delai">Delai de traitement (Facultatif)</label>
-                            <input type="date" name="delai" id="delai">
+                        <input type="date" class="form-control" name="delai" id="delai">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="validationCustom04">Diffusion (Pour avis) Facultatif</label>

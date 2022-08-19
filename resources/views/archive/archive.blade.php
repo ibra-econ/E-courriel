@@ -57,14 +57,11 @@
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <a href="{{ route('show.courrier',['id'=> $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-                                <a href="{{ route('fiche.courrier',['id'=> $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-download"></i></a>
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-eye"></i></a>
                                 <a href="{{ route('edit.courrier',['id'=> $row->id]) }}" role="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
-
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
-                                    class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>
+                                    class="btn btn-sm btn-green-1 mt-1"><i class="fe fe-trash"></i></button>
                             </td>
                         </tr>
                         @endforeach
@@ -96,7 +93,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{url('delete/archive')}}/" + id,
+                url: "{{url('delete/courrier')}}/" + id,
                 data: {_token: CSRF_TOKEN},
                 dataType: 'JSON',
                 success: function (results) {

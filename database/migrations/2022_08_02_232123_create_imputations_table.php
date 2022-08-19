@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('delai')->nullable();
             $table->date('fin_traitement')->nullable();
             $table->string('observation')->nullable();
+            $table->string('etat')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

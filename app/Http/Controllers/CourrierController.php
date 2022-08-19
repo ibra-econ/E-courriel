@@ -81,6 +81,14 @@ class CourrierController extends Controller
         return view('courrier.show', compact(["courrier", 'annotation', 'departement']));
     }
 
+    public function show_suivie(int $id)
+    {
+        $courrier = Courrier::with('documents', 'correspondant', 'annotations', 'imputation')->find($id);
+        $annotation = Annotation::all();
+        $departement = Departement::all();
+        return view('courrier.suivie_show', compact(["courrier", 'annotation', 'departement']));
+    }
+
     public function edit(int $id, Courrier $courrier)
     {
 
