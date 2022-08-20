@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 
-<h2 class="col-12 text-center">Evolution du courrier N° {{ $courrier->numero }} </h2>
-<div class="stepper-wrapper pt-3">
+<h2 class="text-center col-12">Evolution du courrier N° {{ $courrier->numero }} </h2>
+<div class="pt-3 stepper-wrapper">
     <div class="stepper-item {{ $courrier->etat === "Enregistré" || "Imputer" ? 'completed' : '' }}">
       <div class="step-counter">
         <i class="fe fe-check"></i>
@@ -28,7 +28,7 @@
         <i class="fe fe-check"></i>
       </div>
       <div class="step-name">
-        {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($imputation->fin_traitement)) : '' }}
+        {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($courrier->imputation->fin_traitement)) : '' }}
      </div>
       <div class="step-name">Valider</div>
     </div>
@@ -42,9 +42,9 @@
 
 <div class="row">
     {{-- courrier document --}}
-    <div class="col-md-12 mb-4">
+    <div class="mb-4 col-md-12">
         <div class="accordion w-100" id="accordion1">
-            <div class="card shadow">
+            <div class="shadow card">
                 <div class="card-header" id="heading1">
                     <a role="button" href="#collapse1" data-toggle="collapse" data-target="#collapse1"
                         aria-expanded="false" aria-controls="collapse1">
@@ -55,11 +55,11 @@
                     <div class="card-body">
                         <div class="col-12">
                             <div class="file-container border-top" id="document">
-                                <div class="file-panel mt-4">
-                                    <div class="row my-4">
+                                <div class="mt-4 file-panel">
+                                    <div class="my-4 row">
                                         @forelse($courrier->documents as $row)
                                         <div class="col-md-3">
-                                            <div class="card text-center mb-2 shadow">
+                                            <div class="mb-2 text-center shadow card">
                                                 <div class="card-body file">
                                                     <div class="file-action">
                                                         <a target="_blank"
@@ -70,21 +70,21 @@
                                                             role="button" class="btn btn-sm btn-green-1"><i
                                                                 class="fe fe-edit"></i></a>
                                                     </div>
-                                                    <div class="circle circle-lg bg-light my-4">
+                                                    <div class="my-4 circle circle-lg bg-light">
                                                         <span class="fe fe-file fe-24 text-success"></span>
                                                     </div>
                                                     <div class="file-info">
                                                         <span class="badge badge-pill badge-light text-muted">PDF</span>
                                                     </div>
                                                 </div> <!-- .card-body -->
-                                                <div class="card-footer bg-transparent border-0 fname">
+                                                <div class="bg-transparent border-0 card-footer fname">
                                                     <strong>{{ $row->libelle }}</strong> <br>
                                                     <strong>crée: {{ date('d/m/Y',strtotime($row->created_at)) }}</strong>
                                                 </div> <!-- .card-footer -->
                                             </div> <!-- .card -->
                                         </div>
                                         @empty
-                                        <div class="col-12 text-center">
+                                        <div class="text-center col-12">
                                             <h2>Aucun document</h2>
                                         </div>
                                         @endforelse
@@ -95,7 +95,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card shadow">
+            <div class="shadow card">
                 <div class="card-header" id="heading1">
                     <a role="button" href="#collapse2" data-toggle="collapse" data-target="#collapse2"
                         aria-expanded="false" aria-controls="collapse2">
@@ -115,7 +115,7 @@
                                                 <div class="col-md-6">
                                                     <div class="avatar-lg">
                                                         <img src="{{ asset('assets/images/favicon.png') }}"
-                                                            class="rounded mr-5" alt="">
+                                                            class="mr-5 rounded" alt="">
                                                     </div>
                                                 </div>
 
@@ -166,12 +166,12 @@
                                             @foreach($courrier->annotations as $row2)
                                             @if ($row->id == $row2->pivot->annotation_id)
                                             <div class="col-md-3">
-                                                <i class="fe fe-check fe-16 font-bold"></i> {{ $row->nom }}
+                                                <i class="font-bold fe fe-check fe-16"></i> {{ $row->nom }}
                                             </div>
                                             @endif
                                             @endforeach
                                             <div class="col-md-3">
-                                                <div class="custom-control custom-checkbox mb-3">
+                                                <div class="mb-3 custom-control custom-checkbox">
                                                     <input type="checkbox" disabled class="custom-control-input"
                                                         value="{{ $row->id }}" id="{{ $row->id }}">
                                                     <label class="custom-control-label" for="{{ $row->id }}">{{
@@ -180,7 +180,7 @@
                                             </div>
                                             @endforeach
                                         </div>
-                                        <div class="ml-2 mt-2">
+                                        <div class="mt-2 ml-2">
                                             <p class="text-dark">Autres Précisions:</p>
                                             <p class="text-dark">AUTRES ANNOTATIONS:</p>
                                         </div>
@@ -193,7 +193,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card shadow">
+            <div class="shadow card">
                 <div class="card-header" id="heading1">
                     <a role="button" href="#collapse3" data-toggle="collapse" data-target="#collapse3"
                         aria-expanded="false" aria-controls="collapse3">
@@ -213,7 +213,7 @@
                                                 <div class="col-md-6">
                                                     <div class="avatar-lg">
                                                         <img src="{{ asset('assets/images/favicon.png') }}"
-                                                            class="rounded mr-5" alt="logo">
+                                                            class="mr-5 rounded" alt="logo">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -244,7 +244,7 @@
                                                 $courrier->objet }}</p>
                                             <p class="mb-2 text-dark font-weight-bolder text-uppercase">Date de fin
                                                 traitement:
-                                                {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($imputation->fin_traitement)) : '' }}
+                                                {{ $courrier->imputation !== null ? date('d/m/Y',strtotime($courrier->imputation->fin_traitement)) : '' }}
                                             </p>
                                         </div>
 
