@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('courriers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('nature_id');
             $table->foreign('nature_id')->references('id')->on('natures')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('correspondant_id');

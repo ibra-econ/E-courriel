@@ -39,9 +39,9 @@ class AuthServiceProvider extends ServiceProvider
             });
 
         Gate::define('update-imputation', function (User $user, Imputation $imputation) {
-        //    dd($user->id);
-            return $user->id == $imputation->user_id;
-            // return $user->id == $imputation->user_id;
+
+            return $user->id == $imputation->user_id || $user->isAdmin();
+
         });
 
     }

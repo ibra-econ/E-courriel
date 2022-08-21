@@ -225,7 +225,7 @@ Route::middleware(['auth', 'IsSuperuser'])->group(function () {
     });
 });
 
-// si user est Secretaire
+// si user is Secretaire
 Route::middleware(['auth', 'IsSecretaire'])->group(function () {
     // route des dashboard
     Route::controller(RouteController::class)->group(function () {
@@ -259,6 +259,7 @@ Route::middleware(['auth', 'IsSecretaire'])->group(function () {
 
 });
 
+// si user is agent
 Route::middleware(['auth', 'IsAgent'])->group(function () {
     // route des dashboard
     Route::controller(RouteController::class)->group(function () {

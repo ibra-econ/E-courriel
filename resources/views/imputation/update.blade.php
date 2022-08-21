@@ -18,8 +18,6 @@
         <form action="{{ route('update.imputation') }}" method="POST" class="p-3 needs-validation" novalidate>
             @csrf
             <input type="hidden" name="id" value="{{ $item->id }}">
-            {{-- <input type="hidden" name="diffusion_id" value="{{ $item->id }}"> --}}
-            {{-- <input type="hidden" name="id" value="{{ $item->id }}"> --}}
             <div class="row">
                 <div class="col-md-12 mb-3">
                     <label for="simple-select2">Courrier</label>
@@ -49,13 +47,15 @@
                     <optgroup label="Departement">
                         @foreach ($departement as $row)
                         @foreach ($item->diffusions as $row2)
-                          <option value="{{ $row->id }}" {{ $row->id == $row2->departement_id ? 'selected' : '' }}>{{ $row->nom }}</option>
+                        @if ($row->id == $row2->departement_id)
+                        <option value="{{ $row->id }}" selected >{{ $row->nom }}</option>
+                        @endif
                         @endforeach
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
                         @endforeach
                     </optgroup>
                   </select>
                     <div class="valid-feedback"></div>
-                    <div class="invalid-feedback">Ce champ est obligatoire.</div>
                 </div>
 
                 <div class="text-center col-12">

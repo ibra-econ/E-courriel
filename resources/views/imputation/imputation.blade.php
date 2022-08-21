@@ -40,6 +40,7 @@
                             <th>Expediteur</th>
                             <th>Departement</th>
                             <th>Date arrivée</th>
+                            <th>Etat</th>
                             <th>Fin Traitement</th>
                             <th>Crée</th>
                             <th>Action</th>
@@ -56,6 +57,7 @@
                             <td>{{ $row->courrier->correspondant->nom.' '.$row->courrier->correspondant->prenom }}</td>
                             <td>{{ $row->departement->nom }}</td>
                             <td>{{ date('d/m/Y',strtotime($row->courrier->date_arriver)) }}</td>
+                            <td><span class="badge badge-pill  {{ $row->etat === "lu" ? 'badge-success' : 'badge-danger' }} text-white">{{ $row->etat }}</span></td>
                             <td>{{ $row->fin_traitement }}</td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>
