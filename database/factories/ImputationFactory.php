@@ -20,6 +20,7 @@ class ImputationFactory extends Factory
             'user_id' => rand(1,5),
             'courrier_id' => rand(1,5),
             'departement_id' => rand(1,5),
+            'etat' => $this->faker->randomElement(['lu','non lu'])
         ];
     }
 }

@@ -33,7 +33,7 @@ class TraitementController extends Controller
         if ($request->archiver == null and $request->valider == null):
             $courrier->etat = "Imputer";
             $imputation = Imputation::where('id',$request->imputation)->update(['fin_traitement'=> null]);
-            // $imputation->fin_traitement = null;
+
         endif;
         $courrier->save();
         // $imputation->save();

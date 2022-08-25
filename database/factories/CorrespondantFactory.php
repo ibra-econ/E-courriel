@@ -22,7 +22,7 @@ class CorrespondantFactory extends Factory
             'email' => $this->faker->email(),
             'fonction' => $this->faker->jobTitle(),
             'phone' => $this->faker->phoneNumber(),
-            'type' => "externe",
+            'type' => $this->faker->randomElement(['externe','interne'])
         ];
     }
 }

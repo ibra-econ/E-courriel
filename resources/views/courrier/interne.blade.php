@@ -127,7 +127,7 @@
                         </div>
                         <div class="mb-3 col-md-3">
                             <label for="validationCustom04">Réference</label>
-                            <input type="text" name="reference" class="form-control" id="validationCustom02"
+                            <input type="text" name="reference" value="{{ $numero == null ? 1 : 'CI-N°'.$numero->numero +1 }}/{{ Auth::user()->departement->code }}" class="form-control" id="validationCustom02"
                                 placeholder="Entrez la reference du courrier" required>
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                         </div>

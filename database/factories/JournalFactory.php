@@ -18,7 +18,7 @@ class JournalFactory extends Factory
     {
         return [
             'user_id' => rand(1,5),
-            'libelle' => 'Connexion'
+            'libelle' => $this->faker->randomElement(['connexion','deconnexion'])
         ];
     }
 }

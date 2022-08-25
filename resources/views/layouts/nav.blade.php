@@ -146,12 +146,12 @@
         @endif
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Agenda lien --}}
-            <li class="nav-item w-100">
+            {{-- <li class="nav-item w-100">
                 <a class="nav-link" href="{{ route('Agenda') }}">
                     <i class="fe fe-calendar fe-16"></i>
                     <span class="ml-3 item-text">Agenda</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
         @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser())
         <ul class="mb-2 navbar-nav flex-fill w-100">
