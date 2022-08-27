@@ -10,14 +10,13 @@
                                 <div class="text-center">
                                     <img class="mx-auto img-fluid" src="{{ asset('assets/images/favicon.png') }}"
                                         alt="logo">
-                                    {{-- <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4> --}}
                                 </div>
                                 {{ $slot }}
                             </div>
                         </div>
-                        <div class="col-lg-6 d-flex align-items-center" style="background: #00704D;">
-                            <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                <img src="{{ asset('assets/images/logo_white.png') }}" alt="">
+                        <div class="col-lg-6 d-flex d-none d-lg-block d-xl-block align-items-center" style="background: #00704D;">
+                            <div class="text-white px-3 p-md-5 py-5 mx-md-4">
+                                <img src="{{ asset('assets/images/logo_white.png') }}" alt="logo">
                                 <h4 class="my-4 text-center">Geré plus facilement vos courrier</h4>
                             </div>
                         </div>

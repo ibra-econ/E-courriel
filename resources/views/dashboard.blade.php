@@ -135,6 +135,21 @@
 {{-- end statisitique --}}
 @endif
 <div class="row my-4">
+<div class="card">
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="">
+
+        </div>
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+</div>
+</div>
+<div class="row my-4">
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
@@ -147,6 +162,11 @@
     </div> <!-- .col -->
     {{-- Notifications --}}
     <div class="col-md-4">
+
+        <div class="card p-3">
+            <h2>Date: {{ date('d/m/Y') }}</h2>
+            <h2 id="time"></h2>
+        </div>
         <div class="card">
             <div class="card-header">
                 <h5 class="modal-title" id="defaultModalLabel">Notifications</h5>
@@ -183,4 +203,23 @@
 @endsection
 @section('chart')
 <script src="{{ asset('assets/chart-script.js') }}"></script>
+{{-- date time function --}}
+<script>
+function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('time').innerHTML ="Heure: "+ h + ":" + m + ":" + s;
+  setTimeout(startTime, 1000);
+}
+
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+startTime();
+</script>
 @endsection
