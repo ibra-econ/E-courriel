@@ -14,6 +14,7 @@ class DocumentController extends Controller
 
     public function edit(int $id)
     {
+        // dd($id);
         $document = Document::find($id);
         return view('document.update', compact(['document']));
     }

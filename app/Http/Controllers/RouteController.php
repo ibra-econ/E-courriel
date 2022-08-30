@@ -267,22 +267,22 @@ class RouteController extends Controller
         return view('imputation.imputation', compact(['rows', 'corbeille', 'courrier', 'departement', 'annotation']));
     }
 
-    // Route Annotation function
+    // Route traitement function
     public function traitement()
     {
         if (Auth::user()->role === "admin"):
-            $rows = Imputation::with('departement', 'user', 'courrier')->where('etat', null)->latest()->get();
+            $rows = Imputation::with('departement', 'user', 'courrier')->where('etat','lu')->orwhere('etat','non lu')->latest()->get();
         endif;
 
         if (Auth::user()->role === "superuser"):
             $rows = Imputation::with('departement', 'user', 'courrier')
-                ->where('user_id', Auth::user()->id)->where('etat', null)
+                ->where('user_id', Auth::user()->id)->where('etat','lu')->orwhere('etat','non lu')
                 ->latest()->get();
         endif;
 
         if (Auth::user()->role === "secretaire"):
             $rows = Imputation::with('departement', 'user', 'courrier')
-                ->where('departement_id', Auth::user()->departement_id)->where('etat', null)
+                ->where('departement_id', Auth::user()->departement_id)->where('etat','lu')->orwhere('etat','non lu')
                 ->latest()->get();
         endif;
         return view('traitement.traitement', compact(['rows']));

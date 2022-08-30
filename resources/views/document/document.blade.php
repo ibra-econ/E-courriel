@@ -13,7 +13,7 @@
                             <div class="col-auto mr-auto form-group">
                                 @if (Auth::user()->isAdmin())
                                 <a href="{{ route('corbeille.document') }}" role="button"
-                                    class="btn mb-2 btn-danger text-white ml-2"> <i class="fe fe-trash-2"></i> Corbeille
+                                    class="mb-2 ml-2 text-white btn btn-danger"> <i class="fe fe-trash-2"></i> Corbeille
                                     {{
                                     $corbeille }}</a>
                                 @endif
@@ -45,7 +45,8 @@
                             <td>
                                 <a target="_blank" href="{{ route('show.document',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
-                                <a href="{{ route('edit.document',['id'=> $row->id]) }}" role="button"
+
+                                     <a href="{{ route('edit.test',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>

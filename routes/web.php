@@ -234,15 +234,14 @@ Route::middleware(['auth', 'IsSecretaire'])->group(function () {
 
         Route::get('imputation', 'imputation')->name('Imputation');
     });
+    // route document controlleur
+Route::controller(DocumentController::class)->group(function () {
+    Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.test');
 
-// route document controlleur
-    Route::controller(DocumentController::class)->group(function () {
-        Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.document');
+    Route::get('file_view/document/{id}', 'file_view')->whereNumber('id')->name('show.document');
 
-        Route::get('file_view/document/{id}', 'file_view')->whereNumber('id')->name('show.document');
-
-        Route::post('update/document', 'update')->name('update.document');
-    });
+    Route::post('update/document', 'update')->name('update.document');
+});
 
     // route imputation courrier
     Route::controller(ImputationController::class)->group(function () {
@@ -329,8 +328,6 @@ Route::middleware(['auth', 'IsAgent'])->group(function () {
     Route::controller(AgendaController::class)->group(function () {
         Route::post('new/agenda', 'create')->name('new.agenda');
 
-        Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.agenda');
-
         Route::post('update/agenda', 'update')->name('update.agenda');
 
         Route::post('delete/agenda/{id}', 'delete');
@@ -342,5 +339,8 @@ Route::middleware(['auth', 'IsAgent'])->group(function () {
         Route::post('restore/all/agenda', 'restore_all');
     });
 });
+
+
+
 
 require __DIR__ . '/auth.php';
