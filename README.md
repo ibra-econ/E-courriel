@@ -137,7 +137,7 @@ php artisan migrate –seed
 
 npm run dev
 ```
-Lancement du server:
+
 
 Ensuite ouvrez une nouvelle session du terminale
 ``` bash
@@ -145,7 +145,7 @@ php artisan serve
 
 ```
 Ensuite allez dans phpmyadmin dans la table user
-Copier email de l'utilisateurs de preference avec le role 'admin'
+Copier email d'un l'utilisateurs de preference avec le role 'admin'
 
 ![Logo](https://user-images.githubusercontent.com/84472630/187783467-733f7f59-df13-4d63-a320-3704bb796d9a.png)
 
