@@ -126,7 +126,10 @@ Ensuite enregistrer et fermer
 ouvrez le terminale de votre editeur et tapez ces commande
 
 composer install
+
 npm install
+
+php artisan key:generate
 
 php artisan migrate –seed
 
