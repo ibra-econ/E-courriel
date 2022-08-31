@@ -99,8 +99,11 @@ Ensuite ouvrez l'editeur (Vs code, Atom, Sublimtext ) de votre choix
 Placer le a la racine de de votre serveur local
 
  Example: Wamp (C:\Wamp\www) ou Xampp (C:\Wamp\htdocs)
+ 
 2. Creer une nouvelle base de données
+
 3. Configuration du fichier .env
+
  ``` bash
 # Allez dans votre editeur et chercher le fichier .env
 app/.env.example
