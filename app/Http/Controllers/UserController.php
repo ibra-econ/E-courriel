@@ -84,7 +84,7 @@ class UserController extends Controller
 
     public function edit(int $id)
     {
-        $user = User::with('poste')->find($id);
+        $user = User::find($id);
         $departement = Departement::all();
         return view('user.update', compact(['user', 'departement']));
     }
