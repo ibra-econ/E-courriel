@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Agenda;
-use App\Models\Annotation;
-use App\Models\Config;
-use App\Models\Correspondant;
-use App\Models\Courrier;
-use App\Models\Departement;
-use App\Models\Diffusion;
-use App\Models\Document;
-use App\Models\Imputation;
-use App\Models\Journal;
-use App\Models\Nature;
 use App\Models\User;
+use App\Models\Agenda;
+use App\Models\Config;
+use App\Models\Nature;
+use App\Models\Journal;
+use App\Models\Courrier;
+use App\Models\Document;
+use App\Models\Diffusion;
+use App\Models\Annotation;
+use App\Models\Imputation;
+use App\Models\Departement;
+use App\Models\Correspondant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class RouteController extends Controller
@@ -45,7 +46,27 @@ class RouteController extends Controller
         // Total departement
         $departement = Departement::count();
 
-        return view('dashboard', compact(['correspondant', 'arriver', 'depart', 'user', 'departement', 'interne']));
+        // courrier arriver chart
+        $courrier_arriver = Courrier::select(DB::raw("COUNT(*) as count"), DB::raw("created_at as month_name"))
+        ->where('type','arriver')
+        ->whereYear('created_at', date('Y'))
+        ->groupBy(DB::raw("created_at"))
+        ->pluck('count', 'month_name');
+
+        $label_arriver = $courrier_arriver->keys();
+        $data_arriver = $courrier_arriver->values();
+
+                // courrier depart chart
+                $courrier_depart = Courrier::select(DB::raw("COUNT(*) as count"), DB::raw("created_at as month_name"))
+                ->where('type','depart')
+                ->whereYear('created_at', date('Y'))
+                ->groupBy(DB::raw("created_at"))
+                ->pluck('count', 'month_name');
+
+                $label_depart = $courrier_depart->keys();
+                $data_depart = $courrier_depart->values();
+
+        return view('dashboard', compact(['correspondant', 'arriver', 'depart', 'user', 'departement', 'interne','label_arriver', 'data_arriver','label_depart','data_depart']));
     }
 
     // Route courrier depart function

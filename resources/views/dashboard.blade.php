@@ -202,7 +202,133 @@
 
 @endsection
 @section('chart')
-<script src="{{ asset('assets/chart-script.js') }}"></script>
+<script type="text/javascript">
+      var label_arriver =  {{ Js::from($label_arriver) }};
+      var data_arriver =  {{ Js::from($data_arriver) }};
+
+      var label_depart =  {{ Js::from($label_depart) }};
+      var data_depart =  {{ Js::from($data_depart) }};
+     // chart script
+ function generateData(e, t, o) {
+    for (var a = 0, r = []; a < t; ) {
+        var s = Math.floor(750 * Math.random()) + 1,
+            i = Math.floor(Math.random() * (o.max - o.min + 1)) + o.min,
+            l = Math.floor(61 * Math.random()) + 15;
+        r.push([s, i, l]), a++;
+    }
+    return r;
+}
+var columnChart,
+    columnChartoptions = {
+        series: [
+            {
+                name: "Arriver",
+                data: data_arriver,
+            },
+            {
+                name: "Depart",
+                data: data_depart,
+            },
+        ],
+        chart: {
+            type: "bar",
+            height: 350,
+            stacked: !1,
+            columnWidth: "70%",
+            zoom: { enabled: !0 },
+            toolbar: { show: !1 },
+            background: "transparent",
+        },
+        dataLabels: { enabled: !1 },
+        theme: { mode: colors.chartTheme },
+        responsive: [
+            {
+                breakpoint: 480,
+                options: {
+                    legend: { position: "bottom", offsetX: -10, offsetY: 0 },
+                },
+            },
+        ],
+        plotOptions: {
+            bar: {
+                horizontal: !1,
+                columnWidth: "40%",
+                radius: 30,
+                enableShades: !1,
+                endingShape: "rounded",
+            },
+        },
+        xaxis: {
+            type: "datetime",
+            categories: label_arriver,
+            labels: {
+                show: !0,
+                trim: !0,
+                minHeight: void 0,
+                maxHeight: 120,
+                style: {
+                    colors: colors.mutedColor,
+                    cssClass: "text-muted",
+                    fontFamily: base.defaultFontFamily,
+                },
+            },
+            axisBorder: { show: !1 },
+        },
+        yaxis: {
+            labels: {
+                show: !0,
+                trim: !1,
+                offsetX: -10,
+                minHeight: void 0,
+                maxHeight: 120,
+                style: {
+                    colors: colors.mutedColor,
+                    cssClass: "text-muted",
+                    fontFamily: base.defaultFontFamily,
+                },
+            },
+        },
+        legend: {
+            position: "top",
+            fontFamily: base.defaultFontFamily,
+            fontWeight: 400,
+            labels: { colors: colors.mutedColor, useSeriesColors: !1 },
+            markers: {
+                width: 10,
+                height: 10,
+                strokeWidth: 0,
+                strokeColor: "#fff",
+                fillColors: ['#00704D', '#00A97E'],
+                radius: 6,
+                customHTML: void 0,
+                onClick: void 0,
+                offsetX: 0,
+                offsetY: 0,
+            },
+            itemMargin: { horizontal: 10, vertical: 0 },
+            onItemClick: { toggleDataSeries: !0 },
+            onItemHover: { highlightDataSeries: !0 },
+        },
+        fill: {
+            opacity: 1,
+            colors: ['#00704D', '#00A97E'],
+        },
+        grid: {
+            show: !0,
+            borderColor: colors.borderColor,
+            strokeDashArray: 0,
+            position: "back",
+            xaxis: { lines: { show: !1 } },
+            yaxis: { lines: { show: !0 } },
+            row: { colors: void 0, opacity: 0.5 },
+            column: { colors: void 0, opacity: 0.5 },
+            padding: { top: 0, right: 0, bottom: 0, left: 0 },
+        },
+    },
+    columnChartCtn = document.querySelector("#columnChart");
+columnChartCtn &&
+    (columnChart = new ApexCharts(columnChartCtn, columnChartoptions)).render();
+</script>
 {{-- date time function --}}
 <script>
 function startTime() {

@@ -84,7 +84,6 @@
     <script src='{{ asset('js/jquery.validate.min.js') }}'></script>
     <script src='{{ asset('js/quill.min.js') }}'></script>
     <script src="{{ asset('js/topojson.min.js') }}"></script>
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.custom.js') }}"></script>
     <script src="{{ asset('js/apexcharts.min.js') }}"></script>
