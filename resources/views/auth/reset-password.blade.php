@@ -1,48 +1,41 @@
 <x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    <div class="fxt-inner-wrap fxt-opacity fxt-transition-delay-13">
+        <h2 class="fxt-page-title">Reinitialisation de mot de passe</h2>
+        <p class="fxt-description">
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        </p>
 
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
+           <form method="POST" action="{{ route('password.update') }}">
+               @csrf
 
-            <!-- Password Reset Token -->
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+               <!-- Password Reset Token -->
+               <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+               <!-- Email Address -->
+               <div class="form-group">
+                <label for="email" class="fxt-label">Email</label>
+                <input type="email" class="form-control" name="email" value="{{ $request->email }}" required autofocus>
             </div>
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Mot de passe')" />
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" required class="form-control" id="password"
+                    autocomplete="new-password">
 
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required />
+
+            </div>
+            <div class="form-group">
+                <label for="password_confirmation">Confirmer le mot de passe</label>
+                <input type="password" name="password_confirmation" required class="form-control"
+                    id="password_confirmation">
+
             </div>
 
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirmer le mot de passe')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                    type="password"
-                                    name="password_confirmation" required />
+            <div class="form-group mb-3">
+                <button type="submit" class="fxt-btn-fill">Valider</button>
             </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('réinitialiser le mot de passe') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
+           </form>
+        </div>
 </x-guest-layout>

@@ -1,51 +1,51 @@
 <x-guest-layout>
-    <x-auth-card>
 
+    <div class="fxt-inner-wrap fxt-opacity fxt-transition-delay-13">
+        <div class="text-center">
+            <img src="{{ asset('assets/images/logo_icon.png') }}" height="100" width="100"  alt="Logo">
+        </div>
+        <h2 class="fxt-page-title">Connexion</h2>
+        <p class="fxt-description">
+             <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-        <h1 class="text-center text-4xl font-bold">Connectez vous</h1>
-        <form class="p-2" method="POST" action="{{ route('login') }}">
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        </p>
+        <form method="POST" action="{{ route('login') }}">
             @csrf
-
-            <!-- Email Address -->
-            <div>
-                <x-label class="font-bold" for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            <div class="form-group">
+                <label for="email" class="fxt-label">Email</label>
+                <input type="text" class="form-control" name="email"
+                placeholder="Email ou numero de telephone" :value="old('email')" required autofocus>
             </div>
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label class="font-bold" for="password" :value="__('Mot de passe')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+            <div class="form-group">
+                <label for="password" class="fxt-label">Mot de passe</label>
+                <input type="password" class="form-control" name="password" placeholder="Entrer votre mot de passe"
+                id="password"  required autocomplete="current-password">
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-check form-check-inline">
+                        <input id="remember_me" name="remember" class="form-check-input"
+                            type="checkbox">
+                        <label class="form-check-label text-dark" for="Check">Se souvenir de moi?
+                        </label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                    @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}"> Mot de passe oublié?</a>
+                    @endif
+                    </div>
+                </div>
             </div>
 
-            <!-- Remember Me -->
-            <div class="flex items-center justify-end mt-4 mr-3">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Se souvenir de moi') }}</span>
-                </label>
-                @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 ml-6" href="{{ route('password.request') }}">
-                    {{ __('Mot de passe oublié?') }}
-                </a>
-            @endif
-            </div>
-
-            <div class="flex items-center justify-center mt-4">
-                <x-button class="rounded-md">
-                    {{ __('connexion') }}
-                </x-button>
+            <div class="form-group mb-3">
+                <button type="submit" class="fxt-btn-fill">Connexion</button>
             </div>
         </form>
-    </x-auth-card>
+    </div>
 </x-guest-layout>
