@@ -236,7 +236,7 @@ Route::middleware(['auth', 'IsSecretaire'])->group(function () {
     });
     // route document controlleur
 Route::controller(DocumentController::class)->group(function () {
-    Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.test');
+    Route::get('edit/document/{id}', 'edit')->whereNumber('id')->name('edit.docu');
 
     Route::get('file_view/document/{id}', 'file_view')->whereNumber('id')->name('show.document');
 

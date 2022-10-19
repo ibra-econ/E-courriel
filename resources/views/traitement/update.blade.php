@@ -76,7 +76,7 @@
                                                             href="{{ route('show.document',['id'=> $row->id]) }}"
                                                             role="button" class="btn btn-sm btn-green-1"><i
                                                                 class="fe fe-eye"></i></a>
-                                                        <a href="{{ route('edit.document',['id'=> $row->id]) }}"
+                                                        <a href="{{ route('edit.docu',['id'=> $row->id]) }}"
                                                             role="button" class="btn btn-sm btn-green-1"><i
                                                                 class="fe fe-edit"></i></a>
                                                     </div>

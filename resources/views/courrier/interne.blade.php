@@ -52,7 +52,11 @@
                             <td>{{ $row->nature->nom }}</td>
                             <td>{{ $row->type }}</td>
                             <td>{{ $row->priorite }}</td>
-                            <td>{{ $row->correspondant->prenom.' '.$row->correspondant->nom }}</td>
+                            <td>
+                                @isset($row->correspondant)
+                                {{ $row->correspondant->prenom.' '.$row->correspondant->nom }}
+                                @endisset
+                            </td>
                             <td><span class="badge badge-pill badge-success text-white">{{ $row->etat }}</span></td>
                             <td>{{ $row->created_at->format('d/m/Y') }}</td>
                             <td>

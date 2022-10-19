@@ -17,7 +17,8 @@ class NatureFactory extends Factory
     public function definition()
     {
         return [
-            'nom' => $this->faker->sentence(1)
+
+            'nom' =>  $this->faker->randomElement(['Email','Lettre ','Fax'])
         ];
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('nature_id');
             $table->foreign('nature_id')->references('id')->on('natures')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('correspondant_id');
+            $table->unsignedBigInteger('correspondant_id')->nullable();
             $table->foreign('correspondant_id')->references('id')->on('correspondants')->onUpdate('cascade')->onDelete('cascade');
             $table->string('type');
             $table->string('reference');

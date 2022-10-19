@@ -34,7 +34,7 @@
                     <div class="fxt-transformX-R-50 fxt-transition-delay-10">
                         <div class="fxt-middle-content">
                             <div class="fxt-sub-title">Bienvenue</div>
-                            <h1 class="fxt-main-title">Geré plus facilement vos courrier.</h1>
+                            <h1 class="fxt-main-title">Gerer plus facilement vos courrier.</h1>
                         </div>
                     </div>
 

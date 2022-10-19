@@ -18,7 +18,6 @@
                             <th>Type</th>
                             <th>Priorité</th>
                             <th>correspondant</th>
-
                             <th>Date arrivée</th>
                             <th>Crée</th>
                             <th>Action</th>

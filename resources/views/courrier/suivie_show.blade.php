@@ -66,9 +66,9 @@
                                                             href="{{ route('show.document',['id'=> $row->id]) }}"
                                                             role="button" class="btn btn-sm btn-green-1"><i
                                                                 class="fe fe-eye"></i></a>
-                                                        <a href="{{ route('edit.document',['id'=> $row->id]) }}"
+                                                        {{-- <a href="{{ route('edit.document',['id'=> $row->id]) }}"
                                                             role="button" class="btn btn-sm btn-green-1"><i
-                                                                class="fe fe-edit"></i></a>
+                                                                class="fe fe-edit"></i></a> --}}
                                                     </div>
                                                     <div class="my-4 circle circle-lg bg-light">
                                                         <span class="fe fe-file fe-24 text-success"></span>

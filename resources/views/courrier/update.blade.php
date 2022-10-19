@@ -136,7 +136,7 @@
             <div class="card text-center mb-4 shadow">
                 <div class="card-body file">
                     <div class="file-action">
-                        <a href="{{ route('edit.document',['id'=> $row->id]) }}" role="button"
+                        <a href="{{ route('edit.docu',['id'=> $row->id]) }}" role="button"
                             class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                     </div>
                     <div class="circle circle-lg bg-light my-4">

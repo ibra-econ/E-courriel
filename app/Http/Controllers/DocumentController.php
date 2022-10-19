@@ -23,7 +23,8 @@ class DocumentController extends Controller
     public function file_view(int $id)
     {
         $document = Document::find($id);
-        $filePath = Storage::path($document->chemin);
+        $dd = Storage::url($document->chemin);
+        $filePath = public_path($dd);
         header('Content-Type: application/pdf');
         return response()->file($filePath);
     }
@@ -34,10 +35,9 @@ class DocumentController extends Controller
         $doc = Document::with('courrier')->find($request->id);
         $doc->libelle = $request->libelle;
         if (!empty($request->file('document'))):
-            $dd = Storage::path($doc->chemin);
-            Storage::exists($dd);
-            // delete de l'image
-            unlink($dd);
+            $dd = Storage::url($doc->chemin);
+            // delete de l'scene
+            unlink(public_path($dd));
             // renome le document
             $filename = Str::random(10) . '.' . $request->document->extension();
             // si courrier entrant

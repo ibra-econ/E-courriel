@@ -46,7 +46,7 @@
                                 <a target="_blank" href="{{ route('show.document',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-eye"></i></a>
 
-                                     <a href="{{ route('edit.test',['id'=> $row->id]) }}" role="button"
+                                     <a href="{{ route('edit.docu',['id'=> $row->id]) }}" role="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-edit"></i></a>
                                 <button onclick="deleteConfirmation({{ $row->id }})" type="button"
                                     class="btn btn-sm btn-green-1"><i class="fe fe-trash"></i></button>

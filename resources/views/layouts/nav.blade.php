@@ -105,16 +105,28 @@
                 </ul>
             </li>
         </ul>
-
+        @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser() || Auth::user()->isSecretaire())
         <ul class="mb-2 navbar-nav flex-fill w-100">
-            {{-- Archive lien --}}
+            <ul class="mb-2 navbar-nav flex-fill w-100">
+                {{-- imputation lien --}}
+                <li class="nav-item w-100">
+                    <a class="nav-link" href="{{ route('Imputation') }}">
+                        <i class="fe fe-share-2 fe-16"></i>
+                        <span class="ml-3 item-text">Imputations</span>
+                    </a>
+                </li>
+            </ul>
+            {{-- Traitement lien --}}
             <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Archive') }}">
-                    <i class="fe fe-archive fe-16"></i>
-                    <span class="ml-3 item-text">Archive</span>
+                <a class="nav-link" href="{{ route('Traitement') }}">
+                    <i class="fe fe-settings fe-16"></i>
+                    <span class="ml-3 item-text">Traitement</span>
                 </a>
             </li>
         </ul>
+
+        @endif
+
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Document lien --}}
             <li class="nav-item w-100">
@@ -124,26 +136,7 @@
                 </a>
             </li>
         </ul>
-        @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser() || Auth::user()->isSecretaire())
-        <ul class="mb-2 navbar-nav flex-fill w-100">
-            {{-- Traitement lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Traitement') }}">
-                    <i class="fe fe-settings fe-16"></i>
-                    <span class="ml-3 item-text">Traitement</span>
-                </a>
-            </li>
-        </ul>
-        <ul class="mb-2 navbar-nav flex-fill w-100">
-            {{-- imputation lien --}}
-            <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('Imputation') }}">
-                    <i class="fe fe-share-2 fe-16"></i>
-                    <span class="ml-3 item-text">Imputations</span>
-                </a>
-            </li>
-        </ul>
-        @endif
+
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- Agenda lien --}}
             <li class="nav-item w-100">
@@ -164,7 +157,15 @@
             </li>
         </ul>
         @endif
-
+        <ul class="mb-2 navbar-nav flex-fill w-100">
+            {{-- Archive lien --}}
+            <li class="nav-item w-100">
+                <a class="nav-link" href="{{ route('Archive') }}">
+                    <i class="fe fe-archive fe-16"></i>
+                    <span class="ml-3 item-text">Archive</span>
+                </a>
+            </li>
+        </ul>
         <ul class="mb-2 navbar-nav flex-fill w-100">
             {{-- @if (Auth::user()->isAdmin() || Auth::user()->isSuperuser()) --}}
             <ul class="mb-2 navbar-nav flex-fill w-100">

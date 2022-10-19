@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('objet');
             $table->date('debut');
             $table->time('heure_debut')->nullable();
-            $table->date('fin');
+            $table->date('fin')->nullable();
             $table->time('heure_fin')->nullable();
             $table->softDeletes();
             $table->timestamps();
